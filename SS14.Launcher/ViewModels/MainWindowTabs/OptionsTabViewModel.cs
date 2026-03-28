@@ -1,6 +1,7 @@
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using Microsoft.Toolkit.Mvvm.Messaging;
 using Splat;
 using SS14.Launcher.Localization;
 using SS14.Launcher.Models.ContentManagement;
@@ -60,6 +61,41 @@ public class OptionsTabViewModel : MainWindowTabViewModel
         }
     }
 
+    // Worm-Start
+    public bool ServerListShowMap
+    {
+        get => Cfg.GetCVar(CVars.ServerListShowMap);
+        set
+        {
+            Cfg.SetCVar(CVars.ServerListShowMap, value);
+            Cfg.CommitConfig();
+            NotifyServerListDisplaySettingsChanged();
+        }
+    }
+
+    public bool ServerListShowMode
+    {
+        get => Cfg.GetCVar(CVars.ServerListShowMode);
+        set
+        {
+            Cfg.SetCVar(CVars.ServerListShowMode, value);
+            Cfg.CommitConfig();
+            NotifyServerListDisplaySettingsChanged();
+        }
+    }
+
+    public bool ServerListShowPing
+    {
+        get => Cfg.GetCVar(CVars.ServerListShowPing);
+        set
+        {
+            Cfg.SetCVar(CVars.ServerListShowPing, value);
+            Cfg.CommitConfig();
+            NotifyServerListDisplaySettingsChanged();
+        }
+    }
+    // Worm-End
+
     public void ClearEngines()
     {
         _engineManager.ClearAllEngines();
@@ -83,4 +119,11 @@ public class OptionsTabViewModel : MainWindowTabViewModel
     {
         Helpers.OpenUri(ConfigConstants.AccountManagementUrl);
     }
+
+    // Worm-Start
+    private static void NotifyServerListDisplaySettingsChanged()
+    {
+        WeakReferenceMessenger.Default.Send(new ServerListDisplaySettingsChanged());
+    }
+    // Worm-End
 }

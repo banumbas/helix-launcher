@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Reactive.Linq;
+using Microsoft.Toolkit.Mvvm.Messaging;
 using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
 using SS14.Launcher.Localization;
+using SS14.Launcher.Models.Data;
 using SS14.Launcher.Models.ServerStatus;
 using SS14.Launcher.Utility;
 
@@ -33,6 +35,11 @@ public class ServerListTabViewModel : MainWindowTabViewModel
     private const int throttleMs = 200;
 
     public bool SpinnerVisible => _serverListCache.Status < RefreshListStatus.Updated;
+    // Worm-Start
+    public bool ShowMapColumn => _windowVm.Cfg.GetCVar(CVars.ServerListShowMap);
+    public bool ShowModeColumn => _windowVm.Cfg.GetCVar(CVars.ServerListShowMode);
+    public bool ShowPingColumn => _windowVm.Cfg.GetCVar(CVars.ServerListShowPing);
+    // Worm-End
 
     public string ListText
     {
@@ -73,6 +80,9 @@ public class ServerListTabViewModel : MainWindowTabViewModel
 
         _windowVm = windowVm;
         _serverListCache = Locator.Current.GetRequiredService<ServerListCache>();
+        // Worm-Start
+        WeakReferenceMessenger.Default.Register<ServerListDisplaySettingsChanged>(this, (_, _) => RaiseServerListDisplayPropertiesChanged());
+        // Worm-End
 
         _serverListCache.AllServers.CollectionChanged += ServerListUpdated;
 
@@ -109,6 +119,15 @@ public class ServerListTabViewModel : MainWindowTabViewModel
     {
         _serverListCache.RequestRefresh();
     }
+
+    // Worm-Start
+    private void RaiseServerListDisplayPropertiesChanged()
+    {
+        this.RaisePropertyChanged(nameof(ShowMapColumn));
+        this.RaisePropertyChanged(nameof(ShowModeColumn));
+        this.RaisePropertyChanged(nameof(ShowPingColumn));
+    }
+    // Worm-End
 
     private void ServerListUpdated(object? sender, NotifyCollectionChangedEventArgs notifyCollectionChangedEventArgs)
     {

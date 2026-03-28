@@ -7,6 +7,8 @@ using Avalonia.Controls;
 using Avalonia.VisualTree;
 using DynamicData;
 using DynamicData.Alias;
+using Microsoft.Toolkit.Mvvm.Messaging;
+using ReactiveUI;
 using ReactiveUI.Fody.Helpers;
 using Splat;
 using SS14.Launcher.Localization;
@@ -29,6 +31,9 @@ public class HomePageViewModel : MainWindowTabViewModel
         MainWindowViewModel = mainWindowViewModel;
         _cfg = Locator.Current.GetRequiredService<DataManager>();
         _serverListCache = Locator.Current.GetRequiredService<ServerListCache>();
+        // Worm-Start
+        WeakReferenceMessenger.Default.Register<ServerListDisplaySettingsChanged>(this, (_, _) => RaiseServerListDisplayPropertiesChanged());
+        // Worm-End
 
         _cfg.FavoriteServers
             .Connect()
@@ -64,6 +69,11 @@ public class HomePageViewModel : MainWindowTabViewModel
 
     public override string Name => LocalizationManager.Instance.GetString("tab-home-title");
     public Control? Control { get; set; }
+    // Worm-Start
+    public bool ShowMapColumn => _cfg.GetCVar(CVars.ServerListShowMap);
+    public bool ShowModeColumn => _cfg.GetCVar(CVars.ServerListShowMode);
+    public bool ShowPingColumn => _cfg.GetCVar(CVars.ServerListShowPing);
+    // Worm-End
 
     public async void DirectConnectPressed()
     {
@@ -122,4 +132,13 @@ public class HomePageViewModel : MainWindowTabViewModel
         }
         _serverListCache.RequestInitialUpdate();
     }
+
+    // Worm-Start
+    private void RaiseServerListDisplayPropertiesChanged()
+    {
+        this.RaisePropertyChanged(nameof(ShowMapColumn));
+        this.RaisePropertyChanged(nameof(ShowModeColumn));
+        this.RaisePropertyChanged(nameof(ShowPingColumn));
+    }
+    // Worm-End
 }

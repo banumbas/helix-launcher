@@ -28,6 +28,11 @@
         <Grid>
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" /> <!-- Server Name -->
+            <!-- // Worm-Start -->
+            <ColumnDefinition SharedSizeGroup="ModeCol" MinWidth="110" Width="Auto" />
+            <ColumnDefinition SharedSizeGroup="MapCol" MinWidth="110" Width="Auto" />
+            <ColumnDefinition SharedSizeGroup="PingCol" MinWidth="85" Width="Auto" />
+            <!-- // Worm-End -->
             <ColumnDefinition SharedSizeGroup="TimeCol" MinWidth="80" Width="Auto" />
             <ColumnDefinition SharedSizeGroup="StatusCol" MinWidth="80" Width="Auto" />
             <ColumnDefinition SharedSizeGroup="ConnectCol" Width="Auto" />
@@ -39,12 +44,31 @@
               HorizontalAlignment="Left" />
           </Border>
 
-          <Border Grid.Column="1" Classes="GridCell" Grid.ColumnSpan="2"
+          <Border Grid.Column="1" Classes="GridCell" Grid.ColumnSpan="5"
             IsVisible="{Binding !HaveData}">
             <TextBlock Text="{Binding ServerStatusString}" TextAlignment="Left" Classes="Center" />
           </Border>
 
-          <Border Grid.Column="1" Classes="GridCell" IsVisible="{Binding HaveData}">
+          <!-- // Worm-Start -->
+          <Border Grid.Column="1" Classes="GridCell" IsVisible="{Binding ShowModeColumn}">
+            <TextBlock Text="{Binding ModeDisplayString}" TextTrimming="CharacterEllipsis" />
+          </Border>
+
+          <Border Grid.Column="2" Classes="GridCell" IsVisible="{Binding ShowMapColumn}">
+            <TextBlock Text="{Binding MapDisplayString}" TextTrimming="CharacterEllipsis" />
+          </Border>
+
+          <Border Grid.Column="3" Classes="GridCell" IsVisible="{Binding ShowPingColumn}">
+            <TextBlock Classes="Numeric"
+                       Text="{Binding PingString}"
+                       Classes.PingGood="{Binding IsPingGood}"
+                       Classes.PingMid="{Binding IsPingMid}"
+                       Classes.PingBad="{Binding IsPingBad}"
+                       Classes.PingUnknown="{Binding IsPingUnknown}" />
+          </Border>
+          <!-- // Worm-End -->
+
+          <Border Grid.Column="4" Classes="GridCell" IsVisible="{Binding HaveData}">
             <Panel>
               <controls:TimerTextCell Value="{Binding RoundStartTime}"
                 IsVisible="{Binding RoundStatusString,Converter={x:Static StringConverters.IsNullOrEmpty}}" />
@@ -55,11 +79,11 @@
             </Panel>
           </Border>
 
-          <Border Grid.Column="2" Classes="GridCell" IsVisible="{Binding HaveData}">
+          <Border Grid.Column="5" Classes="GridCell" IsVisible="{Binding HaveData}">
             <TextBlock DockPanel.Dock="Right" Classes="Numeric" Text="{Binding PlayerCountString}" />
           </Border>
 
-          <Border Grid.Column="3" Classes="GridCell">
+          <Border Grid.Column="6" Classes="GridCell">
             <Button IsEnabled="{Binding IsOnline}" DockPanel.Dock="Right"
               Content="{loc:Loc server-entry-connect}"
               Command="{Binding ConnectPressed}" />

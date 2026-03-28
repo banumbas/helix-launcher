@@ -9,7 +9,7 @@ using static SS14.Launcher.Utility.HubUtility;
 
 namespace SS14.Launcher.ViewModels.MainWindowTabs;
 
-public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<FavoritesChanged>, IViewModelBase
+public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<FavoritesChanged>, IRecipient<ServerListDisplaySettingsChanged>, IViewModelBase
 {
     private readonly LocalizationManager _loc = LocalizationManager.Instance;
     private readonly ServerStatusData _cacheData;
@@ -83,6 +83,11 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
     public bool ViewedInFavoritesPane { get; set; }
 
     public bool HaveData => _cacheData.Status == ServerStatusCode.Online;
+    // Worm-Start
+    public bool ShowMapColumn => HaveData && _cfg.GetCVar(CVars.ServerListShowMap);
+    public bool ShowModeColumn => HaveData && _cfg.GetCVar(CVars.ServerListShowMode);
+    public bool ShowPingColumn => HaveData && _cfg.GetCVar(CVars.ServerListShowPing);
+    // Worm-End
 
     public string ServerStatusString
     {
@@ -108,6 +113,27 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
 
 
     public DateTime? RoundStartTime => _cacheData.RoundStartTime;
+
+    // Worm-Start
+    public string? MapName => _cacheData.MapName;
+
+    public string? PresetName => _cacheData.PresetName;
+
+    public string MapDisplayString => string.IsNullOrWhiteSpace(MapName) ? "-" : MapName!;
+
+    public string ModeDisplayString => string.IsNullOrWhiteSpace(PresetName) ? "-" : PresetName!;
+
+    public int? PingMilliseconds => _cacheData.Ping is null
+        ? null
+        : Math.Max(0, (int)Math.Round(_cacheData.Ping.Value.TotalMilliseconds));
+
+    public string PingString => PingMilliseconds is int ping ? $"{ping} ms" : "-";
+
+    public bool IsPingGood => PingMilliseconds is int ping && ping <= 100;
+    public bool IsPingMid => PingMilliseconds is int ping && ping > 100 && ping <= 200;
+    public bool IsPingBad => PingMilliseconds is int ping && ping > 200;
+    public bool IsPingUnknown => PingMilliseconds == null;
+    // Worm-End
 
     public string RoundStatusString =>
         _cacheData.RoundStatus == GameRoundStatus.InLobby
@@ -202,6 +228,15 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
         OnPropertyChanged(nameof(FavoriteButtonText));
     }
 
+    // Worm-Start
+    public void Receive(ServerListDisplaySettingsChanged message)
+    {
+        OnPropertyChanged(nameof(ShowMapColumn));
+        OnPropertyChanged(nameof(ShowModeColumn));
+        OnPropertyChanged(nameof(ShowPingColumn));
+    }
+    // Worm-End
+
     private void CheckUpdateInfo()
     {
         if (!IsExpanded || _cacheData.Status != ServerStatusCode.Online)
@@ -237,6 +272,27 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
                 OnPropertyChanged(nameof(PlayerCountString));
                 break;
 
+            // Worm-Start
+            case nameof(IServerStatusData.MapName):
+                OnPropertyChanged(nameof(MapName));
+                OnPropertyChanged(nameof(MapDisplayString));
+                break;
+
+            case nameof(IServerStatusData.PresetName):
+                OnPropertyChanged(nameof(PresetName));
+                OnPropertyChanged(nameof(ModeDisplayString));
+                break;
+
+            case nameof(IServerStatusData.Ping):
+                OnPropertyChanged(nameof(PingMilliseconds));
+                OnPropertyChanged(nameof(PingString));
+                OnPropertyChanged(nameof(IsPingGood));
+                OnPropertyChanged(nameof(IsPingMid));
+                OnPropertyChanged(nameof(IsPingBad));
+                OnPropertyChanged(nameof(IsPingUnknown));
+                break;
+            // Worm-End
+
             case nameof(IServerStatusData.RoundStartTime):
                 OnPropertyChanged(nameof(RoundStartTime));
                 break;
@@ -251,6 +307,21 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
                 OnPropertyChanged(nameof(PlayerCountString));
                 OnPropertyChanged(nameof(Description));
                 OnPropertyChanged(nameof(HaveData));
+                // Worm-Start
+                OnPropertyChanged(nameof(MapName));
+                OnPropertyChanged(nameof(PresetName));
+                OnPropertyChanged(nameof(MapDisplayString));
+                OnPropertyChanged(nameof(ModeDisplayString));
+                OnPropertyChanged(nameof(ShowMapColumn));
+                OnPropertyChanged(nameof(ShowModeColumn));
+                OnPropertyChanged(nameof(ShowPingColumn));
+                OnPropertyChanged(nameof(PingMilliseconds));
+                OnPropertyChanged(nameof(PingString));
+                OnPropertyChanged(nameof(IsPingGood));
+                OnPropertyChanged(nameof(IsPingMid));
+                OnPropertyChanged(nameof(IsPingBad));
+                OnPropertyChanged(nameof(IsPingUnknown));
+                // Worm-End
                 CheckUpdateInfo();
                 break;
 

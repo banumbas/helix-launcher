@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Linq;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using Serilog;
@@ -23,6 +24,9 @@ public sealed class ServerListCache : ReactiveObject, IServerSource
 {
     private readonly HubApi _hubApi;
     private readonly DataManager _dataManager;
+    // Worm-Start
+    private readonly HttpClient _http;
+    // Worm-End
 
     private CancellationTokenSource? _refreshCancel;
 
@@ -36,6 +40,9 @@ public sealed class ServerListCache : ReactiveObject, IServerSource
     {
         _hubApi = Locator.Current.GetRequiredService<HubApi>();
         _dataManager = Locator.Current.GetRequiredService<DataManager>();
+        // Worm-Start
+        _http = Locator.Current.GetRequiredService<HttpClient>();
+        // Worm-End
     }
 
     /// <summary>
@@ -129,12 +136,17 @@ public sealed class ServerListCache : ReactiveObject, IServerSource
                 }
             }
 
-            _allServers.AddItems(entries.Select(entry =>
+            // Worm-Start
+            var loadedServers = entries.Select(entry =>
             {
                 var statusData = new ServerStatusData(entry.Address, entry.HubAddress);
                 ServerStatusCache.ApplyStatus(statusData, entry.StatusData);
                 return statusData;
-            }));
+            }).ToList();
+
+            _allServers.AddItems(loadedServers);
+            _ = RefreshServerPingsAsync(loadedServers, cancel);
+            // Worm-End
 
             if (_allServers.Count == 0)
                 // We did not get any servers
@@ -154,6 +166,40 @@ public sealed class ServerListCache : ReactiveObject, IServerSource
             Status = RefreshListStatus.Error;
         }
     }
+
+    // Worm-Start
+    private async Task RefreshServerPingsAsync(IReadOnlyCollection<ServerStatusData> servers, CancellationToken cancel)
+    {
+        if (servers.Count == 0)
+            return;
+
+        using var limiter = new SemaphoreSlim(6, 6);
+        var tasks = servers.Select(server => RefreshServerPingAsync(server, limiter, cancel)).ToArray();
+        await Task.WhenAll(tasks);
+    }
+
+    private async Task RefreshServerPingAsync(ServerStatusData server, SemaphoreSlim limiter, CancellationToken cancel)
+    {
+        await limiter.WaitAsync(cancel);
+
+        try
+        {
+            await ServerStatusCache.RefreshPingAsync(server, _http, cancel);
+        }
+        catch (OperationCanceledException)
+        {
+        }
+        catch (Exception e)
+        {
+            server.Ping = null;
+            Log.Debug(e, "Failed to refresh ping for server {Server}", server.Address);
+        }
+        finally
+        {
+            limiter.Release();
+        }
+    }
+    // Worm-End
 
     void IServerSource.UpdateInfoFor(ServerStatusData statusData)
     {

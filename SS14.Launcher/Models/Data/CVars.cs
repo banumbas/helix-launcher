@@ -115,6 +115,23 @@ public static class CVars
     /// <seealso cref="ServerFilter.PlayerCountMax"/>
     public static readonly CVarDef<int> FilterPlayerCountMaxValue = CVarDef.Create("FilterPlayerCountMaxValue", 0);
 
+    // Worm-Start
+    /// <summary>
+    /// Show map column in server lists.
+    /// </summary>
+    public static readonly CVarDef<bool> ServerListShowMap = CVarDef.Create("ServerListShowMap", true);
+
+    /// <summary>
+    /// Show mode column in server lists.
+    /// </summary>
+    public static readonly CVarDef<bool> ServerListShowMode = CVarDef.Create("ServerListShowMode", true);
+
+    /// <summary>
+    /// Show ping column in server lists.
+    /// </summary>
+    public static readonly CVarDef<bool> ServerListShowPing = CVarDef.Create("ServerListShowPing", true);
+    // Worm-End
+
     /// <summary>
     /// Stores whether the user has seen the Wine warning.
     /// </summary>

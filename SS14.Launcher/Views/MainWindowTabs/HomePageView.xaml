@@ -39,10 +39,16 @@
     <Panel DockPanel.Dock="Bottom" Classes="ScrollViewerSep" />
     <Panel DockPanel.Dock="Top" Classes="ScrollViewerSep" />
     <Panel>
-      <mwt:ServerList List="{Binding Favorites}" IsVisible="{Binding !FavoritesEmpty}">
+      <!-- // Worm-Start -->
+      <mwt:ServerList List="{Binding Favorites}"
+                      IsVisible="{Binding !FavoritesEmpty}"
+                      ShowMapColumn="{Binding ShowMapColumn}"
+                      ShowModeColumn="{Binding ShowModeColumn}"
+                      ShowPingColumn="{Binding ShowPingColumn}">
         <Button Content="{loc:Loc tab-home-go-to-servers-tab}"
                 Command="{Binding MainWindowViewModel.SelectTabServers}" />
       </mwt:ServerList>
+      <!-- // Worm-End -->
 
       <StackPanel IsVisible="{Binding FavoritesEmpty}"
                   Orientation="Vertical" VerticalAlignment="Center">

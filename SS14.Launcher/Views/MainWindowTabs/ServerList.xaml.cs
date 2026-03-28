@@ -11,6 +11,53 @@ namespace SS14.Launcher.Views.MainWindowTabs;
 
 public sealed partial class ServerList : TemplatedControl
 {
+    // Worm-Start
+    public static readonly DirectProperty<ServerList, bool> ShowMapColumnProperty =
+        AvaloniaProperty.RegisterDirect<ServerList, bool>(
+            nameof(ShowMapColumn),
+            o => o.ShowMapColumn,
+            (o, v) => o.ShowMapColumn = v
+        );
+
+    private bool _showMapColumn = true;
+
+    public bool ShowMapColumn
+    {
+        get => _showMapColumn;
+        set => SetAndRaise(ShowMapColumnProperty, ref _showMapColumn, value);
+    }
+
+    public static readonly DirectProperty<ServerList, bool> ShowModeColumnProperty =
+        AvaloniaProperty.RegisterDirect<ServerList, bool>(
+            nameof(ShowModeColumn),
+            o => o.ShowModeColumn,
+            (o, v) => o.ShowModeColumn = v
+        );
+
+    private bool _showModeColumn = true;
+
+    public bool ShowModeColumn
+    {
+        get => _showModeColumn;
+        set => SetAndRaise(ShowModeColumnProperty, ref _showModeColumn, value);
+    }
+
+    public static readonly DirectProperty<ServerList, bool> ShowPingColumnProperty =
+        AvaloniaProperty.RegisterDirect<ServerList, bool>(
+            nameof(ShowPingColumn),
+            o => o.ShowPingColumn,
+            (o, v) => o.ShowPingColumn = v
+        );
+
+    private bool _showPingColumn = true;
+
+    public bool ShowPingColumn
+    {
+        get => _showPingColumn;
+        set => SetAndRaise(ShowPingColumnProperty, ref _showPingColumn, value);
+    }
+    // Worm-End
+
     public static readonly DirectProperty<ServerList, bool> ShowHeaderProperty =
         AvaloniaProperty.RegisterDirect<ServerList, bool>(
             nameof(ShowHeader),

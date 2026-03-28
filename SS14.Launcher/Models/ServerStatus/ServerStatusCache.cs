@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
@@ -88,6 +89,9 @@ public sealed class ServerStatusCache : IServerSource
 
             var statusAddr = UriHelper.GetServerStatusAddress(parsedAddress);
             data.Status = ServerStatusCode.FetchingStatus;
+            // Worm-Start
+            data.Ping = null;
+            // Worm-End
 
             ServerApi.ServerStatus status;
             try
@@ -112,17 +116,85 @@ public sealed class ServerStatusCache : IServerSource
             }
 
             ApplyStatus(data, status);
+
+            // Worm-Start
+            try
+            {
+                await RefreshPingAsync(data, http, cancel);
+            }
+            catch (OperationCanceledException)
+            {
+                throw;
+            }
+            catch
+            {
+                data.Ping = null;
+            }
+            // Worm-End
         }
         catch (OperationCanceledException)
         {
+            // Worm-Start
+            data.Ping = null;
+            // Worm-End
             data.Status = ServerStatusCode.Offline;
         }
     }
+
+    // Worm-Start
+    public static async Task RefreshPingAsync(ServerStatusData data, HttpClient http, CancellationToken cancel)
+    {
+        if (!UriHelper.TryParseSs14Uri(data.Address, out var parsedAddress))
+        {
+            data.Ping = null;
+            return;
+        }
+
+        var statusAddr = UriHelper.GetServerStatusAddress(parsedAddress);
+        var firstSample = await ProbeStatusLatencyAsync(statusAddr, http, cancel);
+
+        if (firstSample == null)
+        {
+            data.Ping = null;
+            return;
+        }
+
+        var bestSample = firstSample.Value;
+
+        // The first measurement can include DNS/TLS warm-up, so smooth it with one extra sample.
+        if (data.Ping == null)
+        {
+            var secondSample = await ProbeStatusLatencyAsync(statusAddr, http, cancel);
+            if (secondSample is { } latency && latency < bestSample)
+            {
+                bestSample = latency;
+            }
+        }
+
+        data.Ping = bestSample;
+    }
+
+    private static async Task<TimeSpan?> ProbeStatusLatencyAsync(Uri statusAddr, HttpClient http, CancellationToken cancel)
+    {
+        using var linkedToken = CancellationTokenSource.CreateLinkedTokenSource(cancel);
+        linkedToken.CancelAfter(ConfigConstants.ServerStatusTimeout);
+
+        var stopwatch = Stopwatch.StartNew();
+        using var response = await http.GetAsync(statusAddr, HttpCompletionOption.ResponseHeadersRead, linkedToken.Token);
+        stopwatch.Stop();
+
+        return response.IsSuccessStatusCode ? stopwatch.Elapsed : null;
+    }
+    // Worm-End
 
     public static void ApplyStatus(ServerStatusData data, ServerApi.ServerStatus status)
     {
         data.Status = ServerStatusCode.Online;
         data.Name = status.Name;
+        // Worm-Start
+        data.MapName = status.Map;
+        data.PresetName = status.Preset;
+        // Worm-End
         data.PlayerCount = Math.Max(0, status.PlayerCount);
         data.SoftMaxPlayerCount = Math.Max(0, status.SoftMaxPlayerCount);
 

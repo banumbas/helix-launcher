@@ -11,6 +11,10 @@ public sealed class ServerStatusData : ObservableObject, IServerStatusData
     private TimeSpan? _ping;
     private int _playerCount;
     private int _softMaxPlayerCount;
+    // Worm-Start
+    private string? _mapName;
+    private string? _presetName;
+    // Worm-End
     private DateTime? _roundStartTime;
     private GameRoundStatus _roundStatus;
     private ServerStatusCode _status = ServerStatusCode.FetchingStatus;
@@ -44,8 +48,9 @@ public sealed class ServerStatusData : ObservableObject, IServerStatusData
         set => SetProperty(ref _desc, value);
     }
 
-    // BUG: This ping stat is completely wrong currently.
-    // See the assignment in ServerStatusCache.cs for why.
+    // Worm-Start
+    // Ping is sampled directly from the status endpoint so it is not skewed by hub fetch timing.
+    // Worm-End
     public TimeSpan? Ping
     {
         get => _ping;
@@ -78,6 +83,20 @@ public sealed class ServerStatusData : ObservableObject, IServerStatusData
         get => _softMaxPlayerCount;
         set => SetProperty(ref _softMaxPlayerCount, value);
     }
+
+    // Worm-Start
+    public string? MapName
+    {
+        get => _mapName;
+        set => SetProperty(ref _mapName, value);
+    }
+
+    public string? PresetName
+    {
+        get => _presetName;
+        set => SetProperty(ref _presetName, value);
+    }
+    // Worm-End
 
     public DateTime? RoundStartTime
     {

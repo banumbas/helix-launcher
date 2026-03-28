@@ -27,6 +27,14 @@ public interface IServerStatusData : INotifyPropertyChanged
 
     int SoftMaxPlayerCount { get; set; }
 
+    // Worm-Start
+    TimeSpan? Ping { get; set; }
+
+    string? MapName { get; set; }
+
+    string? PresetName { get; set; }
+    // Worm-End
+
     DateTime? RoundStartTime { get; set; }
 
     GameRoundStatus RoundStatus { get; set; }
