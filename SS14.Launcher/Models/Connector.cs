@@ -20,6 +20,7 @@ using Splat;
 using SS14.Launcher.Models.Data;
 using SS14.Launcher.Models.EngineManager;
 using SS14.Launcher.Models.Logins;
+using SS14.Launcher.Models.ResourcePacks; // Worm-Edit
 using SS14.Launcher.Utility;
 
 namespace SS14.Launcher.Models;
@@ -34,6 +35,9 @@ public partial class Connector : ReactiveObject
     private readonly DataManager _cfg;
     private readonly LoginManager _loginManager;
     private readonly IEngineManager _engineManager;
+    // Worm-Start
+    private readonly ResourcePackManager _resourcePackManager;
+    // Worm-End
 
     private ConnectionStatus _status = ConnectionStatus.None;
     private bool _clientExitedBadly;
@@ -49,6 +53,9 @@ public partial class Connector : ReactiveObject
         _cfg = Locator.Current.GetRequiredService<DataManager>();
         _loginManager = Locator.Current.GetRequiredService<LoginManager>();
         _engineManager = Locator.Current.GetRequiredService<IEngineManager>();
+        // Worm-Start
+        _resourcePackManager = Locator.Current.GetRequiredService<ResourcePackManager>();
+        // Worm-End
         _http = Locator.Current.GetRequiredService<HttpClient>();
     }
 
@@ -135,7 +142,17 @@ public partial class Connector : ReactiveObject
 
         var connectAddress = GetConnectAddress(info, infoAddr);
 
-        await LaunchClientWrap(installation, info, info.BuildInformation, connectAddress, parsedAddr, false, cancel);
+        // Worm-Start
+        await LaunchClientWrap(
+            installation,
+            info,
+            info.BuildInformation,
+            connectAddress,
+            parsedAddr,
+            false,
+            cancel,
+            info.BuildInformation.ForkId);
+        // Worm-End
     }
 
     private async Task HandlePrivacyPolicyAsync(ServerInfo info, CancellationToken cancel)
@@ -215,6 +232,9 @@ public partial class Connector : ReactiveObject
     private async Task LaunchContentBundleInternal(IStorageFile file, CancellationToken cancel)
     {
         Status = ConnectionStatus.Updating;
+        // Worm-Start
+        string? resourcePackForkId = null;
+        // Worm-End
 
         ContentLaunchInfo installation;
         await using (var zipStream = await file.OpenReadAsync())
@@ -286,13 +306,19 @@ public partial class Connector : ReactiveObject
 
             if (metadata.ServerGC == true)
                 installation = installation with { ServerGC = true };
+
+            // Worm-Start
+            resourcePackForkId = metadata.BaseBuild?.ForkId;
+            // Worm-End
         }
 
         Log.Debug("Launching client");
 
         // I originally wanted to pass through build info,
         // but then realized I'd need to pipe the entries in the SQLite DB ("AnonymousContentBundle") up and ehhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh.
-        await LaunchClientWrap(installation, null, null, null, null, true, cancel);
+        // Worm-Start
+        await LaunchClientWrap(installation, null, null, null, null, true, cancel, resourcePackForkId);
+        // Worm-End
     }
 
     private async Task LaunchClientWrap(
@@ -302,11 +328,24 @@ public partial class Connector : ReactiveObject
         Uri? connectAddress = null,
         Uri? parsedAddr = null,
         bool contentBundle = false,
-        CancellationToken cancel = default)
+        CancellationToken cancel = default,
+        // Worm-Start
+        string? resourcePackForkId = null)
+        // Worm-End
     {
         Status = ConnectionStatus.StartingClient;
 
-        var clientProc = await ConnectLaunchClient(launchInfo, info, buildInfo, connectAddress, parsedAddr, contentBundle);
+        // Worm-Start
+        var clientProc = await ConnectLaunchClient(
+            launchInfo,
+            info,
+            buildInfo,
+            connectAddress,
+            parsedAddr,
+            contentBundle,
+            resourcePackForkId,
+            cancel);
+        // Worm-End
 
         if (clientProc != null)
         {
@@ -338,7 +377,11 @@ public partial class Connector : ReactiveObject
         ServerBuildInformation? serverBuildInformation,
         Uri? connectAddress,
         Uri? parsedAddr,
-        bool contentBundle)
+        bool contentBundle,
+        // Worm-Start
+        string? resourcePackForkId,
+        CancellationToken cancel)
+        // Worm-End
     {
         var cVars = new List<(string, string)>();
 
@@ -415,7 +458,14 @@ public partial class Connector : ReactiveObject
             }
 
             // Launch client.
-            return await LaunchClient(launchInfo, args, cVars);
+            // Worm-Start
+            return await LaunchClient(
+                launchInfo,
+                args,
+                cVars,
+                resourcePackForkId ?? serverBuildInformation?.ForkId,
+                cancel);
+            // Worm-End
         }
         catch (Exception e)
         {
@@ -526,7 +576,11 @@ public partial class Connector : ReactiveObject
     private async Task<Process?> LaunchClient(
         ContentLaunchInfo launchInfo,
         IEnumerable<string> extraArgs,
-        List<(string, string)> env)
+        List<(string, string)> env,
+        // Worm-Start
+        string? resourcePackForkId,
+        CancellationToken cancel)
+        // Worm-End
     {
         var pubKey = LauncherPaths.PathPublicKey;
         var engineVersion = launchInfo.ModuleInfo.Single(x => x.Module == "Robust").Version;
@@ -546,7 +600,22 @@ public partial class Connector : ReactiveObject
 
         EnvVar("SS14_LOADER_CONTENT_DB", LauncherPaths.PathContentDb);
         EnvVar("SS14_LOADER_CONTENT_VERSION", launchInfo.Version.ToString());
-        EnvVar("SS14_LOADER_OVERLAY_ZIP", launchInfo.OverlayZip);
+        // Worm-Start
+        var overlayZips = new List<string>();
+        var resourcePackOverlay = await _resourcePackManager.BuildOverlayZipAsync(
+            _resourcePackManager.LoadPacks(),
+            resourcePackForkId,
+            cancel);
+
+        if (!string.IsNullOrWhiteSpace(resourcePackOverlay))
+            overlayZips.Add(resourcePackOverlay);
+
+        if (!string.IsNullOrWhiteSpace(launchInfo.OverlayZip))
+            overlayZips.Add(launchInfo.OverlayZip);
+
+        EnvVar("SS14_LOADER_OVERLAY_ZIPS", overlayZips.Count == 0 ? null : string.Join(Path.PathSeparator, overlayZips));
+        EnvVar("SS14_LOADER_OVERLAY_ZIP", overlayZips.Count == 1 ? overlayZips[0] : null);
+        // Worm-End
 
         // Env vars for engine modules.
         {
@@ -633,7 +702,15 @@ public partial class Connector : ReactiveObject
 
         void EnvVar(string envVar, string? value)
         {
+            // Worm-Start
+            if (value == null)
+            {
+                startInfo.EnvironmentVariables.Remove(envVar);
+                return;
+            }
+
             startInfo.EnvironmentVariables[envVar] = value;
+            // Worm-End
             // Log.Debug("Env: {EnvVar} = {Value}", envVar, value);
         }
     }

@@ -67,8 +67,13 @@ internal class Program
         var contentDb = Environment.GetEnvironmentVariable("SS14_LOADER_CONTENT_DB");
         var contentVersion = Environment.GetEnvironmentVariable("SS14_LOADER_CONTENT_VERSION");
         var overlayZip = Environment.GetEnvironmentVariable("SS14_LOADER_OVERLAY_ZIP");
+        // Worm-Start
+        var overlayZips = Environment.GetEnvironmentVariable("SS14_LOADER_OVERLAY_ZIPS");
+        // Worm-End
         ContentDbFileApi? contentApi = null;
-        ZipFileApi? overlayApi = null;
+        // Worm-Start
+        var overlayApis = new List<ZipFileApi>();
+        // Worm-End
         IEnumerable<ApiMount>? extraMounts = null;
         if (!string.IsNullOrEmpty(contentDb) && !string.IsNullOrEmpty(contentVersion))
         {
@@ -76,16 +81,36 @@ internal class Program
             extraMounts = new[] { new ApiMount(contentApi, "/") };
         }
 
-        if (!string.IsNullOrEmpty(overlayZip))
+        // Worm-Start
+        var overlayPaths = new List<string>();
+        if (!string.IsNullOrWhiteSpace(overlayZips))
         {
-            var overlayArchive = new ZipArchive(
-                File.OpenRead(overlayZip),
-                ZipArchiveMode.Read);
-
-            overlayApi = new ZipFileApi(overlayArchive, "");
-            // Put this *before* the game's regular installation so it masks files.
-            extraMounts = [new ApiMount(overlayApi, "/"), ..extraMounts ?? []];
+            overlayPaths.AddRange(overlayZips.Split(Path.PathSeparator, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries));
         }
+        else if (!string.IsNullOrWhiteSpace(overlayZip))
+        {
+            overlayPaths.Add(overlayZip);
+        }
+
+        if (overlayPaths.Count > 0)
+        {
+            var overlayMounts = new List<ApiMount>(overlayPaths.Count);
+
+            foreach (var overlayPath in overlayPaths)
+            {
+                var overlayArchive = new ZipArchive(
+                    File.OpenRead(overlayPath),
+                    ZipArchiveMode.Read);
+
+                var overlayApi = new ZipFileApi(overlayArchive, "");
+                overlayApis.Add(overlayApi);
+                overlayMounts.Add(new ApiMount(overlayApi, "/"));
+            }
+
+            // Put overlays before the game's regular installation so they mask files.
+            extraMounts = [..overlayMounts, ..extraMounts ?? []];
+        }
+        // Worm-End
 
         var args = new MainArgs(_engineArgs, _fileApi, redialApi, extraMounts);
 
@@ -96,7 +121,12 @@ internal class Program
         finally
         {
             contentApi?.Dispose();
-            overlayApi?.Dispose();
+            // Worm-Start
+            foreach (var overlayApi in overlayApis)
+            {
+                overlayApi.Dispose();
+            }
+            // Worm-End
         }
         return true;
     }

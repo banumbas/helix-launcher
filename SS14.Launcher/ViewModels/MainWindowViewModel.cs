@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -41,6 +41,9 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
     public HomePageViewModel HomeTab { get; }
     public ServerListTabViewModel ServersTab { get; }
     public NewsTabViewModel NewsTab { get; }
+    // Worm-Start
+    public ResourcePacksTabViewModel ResourcePacksTab { get; }
+    // Worm-End
     public OptionsTabViewModel OptionsTab { get; }
 
     public MainWindowViewModel()
@@ -54,12 +57,18 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
         ServersTab = new ServerListTabViewModel(this);
         NewsTab = new NewsTabViewModel();
         HomeTab = new HomePageViewModel(this);
+        // Worm-Start
+        ResourcePacksTab = new ResourcePacksTabViewModel();
+        // Worm-End
         OptionsTab = new OptionsTabViewModel();
 
         var tabs = new List<MainWindowTabViewModel>();
         tabs.Add(HomeTab);
         tabs.Add(ServersTab);
         tabs.Add(NewsTab);
+        // Worm-Start
+        tabs.Add(ResourcePacksTab);
+        // Worm-End
         tabs.Add(OptionsTab);
 #if DEVELOPMENT
         tabs.Add(new DevelopmentTabViewModel());
