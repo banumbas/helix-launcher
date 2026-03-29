@@ -1,6 +1,8 @@
 # SS14.Launcher
 <img width="1017" height="712" alt="изображение" src="https://github.com/user-attachments/assets/35deb3cf-3cce-4242-acad-341098d94a84" />
 
+discord: https://discord.gg/68WfqhBJx3
+
 # Resource Packs
 
 Resource packs replace game files by path at launch time. 
