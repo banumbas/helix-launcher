@@ -120,6 +120,11 @@ public class ServerListTabViewModel : MainWindowTabViewModel
         _serverListCache.RequestRefresh();
     }
 
+    public void DirectConnectPressed()
+    {
+        _windowVm.HomeTab.DirectConnectPressed();
+    }
+
     // Worm-Start
     private void RaiseServerListDisplayPropertiesChanged()
     {
@@ -157,6 +162,18 @@ public class ServerListTabViewModel : MainWindowTabViewModel
         {
             var vm = new ServerEntryViewModel(_windowVm, server, _serverListCache, _windowVm.Cfg);
             SearchedServers.Add(vm);
+        }
+
+        for (var i = 0; i < Math.Min(12, SearchedServers.Count); i++)
+        {
+            var cacheData = SearchedServers[i].CacheData;
+            if (cacheData.Status != ServerStatusCode.Online)
+                continue;
+
+            if (cacheData.StatusInfo is not (ServerStatusInfoCode.NotFetched or ServerStatusInfoCode.Error))
+                continue;
+
+            ((IServerSource)_serverListCache).UpdateInfoFor(cacheData);
         }
 
         this.RaisePropertyChanged(nameof(ListText));

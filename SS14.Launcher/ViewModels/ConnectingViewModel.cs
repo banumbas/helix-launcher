@@ -6,6 +6,7 @@ using ReactiveUI;
 using Splat;
 using SS14.Launcher.Localization;
 using SS14.Launcher.Models;
+using SS14.Launcher.Models.Worm;
 using SS14.Launcher.Utility;
 
 namespace SS14.Launcher.ViewModels;
@@ -221,8 +222,11 @@ public class ConnectingViewModel : ViewModelBase
         ? _loc.GetString("connecting-privacy-policy-text-version-changed")
         : _loc.GetString("connecting-privacy-policy-text");
 
-    public static void StartConnect(MainWindowViewModel windowVm, string address, string? givenReason = null)
+    public static void StartConnect(MainWindowViewModel windowVm, string address, string? givenReason = null, string? displayName = null)
     {
+        // Worm-Start
+        Locator.Current.GetService<RecentServerManager>()?.RememberServer(address, displayName);
+        // Worm-End
         var connector = new Connector();
         var vm = new ConnectingViewModel(connector, windowVm, givenReason, ConnectionType.Server);
         windowVm.ConnectingVM = vm;

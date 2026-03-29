@@ -263,9 +263,9 @@ public sealed class ServerStatusCache : IServerSource
             return;
         }
 
-        data.StatusInfo = ServerStatusInfoCode.Fetched;
         data.Description = info.Desc;
         data.Links = info.Links;
+        data.StatusInfo = ServerStatusInfoCode.Fetched;
     }
 
     public void Refresh()

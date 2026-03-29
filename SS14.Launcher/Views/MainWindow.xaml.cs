@@ -6,6 +6,7 @@ using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using SS14.Launcher.Localization;
 using SS14.Launcher.ViewModels;
+using SS14.Launcher.Views.Worm;
 using TerraFX.Interop.Windows;
 using IDataObject = Avalonia.Input.IDataObject;
 
@@ -15,11 +16,18 @@ public partial class MainWindow : Window
 {
     private MainWindowViewModel? _viewModel;
 
-    private MainWindowContent _content;
+    // Worm-Start
+    private MainWindowContentWorm _content;
+    // Worm-End
 
     public MainWindow()
     {
         InitializeComponent();
+
+        // Worm-Start
+        Width = MinWidth;
+        Height = MinHeight;
+        // Worm-End
 
         DarkMode();
 
@@ -28,7 +36,9 @@ public partial class MainWindow : Window
         AddHandler(DragDrop.DragOverEvent, DragOver);
         AddHandler(DragDrop.DropEvent, Drop);
 
-        _content = (MainWindowContent) Content!;
+        // Worm-Start
+        _content = (MainWindowContentWorm) Content!;
+        // Worm-End
 
         ReloadTitle();
     }
@@ -37,7 +47,9 @@ public partial class MainWindow : Window
     {
         ReloadTitle();
 
-        Content = _content = new MainWindowContent();
+        // Worm-Start
+        Content = _content = new MainWindowContentWorm();
+        // Worm-End
     }
 
     private void ReloadTitle()
@@ -75,8 +87,14 @@ public partial class MainWindow : Window
 
         var hWnd = (HWND)handle.Handle;
 
-        COLORREF r = 0x00262121;
-        TerraFX.Interop.Windows.Windows.DwmSetWindowAttribute(hWnd, 35, &r, (uint) sizeof(COLORREF));
+        // Worm-Start
+        COLORREF caption = 0x001C140F;
+        COLORREF border = 0x0035291F;
+        COLORREF text = 0x00F0E9E5;
+        // Worm-End
+        TerraFX.Interop.Windows.Windows.DwmSetWindowAttribute(hWnd, 35, &caption, (uint) sizeof(COLORREF));
+        TerraFX.Interop.Windows.Windows.DwmSetWindowAttribute(hWnd, 34, &border, (uint) sizeof(COLORREF));
+        TerraFX.Interop.Windows.Windows.DwmSetWindowAttribute(hWnd, 36, &text, (uint) sizeof(COLORREF));
 
         // Removes the top margin of the window on Windows 11, since there's ample space after we recolor the title bar.
         Classes.Add("WindowsTitlebarColorActive");

@@ -602,10 +602,22 @@ public partial class Connector : ReactiveObject
         EnvVar("SS14_LOADER_CONTENT_VERSION", launchInfo.Version.ToString());
         // Worm-Start
         var overlayZips = new List<string>();
-        var resourcePackOverlay = await _resourcePackManager.BuildOverlayZipAsync(
-            _resourcePackManager.LoadPacks(),
-            resourcePackForkId,
-            cancel);
+        string? resourcePackOverlay = null;
+        try
+        {
+            resourcePackOverlay = await _resourcePackManager.BuildOverlayZipAsync(
+                _resourcePackManager.LoadPacks(),
+                resourcePackForkId,
+                cancel);
+        }
+        catch (OperationCanceledException)
+        {
+            throw;
+        }
+        catch (Exception e)
+        {
+            Log.Warning(e, "Failed to build resource pack overlay zip, continuing without resource packs");
+        }
 
         if (!string.IsNullOrWhiteSpace(resourcePackOverlay))
             overlayZips.Add(resourcePackOverlay);
@@ -810,9 +822,30 @@ public partial class Connector : ReactiveObject
 
         if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
         {
+            var loaderExe = Path.Combine(basePath, "SS14.Loader.exe");
+            if (File.Exists(loaderExe))
+            {
+                return new ProcessStartInfo
+                {
+                    FileName = loaderExe,
+                };
+            }
+
+            var loaderDll = Path.Combine(basePath, "SS14.Loader.dll");
+            if (File.Exists(loaderDll))
+            {
+                var startInfo = new ProcessStartInfo
+                {
+                    FileName = "dotnet",
+                };
+
+                startInfo.ArgumentList.Add(loaderDll);
+                return startInfo;
+            }
+
             return new ProcessStartInfo
             {
-                FileName = Path.Combine(basePath, "SS14.Loader.exe"),
+                FileName = loaderExe,
             };
         }
 

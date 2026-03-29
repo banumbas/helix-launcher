@@ -1,0 +1,154 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:mainWindowTabs="clr-namespace:SS14.Launcher.ViewModels.MainWindowTabs"
+             xmlns:wormViews="clr-namespace:SS14.Launcher.Views.Worm"
+             xmlns:v="clr-namespace:SS14.Launcher.Views"
+             xmlns:loc="clr-namespace:SS14.Launcher.Localization"
+             mc:Ignorable="d"
+             d:DesignWidth="1240"
+             d:DesignHeight="520"
+             x:Class="SS14.Launcher.Views.Worm.ServerListWorm"
+             x:Name="Root">
+  <Design.DataContext>
+    <mainWindowTabs:ServerListTabViewModel />
+  </Design.DataContext>
+
+  <UserControl.DataTemplates>
+    <DataTemplate DataType="mainWindowTabs:ServerEntryViewModel">
+      <wormViews:ServerEntryWormView />
+    </DataTemplate>
+  </UserControl.DataTemplates>
+
+  <UserControl.Styles>
+    <Style Selector="TextBlock.WormServerHeaderText">
+      <Setter Property="Foreground" Value="#8A95A8" />
+      <Setter Property="FontSize" Value="12" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+      <Setter Property="VerticalAlignment" Value="Center" />
+      <Setter Property="TextAlignment" Value="Center" />
+      <Setter Property="HorizontalAlignment" Value="Center" />
+    </Style>
+
+    <Style Selector="Border.WormHeaderMetaCell">
+      <Setter Property="Height" Value="38" />
+      <Setter Property="Background" Value="#0F141C" />
+      <Setter Property="BorderBrush" Value="#1F2935" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="10" />
+      <Setter Property="Padding" Value="8,0" />
+    </Style>
+
+    <Style Selector="Border.WormModeWidth">
+      <Setter Property="Width" Value="124" />
+    </Style>
+
+    <Style Selector="Border.WormMapWidth">
+      <Setter Property="Width" Value="124" />
+    </Style>
+
+    <Style Selector="Border.WormPingWidth">
+      <Setter Property="Width" Value="72" />
+    </Style>
+
+    <Style Selector="Border.WormTimeWidth">
+      <Setter Property="Width" Value="80" />
+    </Style>
+
+    <Style Selector="Border.WormPlayersWidth">
+      <Setter Property="Width" Value="88" />
+    </Style>
+
+    <Style Selector="ItemsControl.WormServerItems > ContentPresenter">
+      <Setter Property="HorizontalAlignment" Value="Stretch" />
+    </Style>
+
+    <Style Selector="TextBlock.WormListText">
+      <Setter Property="Margin" Value="16,4,16,16" />
+      <Setter Property="Foreground" Value="#8A95A8" />
+      <Setter Property="TextWrapping" Value="Wrap" />
+    </Style>
+  </UserControl.Styles>
+
+  <Grid RowDefinitions="Auto,*">
+    <Grid IsVisible="{Binding #Root.ShowHeader}"
+          ColumnDefinitions="*,12,Auto,12,136"
+          Margin="2,2,2,4">
+      <TextBlock Text="{loc:Loc tab-servers-table-name}"
+                 Classes="WormServerHeaderText"
+                 HorizontalAlignment="Left"
+                 TextAlignment="Left"
+                 Margin="18,0,0,0" />
+
+      <StackPanel Grid.Column="2"
+                  Orientation="Horizontal"
+                  Spacing="8"
+                  HorizontalAlignment="Right">
+        <Border Classes="WormHeaderMetaCell WormModeWidth"
+                IsVisible="{Binding #Root.ShowModeColumn}">
+          <TextBlock Classes="WormServerHeaderText"
+                     Text="{loc:Loc tab-servers-table-mode}" />
+        </Border>
+        <Border Classes="WormHeaderMetaCell WormMapWidth"
+                IsVisible="{Binding #Root.ShowMapColumn}">
+          <TextBlock Classes="WormServerHeaderText"
+                     Text="{loc:Loc tab-servers-table-map}" />
+        </Border>
+        <Border Classes="WormHeaderMetaCell WormPingWidth"
+                IsVisible="{Binding #Root.ShowPingColumn}">
+          <TextBlock Classes="WormServerHeaderText"
+                     Text="{loc:Loc tab-servers-table-ping}" />
+        </Border>
+        <Border Classes="WormHeaderMetaCell WormTimeWidth">
+          <TextBlock Classes="WormServerHeaderText"
+                     Text="{loc:Loc tab-servers-table-round-time}" />
+        </Border>
+        <Border Classes="WormHeaderMetaCell WormPlayersWidth">
+          <TextBlock Classes="WormServerHeaderText"
+                     Text="{loc:Loc tab-servers-table-players}" />
+        </Border>
+      </StackPanel>
+
+      <Border Grid.Column="4"
+              Classes="WormHeaderMetaCell">
+        <TextBlock Classes="WormServerHeaderText"
+                   Text="{loc:Loc server-entry-connect}" />
+      </Border>
+    </Grid>
+
+    <ScrollViewer Grid.Row="1"
+                  IsVisible="{Binding #Root.UseInternalScrollViewer}"
+                  Margin="0,10,0,0"
+                  HorizontalScrollBarVisibility="Disabled"
+                  VerticalScrollBarVisibility="Visible">
+      <StackPanel>
+        <ItemsControl Classes="WormServerItems"
+                      HorizontalAlignment="Stretch"
+                      ItemsSource="{Binding #Root.List}" />
+        <TextBlock Classes="WormListText"
+                   IsVisible="{Binding #Root.ListText,Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                   Text="{Binding #Root.ListText}" />
+        <Viewbox Classes="DungSpinnerBox"
+                 IsVisible="{Binding #Root.SpinnerVisible}">
+          <v:DungSpinner IsVisible="{Binding #Root.SpinnerVisible}" />
+        </Viewbox>
+      </StackPanel>
+    </ScrollViewer>
+
+    <StackPanel Grid.Row="1"
+                IsVisible="{Binding !#Root.UseInternalScrollViewer}"
+                Margin="0,10,0,0">
+      <ItemsControl Classes="WormServerItems"
+                    HorizontalAlignment="Stretch"
+                    ItemsSource="{Binding #Root.List}" />
+      <TextBlock Classes="WormListText"
+                 IsVisible="{Binding #Root.ListText,Converter={x:Static StringConverters.IsNotNullOrEmpty}}"
+                 Text="{Binding #Root.ListText}" />
+      <Viewbox Classes="DungSpinnerBox"
+               IsVisible="{Binding #Root.SpinnerVisible}">
+        <v:DungSpinner IsVisible="{Binding #Root.SpinnerVisible}" />
+      </Viewbox>
+    </StackPanel>
+  </Grid>
+</UserControl>

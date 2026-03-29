@@ -12,19 +12,34 @@
   </Design.DataContext>
 
   <UserControl.Styles>
+    <!-- Worm-Start -->
     <Style Selector="Border.resource-pack-card">
       <Setter Property="Padding" Value="12" />
       <Setter Property="Margin" Value="0,0,0,8" />
       <Setter Property="CornerRadius" Value="10" />
-      <Setter Property="Background" Value="{DynamicResource ThemePopupBackgroundColor}" />
-      <Setter Property="BorderBrush" Value="Transparent" />
-      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="Background" Value="#1F2128" />
+      <Setter Property="BorderBrush" Value="#333743" />
+      <Setter Property="BorderThickness" Value="1" />
     </Style>
+
+    <Style Selector="Border.resource-pack-panel">
+      <Setter Property="CornerRadius" Value="10" />
+      <Setter Property="BorderBrush" Value="#333743" />
+      <Setter Property="BorderThickness" Value="1" />
+    </Style>
+
+    <Style Selector="TextBlock.resource-pack-heading">
+      <Setter Property="Foreground" Value="#4286FF" />
+      <Setter Property="FontWeight" Value="Bold" />
+      <Setter Property="FontSize" Value="18" />
+    </Style>
+    <!-- Worm-End -->
   </UserControl.Styles>
 
   <DockPanel Margin="8">
+    <!-- Worm-Start -->
     <StackPanel DockPanel.Dock="Top" Spacing="6">
-      <TextBlock Text="{loc:Loc tab-resource-packs-header}" Classes="NanoHeadingMedium" />
+      <TextBlock Text="{loc:Loc tab-resource-packs-header}" Classes="resource-pack-heading" />
       <TextBlock Text="{loc:Loc tab-resource-packs-desc}"
                  Classes="SubText"
                  TextWrapping="Wrap" />
@@ -34,8 +49,8 @@
                  Classes="SubText"
                  TextWrapping="Wrap" />
       <Border Padding="10,8"
-              CornerRadius="8"
-              Background="{DynamicResource ThemePopupBackgroundColor}">
+              Classes="resource-pack-panel"
+              Background="#1D1F26">
         <TextBlock Text="{loc:Loc tab-resource-packs-priority}"
                    Classes="SubText"
                    TextWrapping="Wrap" />
@@ -47,16 +62,18 @@
                 Spacing="6"
                 HorizontalAlignment="Right"
                 Margin="0,10,0,0">
-      <Button Content="{loc:Loc tab-resource-packs-open-directory}"
+      <Button Classes="WormPillButton"
+              Content="{loc:Loc tab-resource-packs-open-directory}"
               Click="OpenResourcePackDirectoryPressed" />
-      <Button Content="{loc:Loc tab-resource-packs-reload}"
+      <Button Classes="WormPillButton"
+              Content="{loc:Loc tab-resource-packs-reload}"
               Click="ReloadResourcePacksPressed" />
     </StackPanel>
 
     <Border Margin="0,10,0,0"
             Padding="12"
-            CornerRadius="10"
-            Background="{DynamicResource ThemeBackgroundColor}">
+            Classes="resource-pack-panel"
+            Background="#17191F">
       <Grid>
         <TextBlock IsVisible="{Binding !HasResourcePacks}"
                    Text="{loc:Loc tab-resource-packs-empty}"
@@ -103,8 +120,10 @@
                                 Spacing="6"
                                 VerticalAlignment="Top">
                       <Button Content="{loc:Loc tab-resource-packs-move-up}"
+                              Classes="WormPillButton"
                               Click="MoveResourcePackUpPressed" />
                       <Button Content="{loc:Loc tab-resource-packs-move-down}"
+                              Classes="WormPillButton"
                               Click="MoveResourcePackDownPressed" />
                     </StackPanel>
                   </Grid>
@@ -115,5 +134,6 @@
         </ScrollViewer>
       </Grid>
     </Border>
+    <!-- Worm-End -->
   </DockPanel>
 </UserControl>

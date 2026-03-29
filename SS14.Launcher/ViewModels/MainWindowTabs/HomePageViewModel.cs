@@ -14,6 +14,7 @@ using Splat;
 using SS14.Launcher.Localization;
 using SS14.Launcher.Models.Data;
 using SS14.Launcher.Models.ServerStatus;
+using SS14.Launcher.Models.Worm;
 using SS14.Launcher.Utility;
 using SS14.Launcher.Views;
 
@@ -25,12 +26,19 @@ public class HomePageViewModel : MainWindowTabViewModel
     private readonly DataManager _cfg;
     private readonly ServerStatusCache _statusCache = new ServerStatusCache();
     private readonly ServerListCache _serverListCache;
+    // Worm-Start
+    private readonly RecentServerManager _recentServerManager;
+    // Worm-End
 
     public HomePageViewModel(MainWindowViewModel mainWindowViewModel)
     {
         MainWindowViewModel = mainWindowViewModel;
         _cfg = Locator.Current.GetRequiredService<DataManager>();
         _serverListCache = Locator.Current.GetRequiredService<ServerListCache>();
+        // Worm-Start
+        _recentServerManager = Locator.Current.GetRequiredService<RecentServerManager>();
+        _recentServerManager.Entries.CollectionChanged += (_, _) => RebuildRecentServers();
+        // Worm-End
         // Worm-Start
         WeakReferenceMessenger.Default.Register<ServerListDisplaySettingsChanged>(this, (_, _) => RaiseServerListDisplayPropertiesChanged());
         // Worm-End
@@ -43,6 +51,7 @@ public class HomePageViewModel : MainWindowTabViewModel
                 if (IsSelected)
                 {
                     _statusCache.InitialUpdateStatus(a.CacheData);
+                    PreloadInfo(a);
                 }
             })
             .Sort(Comparer<ServerEntryViewModel>.Create((a, b) => {
@@ -60,12 +69,21 @@ public class HomePageViewModel : MainWindowTabViewModel
             });
 
         Favorites = favorites;
+        // Worm-Start
+        RebuildRecentServers();
+        // Worm-End
     }
 
     public ReadOnlyObservableCollection<ServerEntryViewModel> Favorites { get; }
     public ObservableCollection<ServerEntryViewModel> Suggestions { get; } = new();
+    // Worm-Start
+    public ObservableCollection<ServerEntryViewModel> RecentServers { get; } = new();
+    // Worm-End
 
     [Reactive] public bool FavoritesEmpty { get; private set; } = true;
+    // Worm-Start
+    [Reactive] public bool RecentServersEmpty { get; private set; } = true;
+    // Worm-End
 
     public override string Name => LocalizationManager.Instance.GetString("tab-home-title");
     public Control? Control { get; set; }
@@ -124,12 +142,29 @@ public class HomePageViewModel : MainWindowTabViewModel
         _serverListCache.RequestRefresh();
     }
 
+    // Worm-Start
+    public void ClearRecentServersPressed()
+    {
+        _recentServerManager.Clear();
+    }
+    // Worm-End
+
     public override void Selected()
     {
         foreach (var favorite in Favorites)
         {
             _statusCache.InitialUpdateStatus(favorite.CacheData);
+            PreloadInfo(favorite);
         }
+
+        // Worm-Start
+        foreach (var recent in RecentServers)
+        {
+            _statusCache.InitialUpdateStatus(recent.CacheData);
+            PreloadInfo(recent);
+        }
+        // Worm-End
+
         _serverListCache.RequestInitialUpdate();
     }
 
@@ -139,6 +174,44 @@ public class HomePageViewModel : MainWindowTabViewModel
         this.RaisePropertyChanged(nameof(ShowMapColumn));
         this.RaisePropertyChanged(nameof(ShowModeColumn));
         this.RaisePropertyChanged(nameof(ShowPingColumn));
+    }
+    // Worm-End
+
+    // Worm-Start
+    private void RebuildRecentServers()
+    {
+        RecentServers.Clear();
+
+        foreach (var entry in _recentServerManager.Entries)
+        {
+            var statusData = _statusCache.GetStatusFor(entry.Address);
+            var vm = new ServerEntryViewModel(
+                MainWindowViewModel,
+                new ServerStatusDataWithFallbackName(statusData, entry.DisplayName),
+                _statusCache,
+                _cfg);
+
+            RecentServers.Add(vm);
+
+            if (IsSelected)
+            {
+                _statusCache.InitialUpdateStatus(vm.CacheData);
+                PreloadInfo(vm);
+            }
+        }
+
+        RecentServersEmpty = RecentServers.Count == 0;
+    }
+
+    private void PreloadInfo(ServerEntryViewModel viewModel)
+    {
+        if (viewModel.CacheData.Status != ServerStatusCode.Online)
+            return;
+
+        if (viewModel.CacheData.StatusInfo is not (ServerStatusInfoCode.NotFetched or ServerStatusInfoCode.Error))
+            return;
+
+        ((IServerSource)_statusCache).UpdateInfoFor(viewModel.CacheData);
     }
     // Worm-End
 }

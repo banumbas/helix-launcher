@@ -16,6 +16,7 @@ using SS14.Launcher.Models;
 using SS14.Launcher.Models.ContentManagement;
 using SS14.Launcher.Models.OverrideAssets;
 using SS14.Launcher.Models.ResourcePacks; // Worm-Edit
+using SS14.Launcher.Models.Worm;
 using SS14.Launcher.Utility;
 using SS14.Launcher.ViewModels;
 using SS14.Launcher.Views;
@@ -130,6 +131,7 @@ public class App : Application
         var launcherInfo = Locator.Current.GetRequiredService<LauncherInfoManager>();
         // Worm-Start
         var resourcePackManager = Locator.Current.GetRequiredService<ResourcePackManager>();
+        var recentServerManager = Locator.Current.GetRequiredService<RecentServerManager>();
         // Worm-End
 
         loc.Initialize();
@@ -138,6 +140,7 @@ public class App : Application
         overrideAssets.Initialize();
         // Worm-Start
         resourcePackManager.Initialize();
+        recentServerManager.Initialize();
         // Worm-End
 
         var viewModel = new MainWindowViewModel();

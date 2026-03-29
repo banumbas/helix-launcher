@@ -24,6 +24,7 @@ using SS14.Launcher.Models.EngineManager;
 using SS14.Launcher.Models.Logins;
 using SS14.Launcher.Models.OverrideAssets;
 using SS14.Launcher.Models.ResourcePacks; // Worm-Edit
+using SS14.Launcher.Models.Worm;
 using SS14.Launcher.Utility;
 using TerraFX.Interop.Windows;
 using LogEventLevel = Serilog.Events.LogEventLevel;
@@ -228,6 +229,7 @@ internal static class Program
         var engineManager = new EngineManagerDynamic();
         // Worm-Start
         var resourcePackManager = new ResourcePackManager();
+        var recentServerManager = new RecentServerManager();
         // Worm-End
 
         locator.RegisterConstant(loc);
@@ -242,6 +244,7 @@ internal static class Program
         locator.RegisterConstant(launcherInfo);
         // Worm-Start
         locator.RegisterConstant(resourcePackManager);
+        locator.RegisterConstant(recentServerManager);
         // Worm-End
 
         CheckLauncherArchitecture(cfg, engineManager);

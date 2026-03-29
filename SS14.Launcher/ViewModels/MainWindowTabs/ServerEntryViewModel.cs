@@ -57,7 +57,9 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
 
     public void ConnectPressed()
     {
-        ConnectingViewModel.StartConnect(_windowVm, Address);
+        // Worm-Start
+        ConnectingViewModel.StartConnect(_windowVm, Address, displayName: Name);
+        // Worm-End
     }
 
     public FavoriteServer? Favorite { get; }
@@ -67,8 +69,12 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
         get => _isExpanded;
         set
         {
-            _isExpanded = value;
-            CheckUpdateInfo();
+            // Worm-Start
+            if (SetProperty(ref _isExpanded, value))
+            {
+                CheckUpdateInfo();
+            }
+            // Worm-End
         }
     }
 

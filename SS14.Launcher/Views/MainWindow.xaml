@@ -2,12 +2,17 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:views="clr-namespace:SS14.Launcher.Views"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
-        MinWidth="800" MinHeight="500"
-        Width="650" Height="400"
+        xmlns:viewsWorm="clr-namespace:SS14.Launcher.Views.Worm"
+        mc:Ignorable="d" d:DesignWidth="1024" d:DesignHeight="680"
+        MinWidth="1024" MinHeight="680"
+        Width="1024" Height="680"
+        SizeToContent="Manual"
+        Background="#0F141C"
+        WindowStartupLocation="CenterScreen"
         x:Class="SS14.Launcher.Views.MainWindow"
         Icon="{DynamicResource WindowIcon}"
         DragDrop.AllowDrop="True">
-  <views:MainWindowContent />
+  <!-- Worm-Start -->
+  <viewsWorm:MainWindowContentWorm />
+  <!-- Worm-End -->
 </Window>

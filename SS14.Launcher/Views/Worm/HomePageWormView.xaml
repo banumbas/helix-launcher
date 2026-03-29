@@ -1,0 +1,103 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:mainWindowTabs="clr-namespace:SS14.Launcher.ViewModels.MainWindowTabs"
+             xmlns:loc="clr-namespace:SS14.Launcher.Localization"
+             xmlns:wormViews="clr-namespace:SS14.Launcher.Views.Worm"
+             mc:Ignorable="d"
+             d:DesignWidth="1240"
+             d:DesignHeight="720"
+             x:Class="SS14.Launcher.Views.Worm.HomePageWormView">
+  <Design.DataContext>
+    <mainWindowTabs:HomePageViewModel />
+  </Design.DataContext>
+
+  <DockPanel>
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+      <StackPanel Spacing="18">
+        <Border Classes="WormSectionCard"
+                Padding="18">
+          <StackPanel Spacing="16">
+            <Grid ColumnDefinitions="*,Auto">
+              <TextBlock Text="{loc:Loc worm-shell-favorites-title}"
+                         Classes="WormSectionTitle" />
+
+              <StackPanel Grid.Column="1"
+                          Orientation="Horizontal"
+                          Spacing="8">
+                <Button Classes="WormPillButton"
+                        Content="{loc:Loc worm-shell-refresh}"
+                        Click="RefreshClicked" />
+                <Button Classes="WormPillButton"
+                        Content="{loc:Loc worm-shell-direct-connect}"
+                        Click="DirectConnectClicked" />
+                <Button Classes="WormPillButton WormPrimaryButton"
+                        Content="{loc:Loc worm-shell-add-favorite}"
+                        Click="AddFavoriteClicked" />
+              </StackPanel>
+            </Grid>
+
+            <Panel>
+              <wormViews:ServerListWorm List="{Binding Favorites}"
+                                        IsVisible="{Binding !FavoritesEmpty}"
+                                        ShowHeader="False"
+                                        UseInternalScrollViewer="False"
+                                        ShowMapColumn="{Binding ShowMapColumn}"
+                                        ShowModeColumn="{Binding ShowModeColumn}"
+                                        ShowPingColumn="{Binding ShowPingColumn}" />
+
+              <Border IsVisible="{Binding FavoritesEmpty}"
+                      Classes="WormInsetCard"
+                      Padding="18">
+                <StackPanel Spacing="12">
+                  <TextBlock Text="{loc:Loc tab-home-favorites-guide}"
+                             Classes="WormMuted"
+                             TextWrapping="Wrap" />
+                  <Button Classes="WormPillButton WormPrimaryButton"
+                          HorizontalAlignment="Left"
+                          Content="{loc:Loc tab-home-go-to-servers-tab}"
+                          Click="GoToServersClicked" />
+                </StackPanel>
+              </Border>
+            </Panel>
+          </StackPanel>
+        </Border>
+
+        <Border Classes="WormSectionCard"
+                Padding="18">
+          <StackPanel Spacing="16">
+            <Grid ColumnDefinitions="*,Auto">
+              <TextBlock Text="{loc:Loc worm-shell-recent-title}"
+                         Classes="WormSectionTitle" />
+
+              <Button Grid.Column="1"
+                      Classes="WormPillButton"
+                      Content="{loc:Loc worm-shell-clear-history}"
+                      IsVisible="{Binding !RecentServersEmpty}"
+                      Click="ClearHistoryClicked" />
+            </Grid>
+
+            <Panel>
+              <wormViews:ServerListWorm List="{Binding RecentServers}"
+                                        IsVisible="{Binding !RecentServersEmpty}"
+                                        ShowHeader="False"
+                                        UseInternalScrollViewer="False"
+                                        ShowMapColumn="{Binding ShowMapColumn}"
+                                        ShowModeColumn="{Binding ShowModeColumn}"
+                                        ShowPingColumn="{Binding ShowPingColumn}" />
+
+              <Border IsVisible="{Binding RecentServersEmpty}"
+                      Classes="WormInsetCard"
+                      Padding="18">
+                <TextBlock Text="{loc:Loc worm-shell-recent-empty}"
+                           Classes="WormMuted"
+                           TextWrapping="Wrap" />
+              </Border>
+            </Panel>
+          </StackPanel>
+        </Border>
+      </StackPanel>
+    </ScrollViewer>
+  </DockPanel>
+</UserControl>
