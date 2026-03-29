@@ -9,11 +9,11 @@ namespace SS14.Launcher;
 /// </summary>
 public static class LauncherPaths
 {
-    // Worm-Start
+    // Helix-Start
     public static readonly string ResourcePacksDirName = "resource_packs";
     public static readonly string ResourcePackOverlayCacheDirName = "resource_pack_overlays";
     public static readonly string ResourcePacksConfigName = "resource_packs.json";
-    // Worm-End
+    // Helix-End
     public static readonly string AppDataPath = Path.Combine("Space Station 14", GetAppDataName());
     public static readonly string EngineInstallationsDirName = "engines";
     public static readonly string EngineModulesDirName = "modules";
@@ -32,10 +32,10 @@ public static class LauncherPaths
     // Legacy server content directory. No longer used except to delete on launch.
     public static readonly string DirServerContent = Path.Combine(DirUserData, ServerContentDirName);
     public static readonly string DirLogs = Path.Combine(DirUserData, LogsDirName);
-    // Worm-Start
+    // Helix-Start
     public static readonly string DirResourcePacks = Path.Combine(DirUserData, ResourcePacksDirName);
     public static readonly string DirResourcePackOverlayCache = Path.Combine(DirLocalData, ResourcePackOverlayCacheDirName);
-    // Worm-End
+    // Helix-End
     public static readonly string PathLauncherLog = Path.Combine(DirLogs, LauncherLogName);
     public static readonly string PathClientMacLog = Path.Combine(DirLogs, ClientMacLogName);
     public static readonly string PathClientStdoutLog = Path.Combine(DirLogs, ClientStdoutLogName);
@@ -43,9 +43,9 @@ public static class LauncherPaths
     public static readonly string PathPublicKey = Path.Combine(DirLauncherInstall, "signing_key");
     public static readonly string PathContentDb = Path.Combine(DirLocalData, "content.db");
     public static readonly string PathOverrideAssetsDb = Path.Combine(DirLocalData, "override_assets.db");
-    // Worm-Start
+    // Helix-Start
     public static readonly string PathResourcePacksConfig = Path.Combine(DirUserData, ResourcePacksConfigName);
-    // Worm-End
+    // Helix-End
 
     public static void CreateDirs()
     {
@@ -53,10 +53,10 @@ public static class LauncherPaths
         Ensure(DirLocalData);
         Ensure(DirEngineInstallations);
         Ensure(DirModuleInstallations);
-        // Worm-Start
+        // Helix-Start
         Ensure(DirResourcePacks);
         Ensure(DirResourcePackOverlayCache);
-        // Worm-End
+        // Helix-End
 
         static void Ensure(string path) => Helpers.EnsureDirectoryExists(path);
     }

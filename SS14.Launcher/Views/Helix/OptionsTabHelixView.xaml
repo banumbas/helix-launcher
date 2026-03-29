@@ -1,0 +1,177 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:mainWindowTabs="clr-namespace:SS14.Launcher.ViewModels.MainWindowTabs"
+             xmlns:loc="clr-namespace:SS14.Launcher.Localization"
+             xmlns:views="clr-namespace:SS14.Launcher.Views"
+             mc:Ignorable="d"
+             d:DesignWidth="1240"
+             d:DesignHeight="720"
+             x:Class="SS14.Launcher.Views.Helix.OptionsTabHelixView">
+  <Design.DataContext>
+    <mainWindowTabs:OptionsTabViewModel />
+  </Design.DataContext>
+
+  <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+    <StackPanel Spacing="18">
+      <Border Classes="HelixSectionCard"
+              Padding="18">
+        <StackPanel Spacing="16">
+          <TextBlock Text="{loc:Loc tab-options-title}"
+                     Classes="HelixSectionTitle" />
+
+          <StackPanel Orientation="Horizontal"
+                      Spacing="8">
+            <Button x:Name="GeneralTabButton"
+                    Classes="HelixSegmentButton"
+                    Click="ShowGeneralClicked"
+                    Content="{loc:Loc tab-options-general-tab}" />
+            <Button x:Name="HelixLauncherTabButton"
+                    Classes="HelixSegmentButton"
+                    Click="ShowHelixClicked"
+                    Content="{loc:Loc tab-options-helix-tab}" />
+          </StackPanel>
+        </StackPanel>
+      </Border>
+
+      <StackPanel x:Name="GeneralPanel"
+                  Spacing="18">
+        <Border Classes="HelixSectionCard"
+                Padding="18">
+          <StackPanel Spacing="14">
+            <TextBlock Text="{loc:Loc tab-options-general-tab}"
+                       Classes="HelixSectionTitle" />
+
+            <Border Classes="HelixInsetCard"
+                    Padding="14">
+              <StackPanel Spacing="12">
+                <TextBlock Text="{loc:Loc language-selector-label}"
+                           Classes="HelixFieldLabel" />
+                <views:LanguageSelector HorizontalAlignment="Left"
+                                        DataContext="{Binding Language}"
+                                        Placement="BottomEdgeAlignedLeft" />
+              </StackPanel>
+            </Border>
+
+            <Border Classes="HelixInsetCard"
+                    Padding="14">
+              <StackPanel Spacing="10">
+                <Button Classes="HelixPillButton"
+                        Content="{loc:Loc tab-options-account-settings}"
+                        Command="{Binding OpenAccountSettings}"
+                        HorizontalAlignment="Left" />
+                <TextBlock Text="{loc:Loc tab-options-account-settings-desc}"
+                           Classes="HelixMuted"
+                           TextWrapping="Wrap" />
+              </StackPanel>
+            </Border>
+          </StackPanel>
+        </Border>
+
+        <Border Classes="HelixSectionCard"
+                Padding="18">
+          <StackPanel Spacing="14">
+            <TextBlock Text="{loc:Loc tab-options-hub-settings}"
+                       Classes="HelixSectionTitle" />
+
+            <CheckBox Classes="HelixCheck"
+                      IsVisible="{Binding !DisableIncompatibleMacOS}"
+                      IsChecked="{Binding CompatMode}"
+                      Content="{loc:Loc tab-options-compatibility-mode}" />
+            <CheckBox Classes="HelixCheck"
+                      IsVisible="{Binding DisableIncompatibleMacOS}"
+                      IsChecked="False"
+                      IsEnabled="False"
+                      Opacity="0.8"
+                      Content="{loc:Loc tab-options-compatibility-mode}" />
+            <TextBlock IsVisible="{Binding !DisableIncompatibleMacOS}"
+                       TextWrapping="Wrap"
+                       Text="{loc:Loc tab-options-compatibility-mode-desc}"
+                       Classes="HelixMuted" />
+            <TextBlock IsVisible="{Binding DisableIncompatibleMacOS}"
+                       TextWrapping="Wrap"
+                       Text="{loc:Loc tab-options-desc-incompatible}"
+                       Classes="HelixMuted" />
+
+            <CheckBox Classes="HelixCheck"
+                      IsChecked="{Binding LogLauncherVerbose}"
+                      Content="{loc:Loc tab-options-verbose-launcher-logging}" />
+            <TextBlock TextWrapping="Wrap"
+                       Text="{loc:Loc tab-options-verbose-launcher-logging-desc}"
+                       Classes="HelixMuted" />
+
+            <CheckBox Classes="HelixCheck"
+                      IsChecked="{Binding OverrideAssets}"
+                      Content="{loc:Loc tab-options-seasonal-branding}" />
+            <TextBlock TextWrapping="Wrap"
+                       Text="{loc:Loc tab-options-seasonal-branding-desc}"
+                       Classes="HelixMuted" />
+
+            <Button Classes="HelixPillButton"
+                    Click="OpenHubSettings"
+                    Content="{loc:Loc tab-options-hub-settings}"
+                    HorizontalAlignment="Left" />
+            <TextBlock TextWrapping="Wrap"
+                       Text="{loc:Loc tab-options-hub-settings-desc}"
+                       Classes="HelixMuted" />
+          </StackPanel>
+        </Border>
+
+        <Border Classes="HelixSectionCard"
+                Padding="18">
+          <StackPanel Spacing="12">
+            <WrapPanel Orientation="Horizontal">
+              <Button Name="ClearEnginesButton"
+                      Classes="HelixPillButton"
+                      Margin="0,0,10,10"
+                      Content="{loc:Loc tab-options-clear-engines}"
+                      Click="ClearEnginesPressed" />
+              <Button Name="ClearServerContentButton"
+                      Classes="HelixPillButton"
+                      Margin="0,0,10,10"
+                      Content="{loc:Loc tab-options-clear-content}"
+                      Click="ClearServerContentPressed" />
+              <Button Classes="HelixPillButton"
+                      Margin="0,0,10,10"
+                      Content="{loc:Loc tab-options-open-log-directory}"
+                      Command="{Binding OpenLogDirectory}" />
+            </WrapPanel>
+          </StackPanel>
+        </Border>
+      </StackPanel>
+
+      <StackPanel x:Name="HelixPanel"
+                  Spacing="18"
+                  IsVisible="False">
+        <Border Classes="HelixSectionCard"
+                Padding="18">
+          <StackPanel Spacing="14">
+            <StackPanel Spacing="4">
+              <TextBlock Text="{loc:Loc tab-options-helix-server-list-title}"
+                         Classes="HelixSectionTitle" />
+              <TextBlock Text="{loc:Loc tab-options-helix-server-list-desc}"
+                         Classes="HelixMuted"
+                         TextWrapping="Wrap" />
+            </StackPanel>
+
+            <Border Classes="HelixInsetCard"
+                    Padding="14">
+              <StackPanel Spacing="10">
+                <CheckBox Classes="HelixCheck"
+                          IsChecked="{Binding ServerListShowMode}"
+                          Content="{loc:Loc tab-options-helix-show-mode}" />
+                <CheckBox Classes="HelixCheck"
+                          IsChecked="{Binding ServerListShowMap}"
+                          Content="{loc:Loc tab-options-helix-show-map}" />
+                <CheckBox Classes="HelixCheck"
+                          IsChecked="{Binding ServerListShowPing}"
+                          Content="{loc:Loc tab-options-helix-show-ping}" />
+              </StackPanel>
+            </Border>
+          </StackPanel>
+        </Border>
+      </StackPanel>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

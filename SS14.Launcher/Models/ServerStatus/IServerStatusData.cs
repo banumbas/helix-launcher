@@ -27,13 +27,13 @@ public interface IServerStatusData : INotifyPropertyChanged
 
     int SoftMaxPlayerCount { get; set; }
 
-    // Worm-Start
+    // Helix-Start
     TimeSpan? Ping { get; set; }
 
     string? MapName { get; set; }
 
     string? PresetName { get; set; }
-    // Worm-End
+    // Helix-End
 
     DateTime? RoundStartTime { get; set; }
 

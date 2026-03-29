@@ -11,7 +11,7 @@ namespace SS14.Launcher.Views.MainWindowTabs;
 
 public sealed partial class ServerList : TemplatedControl
 {
-    // Worm-Start
+    // Helix-Start
     public static readonly DirectProperty<ServerList, bool> ShowMapColumnProperty =
         AvaloniaProperty.RegisterDirect<ServerList, bool>(
             nameof(ShowMapColumn),
@@ -56,7 +56,7 @@ public sealed partial class ServerList : TemplatedControl
         get => _showPingColumn;
         set => SetAndRaise(ShowPingColumnProperty, ref _showPingColumn, value);
     }
-    // Worm-End
+    // Helix-End
 
     public static readonly DirectProperty<ServerList, bool> ShowHeaderProperty =
         AvaloniaProperty.RegisterDirect<ServerList, bool>(

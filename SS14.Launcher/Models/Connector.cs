@@ -20,7 +20,7 @@ using Splat;
 using SS14.Launcher.Models.Data;
 using SS14.Launcher.Models.EngineManager;
 using SS14.Launcher.Models.Logins;
-using SS14.Launcher.Models.ResourcePacks; // Worm-Edit
+using SS14.Launcher.Models.ResourcePacks; // Helix-Edit
 using SS14.Launcher.Utility;
 
 namespace SS14.Launcher.Models;
@@ -35,9 +35,9 @@ public partial class Connector : ReactiveObject
     private readonly DataManager _cfg;
     private readonly LoginManager _loginManager;
     private readonly IEngineManager _engineManager;
-    // Worm-Start
+    // Helix-Start
     private readonly ResourcePackManager _resourcePackManager;
-    // Worm-End
+    // Helix-End
 
     private ConnectionStatus _status = ConnectionStatus.None;
     private bool _clientExitedBadly;
@@ -53,9 +53,9 @@ public partial class Connector : ReactiveObject
         _cfg = Locator.Current.GetRequiredService<DataManager>();
         _loginManager = Locator.Current.GetRequiredService<LoginManager>();
         _engineManager = Locator.Current.GetRequiredService<IEngineManager>();
-        // Worm-Start
+        // Helix-Start
         _resourcePackManager = Locator.Current.GetRequiredService<ResourcePackManager>();
-        // Worm-End
+        // Helix-End
         _http = Locator.Current.GetRequiredService<HttpClient>();
     }
 
@@ -142,7 +142,7 @@ public partial class Connector : ReactiveObject
 
         var connectAddress = GetConnectAddress(info, infoAddr);
 
-        // Worm-Start
+        // Helix-Start
         await LaunchClientWrap(
             installation,
             info,
@@ -152,7 +152,7 @@ public partial class Connector : ReactiveObject
             false,
             cancel,
             info.BuildInformation.ForkId);
-        // Worm-End
+        // Helix-End
     }
 
     private async Task HandlePrivacyPolicyAsync(ServerInfo info, CancellationToken cancel)
@@ -232,9 +232,9 @@ public partial class Connector : ReactiveObject
     private async Task LaunchContentBundleInternal(IStorageFile file, CancellationToken cancel)
     {
         Status = ConnectionStatus.Updating;
-        // Worm-Start
+        // Helix-Start
         string? resourcePackForkId = null;
-        // Worm-End
+        // Helix-End
 
         ContentLaunchInfo installation;
         await using (var zipStream = await file.OpenReadAsync())
@@ -307,18 +307,18 @@ public partial class Connector : ReactiveObject
             if (metadata.ServerGC == true)
                 installation = installation with { ServerGC = true };
 
-            // Worm-Start
+            // Helix-Start
             resourcePackForkId = metadata.BaseBuild?.ForkId;
-            // Worm-End
+            // Helix-End
         }
 
         Log.Debug("Launching client");
 
         // I originally wanted to pass through build info,
         // but then realized I'd need to pipe the entries in the SQLite DB ("AnonymousContentBundle") up and ehhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh.
-        // Worm-Start
+        // Helix-Start
         await LaunchClientWrap(installation, null, null, null, null, true, cancel, resourcePackForkId);
-        // Worm-End
+        // Helix-End
     }
 
     private async Task LaunchClientWrap(
@@ -329,13 +329,13 @@ public partial class Connector : ReactiveObject
         Uri? parsedAddr = null,
         bool contentBundle = false,
         CancellationToken cancel = default,
-        // Worm-Start
+        // Helix-Start
         string? resourcePackForkId = null)
-        // Worm-End
+        // Helix-End
     {
         Status = ConnectionStatus.StartingClient;
 
-        // Worm-Start
+        // Helix-Start
         var clientProc = await ConnectLaunchClient(
             launchInfo,
             info,
@@ -345,7 +345,7 @@ public partial class Connector : ReactiveObject
             contentBundle,
             resourcePackForkId,
             cancel);
-        // Worm-End
+        // Helix-End
 
         if (clientProc != null)
         {
@@ -378,10 +378,10 @@ public partial class Connector : ReactiveObject
         Uri? connectAddress,
         Uri? parsedAddr,
         bool contentBundle,
-        // Worm-Start
+        // Helix-Start
         string? resourcePackForkId,
         CancellationToken cancel)
-        // Worm-End
+        // Helix-End
     {
         var cVars = new List<(string, string)>();
 
@@ -458,14 +458,14 @@ public partial class Connector : ReactiveObject
             }
 
             // Launch client.
-            // Worm-Start
+            // Helix-Start
             return await LaunchClient(
                 launchInfo,
                 args,
                 cVars,
                 resourcePackForkId ?? serverBuildInformation?.ForkId,
                 cancel);
-            // Worm-End
+            // Helix-End
         }
         catch (Exception e)
         {
@@ -577,10 +577,10 @@ public partial class Connector : ReactiveObject
         ContentLaunchInfo launchInfo,
         IEnumerable<string> extraArgs,
         List<(string, string)> env,
-        // Worm-Start
+        // Helix-Start
         string? resourcePackForkId,
         CancellationToken cancel)
-        // Worm-End
+        // Helix-End
     {
         var pubKey = LauncherPaths.PathPublicKey;
         var engineVersion = launchInfo.ModuleInfo.Single(x => x.Module == "Robust").Version;
@@ -600,7 +600,7 @@ public partial class Connector : ReactiveObject
 
         EnvVar("SS14_LOADER_CONTENT_DB", LauncherPaths.PathContentDb);
         EnvVar("SS14_LOADER_CONTENT_VERSION", launchInfo.Version.ToString());
-        // Worm-Start
+        // Helix-Start
         var overlayZips = new List<string>();
         string? resourcePackOverlay = null;
         try
@@ -627,7 +627,7 @@ public partial class Connector : ReactiveObject
 
         EnvVar("SS14_LOADER_OVERLAY_ZIPS", overlayZips.Count == 0 ? null : string.Join(Path.PathSeparator, overlayZips));
         EnvVar("SS14_LOADER_OVERLAY_ZIP", overlayZips.Count == 1 ? overlayZips[0] : null);
-        // Worm-End
+        // Helix-End
 
         // Env vars for engine modules.
         {
@@ -714,7 +714,7 @@ public partial class Connector : ReactiveObject
 
         void EnvVar(string envVar, string? value)
         {
-            // Worm-Start
+            // Helix-Start
             if (value == null)
             {
                 startInfo.EnvironmentVariables.Remove(envVar);
@@ -722,7 +722,7 @@ public partial class Connector : ReactiveObject
             }
 
             startInfo.EnvironmentVariables[envVar] = value;
-            // Worm-End
+            // Helix-End
             // Log.Debug("Env: {EnvVar} = {Value}", envVar, value);
         }
     }

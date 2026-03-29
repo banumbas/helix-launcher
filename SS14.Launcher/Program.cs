@@ -23,8 +23,8 @@ using SS14.Launcher.Models.ServerStatus;
 using SS14.Launcher.Models.EngineManager;
 using SS14.Launcher.Models.Logins;
 using SS14.Launcher.Models.OverrideAssets;
-using SS14.Launcher.Models.ResourcePacks; // Worm-Edit
-using SS14.Launcher.Models.Worm;
+using SS14.Launcher.Models.ResourcePacks; // Helix-Edit
+using SS14.Launcher.Models.Helix;
 using SS14.Launcher.Utility;
 using TerraFX.Interop.Windows;
 using LogEventLevel = Serilog.Events.LogEventLevel;
@@ -227,10 +227,10 @@ internal static class Program
         var overrideAssets = new OverrideAssetsManager(cfg, http, launcherInfo);
         var loginManager = new LoginManager(cfg, authApi);
         var engineManager = new EngineManagerDynamic();
-        // Worm-Start
+        // Helix-Start
         var resourcePackManager = new ResourcePackManager();
         var recentServerManager = new RecentServerManager();
-        // Worm-End
+        // Helix-End
 
         locator.RegisterConstant(loc);
         locator.RegisterConstant(new ContentManager());
@@ -242,10 +242,10 @@ internal static class Program
         locator.RegisterConstant(loginManager);
         locator.RegisterConstant(overrideAssets);
         locator.RegisterConstant(launcherInfo);
-        // Worm-Start
+        // Helix-Start
         locator.RegisterConstant(resourcePackManager);
         locator.RegisterConstant(recentServerManager);
-        // Worm-End
+        // Helix-End
 
         CheckLauncherArchitecture(cfg, engineManager);
 

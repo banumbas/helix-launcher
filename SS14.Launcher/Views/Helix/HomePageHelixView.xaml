@@ -1,0 +1,103 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:mainWindowTabs="clr-namespace:SS14.Launcher.ViewModels.MainWindowTabs"
+             xmlns:loc="clr-namespace:SS14.Launcher.Localization"
+             xmlns:helixViews="clr-namespace:SS14.Launcher.Views.Helix"
+             mc:Ignorable="d"
+             d:DesignWidth="1240"
+             d:DesignHeight="720"
+             x:Class="SS14.Launcher.Views.Helix.HomePageHelixView">
+  <Design.DataContext>
+    <mainWindowTabs:HomePageViewModel />
+  </Design.DataContext>
+
+  <DockPanel>
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+      <StackPanel Spacing="18">
+        <Border Classes="HelixSectionCard"
+                Padding="18">
+          <StackPanel Spacing="16">
+            <Grid ColumnDefinitions="*,Auto">
+              <TextBlock Text="{loc:Loc helix-shell-favorites-title}"
+                         Classes="HelixSectionTitle" />
+
+              <StackPanel Grid.Column="1"
+                          Orientation="Horizontal"
+                          Spacing="8">
+                <Button Classes="HelixPillButton"
+                        Content="{loc:Loc helix-shell-refresh}"
+                        Click="RefreshClicked" />
+                <Button Classes="HelixPillButton"
+                        Content="{loc:Loc helix-shell-direct-connect}"
+                        Click="DirectConnectClicked" />
+                <Button Classes="HelixPillButton HelixPrimaryButton"
+                        Content="{loc:Loc helix-shell-add-favorite}"
+                        Click="AddFavoriteClicked" />
+              </StackPanel>
+            </Grid>
+
+            <Panel>
+              <helixViews:ServerListHelix List="{Binding Favorites}"
+                                        IsVisible="{Binding !FavoritesEmpty}"
+                                        ShowHeader="False"
+                                        UseInternalScrollViewer="False"
+                                        ShowMapColumn="{Binding ShowMapColumn}"
+                                        ShowModeColumn="{Binding ShowModeColumn}"
+                                        ShowPingColumn="{Binding ShowPingColumn}" />
+
+              <Border IsVisible="{Binding FavoritesEmpty}"
+                      Classes="HelixInsetCard"
+                      Padding="18">
+                <StackPanel Spacing="12">
+                  <TextBlock Text="{loc:Loc tab-home-favorites-guide}"
+                             Classes="HelixMuted"
+                             TextWrapping="Wrap" />
+                  <Button Classes="HelixPillButton HelixPrimaryButton"
+                          HorizontalAlignment="Left"
+                          Content="{loc:Loc tab-home-go-to-servers-tab}"
+                          Click="GoToServersClicked" />
+                </StackPanel>
+              </Border>
+            </Panel>
+          </StackPanel>
+        </Border>
+
+        <Border Classes="HelixSectionCard"
+                Padding="18">
+          <StackPanel Spacing="16">
+            <Grid ColumnDefinitions="*,Auto">
+              <TextBlock Text="{loc:Loc helix-shell-recent-title}"
+                         Classes="HelixSectionTitle" />
+
+              <Button Grid.Column="1"
+                      Classes="HelixPillButton"
+                      Content="{loc:Loc helix-shell-clear-history}"
+                      IsVisible="{Binding !RecentServersEmpty}"
+                      Click="ClearHistoryClicked" />
+            </Grid>
+
+            <Panel>
+              <helixViews:ServerListHelix List="{Binding RecentServers}"
+                                        IsVisible="{Binding !RecentServersEmpty}"
+                                        ShowHeader="False"
+                                        UseInternalScrollViewer="False"
+                                        ShowMapColumn="{Binding ShowMapColumn}"
+                                        ShowModeColumn="{Binding ShowModeColumn}"
+                                        ShowPingColumn="{Binding ShowPingColumn}" />
+
+              <Border IsVisible="{Binding RecentServersEmpty}"
+                      Classes="HelixInsetCard"
+                      Padding="18">
+                <TextBlock Text="{loc:Loc helix-shell-recent-empty}"
+                           Classes="HelixMuted"
+                           TextWrapping="Wrap" />
+              </Border>
+            </Panel>
+          </StackPanel>
+        </Border>
+      </StackPanel>
+    </ScrollViewer>
+  </DockPanel>
+</UserControl>

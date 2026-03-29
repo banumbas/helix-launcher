@@ -1,0 +1,274 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:mainWindowTabs="clr-namespace:SS14.Launcher.ViewModels.MainWindowTabs"
+             xmlns:models="clr-namespace:SS14.Launcher.Models"
+             xmlns:views="clr-namespace:SS14.Launcher.Views"
+             xmlns:controls="clr-namespace:SS14.Launcher.Controls"
+             xmlns:loc="clr-namespace:SS14.Launcher.Localization"
+             mc:Ignorable="d"
+             d:DesignWidth="1240"
+             d:DesignHeight="72"
+             x:Class="SS14.Launcher.Views.Helix.ServerEntryHelixView">
+  <Design.DataContext>
+    <mainWindowTabs:ServerEntryViewModel />
+  </Design.DataContext>
+
+  <UserControl.Styles>
+    <Style Selector="Border.HelixServerRowShell">
+      <Setter Property="Background" Value="#101722" />
+      <Setter Property="BorderBrush" Value="#1F2935" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="12" />
+      <Setter Property="ClipToBounds" Value="True" />
+    </Style>
+
+    <Style Selector="Border.HelixServerMetaCell">
+      <Setter Property="Height" Value="34" />
+      <Setter Property="Background" Value="#0C111A" />
+      <Setter Property="BorderBrush" Value="#1F2935" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="9" />
+      <Setter Property="Padding" Value="8,0" />
+      <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style Selector="Border.HelixModeWidth">
+      <Setter Property="Width" Value="124" />
+    </Style>
+
+    <Style Selector="Border.HelixMapWidth">
+      <Setter Property="Width" Value="124" />
+    </Style>
+
+    <Style Selector="Border.HelixPingWidth">
+      <Setter Property="Width" Value="72" />
+    </Style>
+
+    <Style Selector="Border.HelixTimeWidth">
+      <Setter Property="Width" Value="80" />
+    </Style>
+
+    <Style Selector="Border.HelixPlayersWidth">
+      <Setter Property="Width" Value="88" />
+    </Style>
+
+    <Style Selector="Border.HelixOfflineWidth">
+      <Setter Property="Width" Value="176" />
+    </Style>
+
+    <Style Selector="TextBlock.HelixServerText">
+      <Setter Property="Foreground" Value="#E5E9F0" />
+      <Setter Property="FontSize" Value="13" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+      <Setter Property="VerticalAlignment" Value="Center" />
+      <Setter Property="TextWrapping" Value="NoWrap" />
+      <Setter Property="MaxLines" Value="1" />
+      <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+    </Style>
+
+    <Style Selector="TextBlock.HelixServerMetaText">
+      <Setter Property="Foreground" Value="#E5E9F0" />
+      <Setter Property="FontSize" Value="12" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+      <Setter Property="HorizontalAlignment" Value="Center" />
+      <Setter Property="TextAlignment" Value="Center" />
+      <Setter Property="VerticalAlignment" Value="Center" />
+      <Setter Property="TextTrimming" Value="CharacterEllipsis" />
+    </Style>
+
+    <Style Selector="controls|TimerTextCell">
+      <Setter Property="HorizontalAlignment" Value="Center" />
+      <Setter Property="VerticalAlignment" Value="Center" />
+    </Style>
+
+    <Style Selector="TextBlock.HelixPingGood">
+      <Setter Property="Foreground" Value="#54D06F" />
+    </Style>
+
+    <Style Selector="TextBlock.HelixPingMid">
+      <Setter Property="Foreground" Value="#E4BC45" />
+    </Style>
+
+    <Style Selector="TextBlock.HelixPingBad">
+      <Setter Property="Foreground" Value="#F56A66" />
+    </Style>
+
+    <Style Selector="TextBlock.HelixPingUnknown">
+      <Setter Property="Foreground" Value="#A2A9BD" />
+    </Style>
+
+    <Style Selector="Button.HelixConnectButton">
+      <Setter Property="MinWidth" Value="136" />
+      <Setter Property="Width" Value="136" />
+      <Setter Property="Height" Value="38" />
+      <Setter Property="Padding" Value="12,2" />
+      <Setter Property="HorizontalContentAlignment" Value="Center" />
+      <Setter Property="VerticalContentAlignment" Value="Center" />
+    </Style>
+
+    <Style Selector="Border.HelixServerDetails">
+      <Setter Property="Background" Value="#0F141C" />
+      <Setter Property="BorderBrush" Value="#1F2935" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="12" />
+      <Setter Property="Padding" Value="18" />
+      <Setter Property="Margin" Value="18,8,18,0" />
+    </Style>
+
+    <Style Selector="views|ServerInfoLinkControl Button">
+      <Setter Property="Padding" Value="14,8" />
+      <Setter Property="Background" Value="#111824" />
+      <Setter Property="BorderBrush" Value="#1F2935" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="Foreground" Value="#E5E9F0" />
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  CornerRadius="999">
+            <ContentPresenter Margin="{TemplateBinding Padding}"
+                              Content="{TemplateBinding Content}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                              TextBlock.Foreground="{TemplateBinding Foreground}"
+                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+          </Border>
+        </ControlTemplate>
+      </Setter>
+    </Style>
+
+    <Style Selector="views|ServerInfoLinkControl Button:pointerover">
+      <Setter Property="Background" Value="#162132" />
+      <Setter Property="BorderBrush" Value="#3D7DF0" />
+    </Style>
+  </UserControl.Styles>
+
+  <StackPanel Spacing="8"
+              Margin="0,0,0,8">
+    <Grid>
+      <Border Classes="HelixServerRowShell"
+              PointerPressed="ServerRowPressed">
+        <Grid ColumnDefinitions="Auto,*,12,Auto,12,136"
+              HorizontalAlignment="Stretch"
+              Margin="14,8,14,8"
+              MinHeight="38">
+          <Viewbox Width="10"
+                   Height="12"
+                   VerticalAlignment="Center">
+            <Path Fill="#E5E9F0"
+                  Stretch="Fill"
+                  Data="M 0 0 L 7 6 L 0 12 Z" />
+          </Viewbox>
+
+          <TextBlock Grid.Column="1"
+                     Margin="12,0,0,0"
+                     Classes="HelixServerText"
+                     MinWidth="0"
+                     Text="{Binding Name}" />
+
+          <StackPanel Grid.Column="3"
+                      ClipToBounds="True"
+                      Orientation="Horizontal"
+                      Spacing="8"
+                      HorizontalAlignment="Right">
+            <Border Classes="HelixServerMetaCell HelixModeWidth"
+                    IsVisible="{Binding ShowModeColumn}">
+              <TextBlock Classes="HelixServerMetaText"
+                         Text="{Binding ModeDisplayString}" />
+            </Border>
+
+            <Border Classes="HelixServerMetaCell HelixMapWidth"
+                    IsVisible="{Binding ShowMapColumn}">
+              <TextBlock Classes="HelixServerMetaText"
+                         Text="{Binding MapDisplayString}" />
+            </Border>
+
+            <Border Classes="HelixServerMetaCell HelixPingWidth"
+                    IsVisible="{Binding ShowPingColumn}">
+              <TextBlock Classes="HelixServerMetaText"
+                         Text="{Binding PingString}"
+                         Classes.HelixPingGood="{Binding IsPingGood}"
+                         Classes.HelixPingMid="{Binding IsPingMid}"
+                         Classes.HelixPingBad="{Binding IsPingBad}"
+                         Classes.HelixPingUnknown="{Binding IsPingUnknown}" />
+            </Border>
+
+            <Border Classes="HelixServerMetaCell HelixTimeWidth"
+                    IsVisible="{Binding HaveData}">
+              <Panel>
+                <controls:TimerTextCell Value="{Binding RoundStartTime}"
+                                        IsVisible="{Binding RoundStatusString,Converter={x:Static StringConverters.IsNullOrEmpty}}" />
+                <TextBlock Classes="HelixServerMetaText"
+                           Text="{Binding RoundStatusString}"
+                           IsVisible="{Binding RoundStatusString,Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+              </Panel>
+            </Border>
+
+            <Border Classes="HelixServerMetaCell HelixPlayersWidth"
+                    IsVisible="{Binding HaveData}">
+              <TextBlock Classes="HelixServerMetaText"
+                         Text="{Binding PlayerCountString}" />
+            </Border>
+
+            <Border Classes="HelixServerMetaCell HelixOfflineWidth"
+                    IsVisible="{Binding !HaveData}">
+              <TextBlock Classes="HelixServerMetaText"
+                         Text="{Binding ServerStatusString}" />
+            </Border>
+          </StackPanel>
+        </Grid>
+      </Border>
+
+      <Button Classes="HelixPillButton HelixPrimaryButton HelixConnectButton"
+              HorizontalAlignment="Right"
+              Margin="0,0,14,0"
+              VerticalAlignment="Center"
+              IsEnabled="{Binding IsOnline}"
+              Content="{loc:Loc server-entry-connect}"
+              Click="ConnectClicked" />
+    </Grid>
+
+    <Border Classes="HelixServerDetails"
+            IsVisible="{Binding IsExpanded}">
+      <StackPanel Spacing="14">
+        <TextBlock Foreground="#E5E9F0"
+                   Text="{Binding Description}"
+                   TextWrapping="Wrap" />
+
+        <TextBlock Foreground="#8A95A8"
+                   IsVisible="{Binding ShowFetchedFrom}"
+                   Text="{Binding FetchedFrom}"
+                   TextWrapping="Wrap" />
+
+        <views:RowSideAlignedPanel>
+          <ItemsControl VerticalAlignment="Bottom"
+                        ItemsSource="{Binding CacheData.Links}">
+            <ItemsControl.ItemsPanel>
+              <ItemsPanelTemplate>
+                <WrapPanel Orientation="Horizontal" />
+              </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+              <DataTemplate x:DataType="models:ServerInfoLink">
+                <views:ServerInfoLinkControl DataContext="{Binding}" />
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+
+          <DockPanel Dock="Right">
+            <Button Classes="HelixPillButton"
+                    Content="{Binding FavoriteButtonText}"
+                    Click="FavoriteClicked" />
+            <Button Classes="HelixPillButton"
+                    IsVisible="{Binding ViewedInFavoritesPane}"
+                    Content="{loc:Loc server-entry-raise}"
+                    Click="RaiseFavoriteClicked" />
+          </DockPanel>
+        </views:RowSideAlignedPanel>
+      </StackPanel>
+    </Border>
+  </StackPanel>
+</UserControl>

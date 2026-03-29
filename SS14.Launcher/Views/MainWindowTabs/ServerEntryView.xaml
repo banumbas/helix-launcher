@@ -28,11 +28,11 @@
         <Grid>
           <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" /> <!-- Server Name -->
-            <!-- // Worm-Start -->
+            <!-- // Helix-Start -->
             <ColumnDefinition SharedSizeGroup="ModeCol" MinWidth="110" Width="Auto" />
             <ColumnDefinition SharedSizeGroup="MapCol" MinWidth="110" Width="Auto" />
             <ColumnDefinition SharedSizeGroup="PingCol" MinWidth="85" Width="Auto" />
-            <!-- // Worm-End -->
+            <!-- // Helix-End -->
             <ColumnDefinition SharedSizeGroup="TimeCol" MinWidth="80" Width="Auto" />
             <ColumnDefinition SharedSizeGroup="StatusCol" MinWidth="80" Width="Auto" />
             <ColumnDefinition SharedSizeGroup="ConnectCol" Width="Auto" />
@@ -49,7 +49,7 @@
             <TextBlock Text="{Binding ServerStatusString}" TextAlignment="Left" Classes="Center" />
           </Border>
 
-          <!-- // Worm-Start -->
+          <!-- // Helix-Start -->
           <Border Grid.Column="1" Classes="GridCell" IsVisible="{Binding ShowModeColumn}">
             <TextBlock Text="{Binding ModeDisplayString}" TextTrimming="CharacterEllipsis" />
           </Border>
@@ -66,7 +66,7 @@
                        Classes.PingBad="{Binding IsPingBad}"
                        Classes.PingUnknown="{Binding IsPingUnknown}" />
           </Border>
-          <!-- // Worm-End -->
+          <!-- // Helix-End -->
 
           <Border Grid.Column="4" Classes="GridCell" IsVisible="{Binding HaveData}">
             <Panel>

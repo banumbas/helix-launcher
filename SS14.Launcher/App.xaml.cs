@@ -15,8 +15,8 @@ using SS14.Launcher.Localization;
 using SS14.Launcher.Models;
 using SS14.Launcher.Models.ContentManagement;
 using SS14.Launcher.Models.OverrideAssets;
-using SS14.Launcher.Models.ResourcePacks; // Worm-Edit
-using SS14.Launcher.Models.Worm;
+using SS14.Launcher.Models.ResourcePacks; // Helix-Edit
+using SS14.Launcher.Models.Helix;
 using SS14.Launcher.Utility;
 using SS14.Launcher.ViewModels;
 using SS14.Launcher.Views;
@@ -129,19 +129,19 @@ public class App : Application
         var contentManager = Locator.Current.GetRequiredService<ContentManager>();
         var overrideAssets = Locator.Current.GetRequiredService<OverrideAssetsManager>();
         var launcherInfo = Locator.Current.GetRequiredService<LauncherInfoManager>();
-        // Worm-Start
+        // Helix-Start
         var resourcePackManager = Locator.Current.GetRequiredService<ResourcePackManager>();
         var recentServerManager = Locator.Current.GetRequiredService<RecentServerManager>();
-        // Worm-End
+        // Helix-End
 
         loc.Initialize();
         launcherInfo.Initialize();
         contentManager.Initialize();
         overrideAssets.Initialize();
-        // Worm-Start
+        // Helix-Start
         resourcePackManager.Initialize();
         recentServerManager.Initialize();
-        // Worm-End
+        // Helix-End
 
         var viewModel = new MainWindowViewModel();
         var window = new MainWindow

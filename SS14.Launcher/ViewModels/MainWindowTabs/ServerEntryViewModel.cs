@@ -57,9 +57,9 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
 
     public void ConnectPressed()
     {
-        // Worm-Start
+        // Helix-Start
         ConnectingViewModel.StartConnect(_windowVm, Address, displayName: Name);
-        // Worm-End
+        // Helix-End
     }
 
     public FavoriteServer? Favorite { get; }
@@ -69,12 +69,12 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
         get => _isExpanded;
         set
         {
-            // Worm-Start
+            // Helix-Start
             if (SetProperty(ref _isExpanded, value))
             {
                 CheckUpdateInfo();
             }
-            // Worm-End
+            // Helix-End
         }
     }
 
@@ -89,11 +89,11 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
     public bool ViewedInFavoritesPane { get; set; }
 
     public bool HaveData => _cacheData.Status == ServerStatusCode.Online;
-    // Worm-Start
+    // Helix-Start
     public bool ShowMapColumn => HaveData && _cfg.GetCVar(CVars.ServerListShowMap);
     public bool ShowModeColumn => HaveData && _cfg.GetCVar(CVars.ServerListShowMode);
     public bool ShowPingColumn => HaveData && _cfg.GetCVar(CVars.ServerListShowPing);
-    // Worm-End
+    // Helix-End
 
     public string ServerStatusString
     {
@@ -120,7 +120,7 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
 
     public DateTime? RoundStartTime => _cacheData.RoundStartTime;
 
-    // Worm-Start
+    // Helix-Start
     public string? MapName => _cacheData.MapName;
 
     public string? PresetName => _cacheData.PresetName;
@@ -139,7 +139,7 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
     public bool IsPingMid => PingMilliseconds is int ping && ping > 100 && ping <= 200;
     public bool IsPingBad => PingMilliseconds is int ping && ping > 200;
     public bool IsPingUnknown => PingMilliseconds == null;
-    // Worm-End
+    // Helix-End
 
     public string RoundStatusString =>
         _cacheData.RoundStatus == GameRoundStatus.InLobby
@@ -234,14 +234,14 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
         OnPropertyChanged(nameof(FavoriteButtonText));
     }
 
-    // Worm-Start
+    // Helix-Start
     public void Receive(ServerListDisplaySettingsChanged message)
     {
         OnPropertyChanged(nameof(ShowMapColumn));
         OnPropertyChanged(nameof(ShowModeColumn));
         OnPropertyChanged(nameof(ShowPingColumn));
     }
-    // Worm-End
+    // Helix-End
 
     private void CheckUpdateInfo()
     {
@@ -278,7 +278,7 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
                 OnPropertyChanged(nameof(PlayerCountString));
                 break;
 
-            // Worm-Start
+            // Helix-Start
             case nameof(IServerStatusData.MapName):
                 OnPropertyChanged(nameof(MapName));
                 OnPropertyChanged(nameof(MapDisplayString));
@@ -297,7 +297,7 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
                 OnPropertyChanged(nameof(IsPingBad));
                 OnPropertyChanged(nameof(IsPingUnknown));
                 break;
-            // Worm-End
+            // Helix-End
 
             case nameof(IServerStatusData.RoundStartTime):
                 OnPropertyChanged(nameof(RoundStartTime));
@@ -313,7 +313,7 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
                 OnPropertyChanged(nameof(PlayerCountString));
                 OnPropertyChanged(nameof(Description));
                 OnPropertyChanged(nameof(HaveData));
-                // Worm-Start
+                // Helix-Start
                 OnPropertyChanged(nameof(MapName));
                 OnPropertyChanged(nameof(PresetName));
                 OnPropertyChanged(nameof(MapDisplayString));
@@ -327,7 +327,7 @@ public sealed class ServerEntryViewModel : ObservableRecipient, IRecipient<Favor
                 OnPropertyChanged(nameof(IsPingMid));
                 OnPropertyChanged(nameof(IsPingBad));
                 OnPropertyChanged(nameof(IsPingUnknown));
-                // Worm-End
+                // Helix-End
                 CheckUpdateInfo();
                 break;
 

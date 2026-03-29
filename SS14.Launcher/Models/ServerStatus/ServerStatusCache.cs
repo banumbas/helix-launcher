@@ -89,9 +89,9 @@ public sealed class ServerStatusCache : IServerSource
 
             var statusAddr = UriHelper.GetServerStatusAddress(parsedAddress);
             data.Status = ServerStatusCode.FetchingStatus;
-            // Worm-Start
+            // Helix-Start
             data.Ping = null;
-            // Worm-End
+            // Helix-End
 
             ServerApi.ServerStatus status;
             try
@@ -117,7 +117,7 @@ public sealed class ServerStatusCache : IServerSource
 
             ApplyStatus(data, status);
 
-            // Worm-Start
+            // Helix-Start
             try
             {
                 await RefreshPingAsync(data, http, cancel);
@@ -130,18 +130,18 @@ public sealed class ServerStatusCache : IServerSource
             {
                 data.Ping = null;
             }
-            // Worm-End
+            // Helix-End
         }
         catch (OperationCanceledException)
         {
-            // Worm-Start
+            // Helix-Start
             data.Ping = null;
-            // Worm-End
+            // Helix-End
             data.Status = ServerStatusCode.Offline;
         }
     }
 
-    // Worm-Start
+    // Helix-Start
     public static async Task RefreshPingAsync(ServerStatusData data, HttpClient http, CancellationToken cancel)
     {
         if (!UriHelper.TryParseSs14Uri(data.Address, out var parsedAddress))
@@ -185,16 +185,16 @@ public sealed class ServerStatusCache : IServerSource
 
         return response.IsSuccessStatusCode ? stopwatch.Elapsed : null;
     }
-    // Worm-End
+    // Helix-End
 
     public static void ApplyStatus(ServerStatusData data, ServerApi.ServerStatus status)
     {
         data.Status = ServerStatusCode.Online;
         data.Name = status.Name;
-        // Worm-Start
+        // Helix-Start
         data.MapName = status.Map;
         data.PresetName = status.Preset;
-        // Worm-End
+        // Helix-End
         data.PlayerCount = Math.Max(0, status.PlayerCount);
         data.SoftMaxPlayerCount = Math.Max(0, status.SoftMaxPlayerCount);
 

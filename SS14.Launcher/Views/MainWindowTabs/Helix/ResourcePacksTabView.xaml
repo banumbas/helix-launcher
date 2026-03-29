@@ -1,0 +1,139 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:mainWindowTabs="clr-namespace:SS14.Launcher.ViewModels.MainWindowTabs"
+             xmlns:resourcePacks="clr-namespace:SS14.Launcher.Models.ResourcePacks"
+             xmlns:loc="clr-namespace:SS14.Launcher.Localization"
+             mc:Ignorable="d" d:DesignWidth="900" d:DesignHeight="540"
+             x:Class="SS14.Launcher.Views.MainWindowTabs.ResourcePacksTabView">
+  <Design.DataContext>
+    <mainWindowTabs:ResourcePacksTabViewModel />
+  </Design.DataContext>
+
+  <UserControl.Styles>
+    <!-- Helix-Start -->
+    <Style Selector="Border.resource-pack-card">
+      <Setter Property="Padding" Value="12" />
+      <Setter Property="Margin" Value="0,0,0,8" />
+      <Setter Property="CornerRadius" Value="10" />
+      <Setter Property="Background" Value="#1F2128" />
+      <Setter Property="BorderBrush" Value="#333743" />
+      <Setter Property="BorderThickness" Value="1" />
+    </Style>
+
+    <Style Selector="Border.resource-pack-panel">
+      <Setter Property="CornerRadius" Value="10" />
+      <Setter Property="BorderBrush" Value="#333743" />
+      <Setter Property="BorderThickness" Value="1" />
+    </Style>
+
+    <Style Selector="TextBlock.resource-pack-heading">
+      <Setter Property="Foreground" Value="#4286FF" />
+      <Setter Property="FontWeight" Value="Bold" />
+      <Setter Property="FontSize" Value="18" />
+    </Style>
+    <!-- Helix-End -->
+  </UserControl.Styles>
+
+  <DockPanel Margin="8">
+    <!-- Helix-Start -->
+    <StackPanel DockPanel.Dock="Top" Spacing="6">
+      <TextBlock Text="{loc:Loc tab-resource-packs-header}" Classes="resource-pack-heading" />
+      <TextBlock Text="{loc:Loc tab-resource-packs-desc}"
+                 Classes="SubText"
+                 TextWrapping="Wrap" />
+      <TextBlock Text="{loc:Loc tab-resource-packs-directory-label}"
+                 FontWeight="Bold" />
+      <TextBlock Text="{Binding PacksDirectory}"
+                 Classes="SubText"
+                 TextWrapping="Wrap" />
+      <Border Padding="10,8"
+              Classes="resource-pack-panel"
+              Background="#1D1F26">
+        <TextBlock Text="{loc:Loc tab-resource-packs-priority}"
+                   Classes="SubText"
+                   TextWrapping="Wrap" />
+      </Border>
+    </StackPanel>
+
+    <StackPanel DockPanel.Dock="Bottom"
+                Orientation="Horizontal"
+                Spacing="6"
+                HorizontalAlignment="Right"
+                Margin="0,10,0,0">
+      <Button Classes="HelixPillButton"
+              Content="{loc:Loc tab-resource-packs-open-directory}"
+              Click="OpenResourcePackDirectoryPressed" />
+      <Button Classes="HelixPillButton"
+              Content="{loc:Loc tab-resource-packs-reload}"
+              Click="ReloadResourcePacksPressed" />
+    </StackPanel>
+
+    <Border Margin="0,10,0,0"
+            Padding="12"
+            Classes="resource-pack-panel"
+            Background="#17191F">
+      <Grid>
+        <TextBlock IsVisible="{Binding !HasResourcePacks}"
+                   Text="{loc:Loc tab-resource-packs-empty}"
+                   TextWrapping="Wrap" />
+
+        <ScrollViewer IsVisible="{Binding HasResourcePacks}"
+                      HorizontalScrollBarVisibility="Disabled">
+          <ItemsControl ItemsSource="{Binding ResourcePacks}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate DataType="resourcePacks:ResourcePackInfo">
+                <Border Classes="resource-pack-card">
+                  <Grid ColumnDefinitions="*,Auto">
+                    <StackPanel Spacing="4">
+                      <CheckBox IsChecked="{Binding Enabled, Mode=TwoWay}"
+                                Click="ResourcePackEnabledChanged"
+                                Content="{loc:Loc tab-resource-packs-enabled}" />
+
+                      <TextBlock Margin="24,0,0,0"
+                                 Text="{Binding Name}"
+                                 FontWeight="Bold" />
+
+                      <TextBlock Margin="24,0,0,0"
+                                 IsVisible="{Binding HasDescription}"
+                                 Text="{Binding Description}"
+                                 Classes="SubText"
+                                 TextWrapping="Wrap" />
+
+                      <TextBlock Margin="24,0,0,0"
+                                 Classes="SubText">
+                        <Run Text="{loc:Loc tab-resource-packs-folder-label}" />
+                        <Run Text="{Binding DirectoryName}" />
+                      </TextBlock>
+
+                      <TextBlock Margin="24,0,0,0"
+                                 IsVisible="{Binding HasTargetForkId}"
+                                 Classes="SubText">
+                        <Run Text="{loc:Loc tab-resource-packs-target-label}" />
+                        <Run Text="{Binding TargetForkId}" />
+                      </TextBlock>
+                    </StackPanel>
+
+                    <StackPanel Grid.Column="1"
+                                Orientation="Horizontal"
+                                Spacing="6"
+                                VerticalAlignment="Top">
+                      <Button Content="{loc:Loc tab-resource-packs-move-up}"
+                              Classes="HelixPillButton"
+                              Click="MoveResourcePackUpPressed" />
+                      <Button Content="{loc:Loc tab-resource-packs-move-down}"
+                              Classes="HelixPillButton"
+                              Click="MoveResourcePackDownPressed" />
+                    </StackPanel>
+                  </Grid>
+                </Border>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </ScrollViewer>
+      </Grid>
+    </Border>
+    <!-- Helix-End -->
+  </DockPanel>
+</UserControl>

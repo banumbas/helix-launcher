@@ -1,0 +1,56 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:v="clr-namespace:SS14.Launcher.Views"
+             xmlns:helixVm="clr-namespace:SS14.Launcher.ViewModels.Helix;assembly=SS14.Launcher"
+             xmlns:loc="clr-namespace:SS14.Launcher.Localization"
+             mc:Ignorable="d"
+             d:DesignWidth="420"
+             d:DesignHeight="260"
+             x:Class="SS14.Launcher.Views.Helix.AccountDropDownHelix">
+  <UserControl.Styles>
+    <Style Selector="TextBlock.DropDownSectionLabel">
+      <Setter Property="Foreground" Value="#8A95A8" />
+      <Setter Property="Margin" Value="0,0,0,6" />
+    </Style>
+  </UserControl.Styles>
+
+  <v:DropDown x:Name="DropDownRoot"
+              HeaderContent="{Binding LoginText}"
+              IsDropDownOpen="{Binding IsDropDownOpen, Mode=TwoWay}"
+              Classes="OpenRight">
+    <Panel>
+      <StackPanel Orientation="Vertical"
+                  Spacing="8">
+        <StackPanel Orientation="Vertical"
+                    IsVisible="{Binding AccountControlsVisible}"
+                    Spacing="8">
+          <Button Content="{Binding LogoutText}"
+                  Command="{Binding LogoutPressed}" />
+          <Button Content="{loc:Loc account-drop-down-add-account}"
+                  IsVisible="{Binding EnableMultiAccounts}"
+                  Command="{Binding AddAccountPressed}" />
+        </StackPanel>
+
+        <StackPanel Orientation="Vertical"
+                    IsVisible="{Binding AccountSwitchVisible}"
+                    Spacing="8">
+          <TextBlock Text="{Binding AccountSwitchText}"
+                     Classes="DropDownSectionLabel" />
+
+          <ItemsControl x:Name="AccountsItems"
+                        ItemsSource="{Binding Accounts}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate DataType="helixVm:HelixStoredAccountViewModel">
+                <Button Content="{Binding StatusText}"
+                        Command="{Binding #AccountsItems.DataContext.AccountButtonPressed}"
+                        CommandParameter="{Binding Account}" />
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </StackPanel>
+      </StackPanel>
+    </Panel>
+  </v:DropDown>
+</UserControl>

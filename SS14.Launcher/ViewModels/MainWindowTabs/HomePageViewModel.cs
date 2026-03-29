@@ -14,10 +14,10 @@ using Splat;
 using SS14.Launcher.Localization;
 using SS14.Launcher.Models.Data;
 using SS14.Launcher.Models.ServerStatus;
-using SS14.Launcher.Models.Worm;
+using SS14.Launcher.Models.Helix;
 using SS14.Launcher.Utility;
 using SS14.Launcher.Views;
-using SS14.Launcher.Views.Worm;
+using SS14.Launcher.Views.Helix;
 
 namespace SS14.Launcher.ViewModels.MainWindowTabs;
 
@@ -27,22 +27,22 @@ public class HomePageViewModel : MainWindowTabViewModel
     private readonly DataManager _cfg;
     private readonly ServerStatusCache _statusCache = new ServerStatusCache();
     private readonly ServerListCache _serverListCache;
-    // Worm-Start
+    // Helix-Start
     private readonly RecentServerManager _recentServerManager;
-    // Worm-End
+    // Helix-End
 
     public HomePageViewModel(MainWindowViewModel mainWindowViewModel)
     {
         MainWindowViewModel = mainWindowViewModel;
         _cfg = Locator.Current.GetRequiredService<DataManager>();
         _serverListCache = Locator.Current.GetRequiredService<ServerListCache>();
-        // Worm-Start
+        // Helix-Start
         _recentServerManager = Locator.Current.GetRequiredService<RecentServerManager>();
         _recentServerManager.Entries.CollectionChanged += (_, _) => RebuildRecentServers();
-        // Worm-End
-        // Worm-Start
+        // Helix-End
+        // Helix-Start
         WeakReferenceMessenger.Default.Register<ServerListDisplaySettingsChanged>(this, (_, _) => RaiseServerListDisplayPropertiesChanged());
-        // Worm-End
+        // Helix-End
 
         _cfg.FavoriteServers
             .Connect()
@@ -70,29 +70,29 @@ public class HomePageViewModel : MainWindowTabViewModel
             });
 
         Favorites = favorites;
-        // Worm-Start
+        // Helix-Start
         RebuildRecentServers();
-        // Worm-End
+        // Helix-End
     }
 
     public ReadOnlyObservableCollection<ServerEntryViewModel> Favorites { get; }
     public ObservableCollection<ServerEntryViewModel> Suggestions { get; } = new();
-    // Worm-Start
+    // Helix-Start
     public ObservableCollection<ServerEntryViewModel> RecentServers { get; } = new();
-    // Worm-End
+    // Helix-End
 
     [Reactive] public bool FavoritesEmpty { get; private set; } = true;
-    // Worm-Start
+    // Helix-Start
     [Reactive] public bool RecentServersEmpty { get; private set; } = true;
-    // Worm-End
+    // Helix-End
 
     public override string Name => LocalizationManager.Instance.GetString("tab-home-title");
     public Control? Control { get; set; }
-    // Worm-Start
+    // Helix-Start
     public bool ShowMapColumn => _cfg.GetCVar(CVars.ServerListShowMap);
     public bool ShowModeColumn => _cfg.GetCVar(CVars.ServerListShowMode);
     public bool ShowPingColumn => _cfg.GetCVar(CVars.ServerListShowPing);
-    // Worm-End
+    // Helix-End
 
     public async void DirectConnectPressed()
     {
@@ -101,9 +101,9 @@ public class HomePageViewModel : MainWindowTabViewModel
             return;
         }
 
-        // Worm-Start
-        var res = await new DirectConnectDialogWorm().ShowDialog<string?>(window);
-        // Worm-End
+        // Helix-Start
+        var res = await new DirectConnectDialogHelix().ShowDialog<string?>(window);
+        // Helix-End
         if (res == null)
         {
             return;
@@ -119,9 +119,9 @@ public class HomePageViewModel : MainWindowTabViewModel
             return;
         }
 
-        // Worm-Start
-        var (name, address) = await new AddFavoriteDialogWorm().ShowDialog<(string name, string address)>(window);
-        // Worm-End
+        // Helix-Start
+        var (name, address) = await new AddFavoriteDialogHelix().ShowDialog<(string name, string address)>(window);
+        // Helix-End
 
         try
         {
@@ -147,12 +147,12 @@ public class HomePageViewModel : MainWindowTabViewModel
         _serverListCache.RequestRefresh();
     }
 
-    // Worm-Start
+    // Helix-Start
     public void ClearRecentServersPressed()
     {
         _recentServerManager.Clear();
     }
-    // Worm-End
+    // Helix-End
 
     public override void Selected()
     {
@@ -162,27 +162,27 @@ public class HomePageViewModel : MainWindowTabViewModel
             PreloadInfo(favorite);
         }
 
-        // Worm-Start
+        // Helix-Start
         foreach (var recent in RecentServers)
         {
             _statusCache.InitialUpdateStatus(recent.CacheData);
             PreloadInfo(recent);
         }
-        // Worm-End
+        // Helix-End
 
         _serverListCache.RequestInitialUpdate();
     }
 
-    // Worm-Start
+    // Helix-Start
     private void RaiseServerListDisplayPropertiesChanged()
     {
         this.RaisePropertyChanged(nameof(ShowMapColumn));
         this.RaisePropertyChanged(nameof(ShowModeColumn));
         this.RaisePropertyChanged(nameof(ShowPingColumn));
     }
-    // Worm-End
+    // Helix-End
 
-    // Worm-Start
+    // Helix-Start
     private void RebuildRecentServers()
     {
         RecentServers.Clear();
@@ -218,5 +218,5 @@ public class HomePageViewModel : MainWindowTabViewModel
 
         ((IServerSource)_statusCache).UpdateInfoFor(viewModel.CacheData);
     }
-    // Worm-End
+    // Helix-End
 }

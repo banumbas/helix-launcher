@@ -61,7 +61,7 @@ public class OptionsTabViewModel : MainWindowTabViewModel
         }
     }
 
-    // Worm-Start
+    // Helix-Start
     public bool ServerListShowMap
     {
         get => Cfg.GetCVar(CVars.ServerListShowMap);
@@ -94,7 +94,7 @@ public class OptionsTabViewModel : MainWindowTabViewModel
             NotifyServerListDisplaySettingsChanged();
         }
     }
-    // Worm-End
+    // Helix-End
 
     public void ClearEngines()
     {
@@ -120,10 +120,10 @@ public class OptionsTabViewModel : MainWindowTabViewModel
         Helpers.OpenUri(ConfigConstants.AccountManagementUrl);
     }
 
-    // Worm-Start
+    // Helix-Start
     private static void NotifyServerListDisplaySettingsChanged()
     {
         WeakReferenceMessenger.Default.Send(new ServerListDisplaySettingsChanged());
     }
-    // Worm-End
+    // Helix-End
 }

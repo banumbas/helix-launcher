@@ -11,10 +11,10 @@ public sealed class ServerStatusData : ObservableObject, IServerStatusData
     private TimeSpan? _ping;
     private int _playerCount;
     private int _softMaxPlayerCount;
-    // Worm-Start
+    // Helix-Start
     private string? _mapName;
     private string? _presetName;
-    // Worm-End
+    // Helix-End
     private DateTime? _roundStartTime;
     private GameRoundStatus _roundStatus;
     private ServerStatusCode _status = ServerStatusCode.FetchingStatus;
@@ -48,9 +48,9 @@ public sealed class ServerStatusData : ObservableObject, IServerStatusData
         set => SetProperty(ref _desc, value);
     }
 
-    // Worm-Start
+    // Helix-Start
     // Ping is sampled directly from the status endpoint so it is not skewed by hub fetch timing.
-    // Worm-End
+    // Helix-End
     public TimeSpan? Ping
     {
         get => _ping;
@@ -84,7 +84,7 @@ public sealed class ServerStatusData : ObservableObject, IServerStatusData
         set => SetProperty(ref _softMaxPlayerCount, value);
     }
 
-    // Worm-Start
+    // Helix-Start
     public string? MapName
     {
         get => _mapName;
@@ -96,7 +96,7 @@ public sealed class ServerStatusData : ObservableObject, IServerStatusData
         get => _presetName;
         set => SetProperty(ref _presetName, value);
     }
-    // Worm-End
+    // Helix-End
 
     public DateTime? RoundStartTime
     {

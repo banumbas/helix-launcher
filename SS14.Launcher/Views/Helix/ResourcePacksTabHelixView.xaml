@@ -1,0 +1,142 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:mainWindowTabs="clr-namespace:SS14.Launcher.ViewModels.MainWindowTabs"
+             xmlns:resourcePacks="clr-namespace:SS14.Launcher.Models.ResourcePacks"
+             xmlns:loc="clr-namespace:SS14.Launcher.Localization"
+             mc:Ignorable="d"
+             d:DesignWidth="1240"
+             d:DesignHeight="720"
+             x:Class="SS14.Launcher.Views.Helix.ResourcePacksTabHelixView">
+  <Design.DataContext>
+    <mainWindowTabs:ResourcePacksTabViewModel />
+  </Design.DataContext>
+
+  <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+    <StackPanel Spacing="18">
+      <Border Classes="HelixSectionCard"
+              Padding="18">
+        <StackPanel Spacing="16">
+          <Grid ColumnDefinitions="*,Auto">
+            <StackPanel Spacing="4">
+              <TextBlock Text="{loc:Loc tab-resource-packs-title}"
+                         Classes="HelixSectionTitle" />
+              <TextBlock Text="{loc:Loc tab-resource-packs-desc}"
+                         Classes="HelixMuted"
+                         TextWrapping="Wrap" />
+            </StackPanel>
+
+            <StackPanel Grid.Column="1"
+                        Orientation="Horizontal"
+                        Spacing="8"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Top">
+              <Button Classes="HelixPillButton"
+                      VerticalAlignment="Center"
+                      Content="{loc:Loc tab-resource-packs-open-directory}"
+                      Click="OpenResourcePackDirectoryPressed" />
+              <Button Classes="HelixPillButton"
+                      VerticalAlignment="Center"
+                      Content="{loc:Loc tab-resource-packs-reload}"
+                      Click="ReloadResourcePacksPressed" />
+            </StackPanel>
+          </Grid>
+
+          <Border Classes="HelixInsetCard"
+                  Padding="16">
+            <StackPanel Spacing="8">
+              <TextBlock Text="{loc:Loc tab-resource-packs-directory-label}"
+                         Classes="HelixFieldLabel" />
+              <TextBlock Text="{Binding PacksDirectory}"
+                         Classes="HelixFieldValue"
+                         TextWrapping="Wrap" />
+              <TextBlock Text="{loc:Loc tab-resource-packs-priority}"
+                         Classes="HelixMuted"
+                         TextWrapping="Wrap" />
+            </StackPanel>
+          </Border>
+        </StackPanel>
+      </Border>
+
+      <Border Classes="HelixSectionCard"
+              Padding="18">
+        <Grid>
+          <Border IsVisible="{Binding !HasResourcePacks}"
+                  Classes="HelixInsetCard"
+                  Padding="18">
+            <TextBlock Text="{loc:Loc tab-resource-packs-empty}"
+                       Classes="HelixMuted"
+                       TextWrapping="Wrap" />
+          </Border>
+
+          <ScrollViewer IsVisible="{Binding HasResourcePacks}"
+                        HorizontalScrollBarVisibility="Disabled">
+            <ItemsControl ItemsSource="{Binding ResourcePacks}">
+              <ItemsControl.ItemTemplate>
+                <DataTemplate DataType="resourcePacks:ResourcePackInfo">
+                  <Border Classes="HelixInsetCard"
+                          Margin="0,0,0,12"
+                          Padding="16">
+                    <Grid ColumnDefinitions="*,Auto">
+                      <StackPanel Spacing="10">
+                        <Grid ColumnDefinitions="Auto,*">
+                          <CheckBox Classes="HelixCheck"
+                                    IsChecked="{Binding Enabled, Mode=TwoWay}"
+                                    Click="ResourcePackEnabledChanged"
+                                    Content="{loc:Loc tab-resource-packs-enabled}" />
+
+                          <StackPanel Grid.Column="1"
+                                      Margin="12,0,0,0"
+                                      Spacing="4">
+                            <TextBlock Text="{Binding Name}"
+                                       Foreground="#E5E9F0"
+                                       FontSize="16"
+                                       FontWeight="SemiBold"
+                                       TextWrapping="Wrap" />
+                            <TextBlock IsVisible="{Binding HasDescription}"
+                                       Text="{Binding Description}"
+                                       Classes="HelixMuted"
+                                       TextWrapping="Wrap" />
+                          </StackPanel>
+                        </Grid>
+
+                        <Border Classes="HelixSectionCard"
+                                Padding="12">
+                          <StackPanel Spacing="6">
+                            <TextBlock Classes="HelixFieldLabel">
+                              <Run Text="{loc:Loc tab-resource-packs-folder-label}" />
+                              <Run Text="{Binding DirectoryName}" />
+                            </TextBlock>
+                            <TextBlock IsVisible="{Binding HasTargetForkId}"
+                                       Classes="HelixMuted">
+                              <Run Text="{loc:Loc tab-resource-packs-target-label}" />
+                              <Run Text="{Binding TargetForkId}" />
+                            </TextBlock>
+                          </StackPanel>
+                        </Border>
+                      </StackPanel>
+
+                      <StackPanel Grid.Column="1"
+                                  Margin="16,0,0,0"
+                                  Orientation="Horizontal"
+                                  Spacing="8"
+                                  VerticalAlignment="Top">
+                        <Button Classes="HelixPillButton"
+                                Content="{loc:Loc tab-resource-packs-move-up}"
+                                Click="MoveResourcePackUpPressed" />
+                        <Button Classes="HelixPillButton"
+                                Content="{loc:Loc tab-resource-packs-move-down}"
+                                Click="MoveResourcePackDownPressed" />
+                      </StackPanel>
+                    </Grid>
+                  </Border>
+                </DataTemplate>
+              </ItemsControl.ItemTemplate>
+            </ItemsControl>
+          </ScrollViewer>
+        </Grid>
+      </Border>
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

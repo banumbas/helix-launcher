@@ -1,0 +1,60 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:mainWindowTabs="clr-namespace:SS14.Launcher.ViewModels.MainWindowTabs"
+             xmlns:v="clr-namespace:SS14.Launcher.Views"
+             xmlns:loc="clr-namespace:SS14.Launcher.Localization"
+             mc:Ignorable="d"
+             d:DesignWidth="1240"
+             d:DesignHeight="720"
+             x:Class="SS14.Launcher.Views.Helix.NewsTabHelixView">
+  <Design.DataContext>
+    <mainWindowTabs:NewsTabViewModel />
+  </Design.DataContext>
+
+  <Border Classes="HelixSectionCard"
+          Padding="18">
+    <DockPanel>
+      <StackPanel DockPanel.Dock="Top"
+                  Spacing="4"
+                  Margin="0,0,0,16">
+        <TextBlock Text="{loc:Loc tab-news-title}"
+                   Classes="HelixSectionTitle" />
+        <TextBlock Text="{loc:Loc tab-news-recent-news}"
+                   Classes="HelixMuted" />
+      </StackPanel>
+
+      <Panel>
+        <ScrollViewer IsVisible="{Binding NewsPulled}">
+          <ItemsControl ItemsSource="{Binding NewsEntries}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate DataType="mainWindowTabs:NewsEntryViewModel">
+                <Button Classes="HelixNewsButton"
+                        Margin="0,0,0,10"
+                        Click="NewsEntryPressed">
+                  <TextBlock Text="{Binding Headline}"
+                             Foreground="#E5E9F0"
+                             FontSize="15"
+                             FontWeight="SemiBold"
+                             TextWrapping="Wrap" />
+                </Button>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </ScrollViewer>
+
+        <StackPanel IsVisible="{Binding NewsNotPulled}"
+                    VerticalAlignment="Center"
+                    HorizontalAlignment="Center"
+                    Spacing="12">
+          <Viewbox Classes="DungSpinnerBox">
+            <v:DungSpinner />
+          </Viewbox>
+          <TextBlock Text="{loc:Loc tab-news-pulling-news}"
+                     Classes="HelixMuted" />
+        </StackPanel>
+      </Panel>
+    </DockPanel>
+  </Border>
+</UserControl>

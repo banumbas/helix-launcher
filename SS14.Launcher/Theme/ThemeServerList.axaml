@@ -39,7 +39,7 @@
       -->
       <Setter Property="Margin" Value="0 3 0 0" />
     </Style>
-    <!-- // Worm-Start -->
+    <!-- // Helix-Start -->
     <Style Selector="^ TextBlock.PingGood">
       <Setter Property="Foreground" Value="#57C969" />
     </Style>
@@ -52,7 +52,7 @@
     <Style Selector="^ TextBlock.PingUnknown">
       <Setter Property="Foreground" Value="{DynamicResource ThemeSubTextBrush}" />
     </Style>
-    <!-- // Worm-End -->
+    <!-- // Helix-End -->
   </Style>
 
   <Style Selector="mwt|ServerList">
@@ -62,11 +62,11 @@
           <Grid DockPanel.Dock="Top" Margin="24 0 24 0" IsVisible="{TemplateBinding ShowHeader}">
             <Grid.ColumnDefinitions>
               <ColumnDefinition Width="*" /> <!-- Server Name -->
-              <!-- // Worm-Start -->
+              <!-- // Helix-Start -->
               <ColumnDefinition SharedSizeGroup="ModeCol" MinWidth="110" Width="Auto" />
               <ColumnDefinition SharedSizeGroup="MapCol" MinWidth="110" Width="Auto" />
               <ColumnDefinition SharedSizeGroup="PingCol" MinWidth="85" Width="Auto" />
-              <!-- // Worm-End -->
+              <!-- // Helix-End -->
               <ColumnDefinition SharedSizeGroup="TimeCol" MinWidth="80" Width="Auto" />
               <ColumnDefinition SharedSizeGroup="StatusCol" MinWidth="80" Width="Auto" />
               <ColumnDefinition SharedSizeGroup="ConnectCol" Width="Auto" />
@@ -75,7 +75,7 @@
             <Border Grid.Column="0" Classes="GridCell">
               <TextBlock Text="{loc:Loc tab-servers-table-name}" Classes="SubText" />
             </Border>
-            <!-- // Worm-Start -->
+            <!-- // Helix-Start -->
             <Border Grid.Column="1" Classes="GridCell" IsVisible="{TemplateBinding ShowModeColumn}">
               <TextBlock Text="{loc:Loc tab-servers-table-mode}" Classes="SubText Center" />
             </Border>
@@ -85,7 +85,7 @@
             <Border Grid.Column="3" Classes="GridCell" IsVisible="{TemplateBinding ShowPingColumn}">
               <TextBlock Text="{loc:Loc tab-servers-table-ping}" Classes="SubText Center" />
             </Border>
-            <!-- // Worm-End -->
+            <!-- // Helix-End -->
             <Border Grid.Column="4" Classes="GridCell">
               <TextBlock Text="{loc:Loc tab-servers-table-round-time}" Classes="SubText Center" />
             </Border>

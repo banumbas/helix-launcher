@@ -24,9 +24,9 @@ public sealed class ServerListCache : ReactiveObject, IServerSource
 {
     private readonly HubApi _hubApi;
     private readonly DataManager _dataManager;
-    // Worm-Start
+    // Helix-Start
     private readonly HttpClient _http;
-    // Worm-End
+    // Helix-End
 
     private CancellationTokenSource? _refreshCancel;
 
@@ -40,9 +40,9 @@ public sealed class ServerListCache : ReactiveObject, IServerSource
     {
         _hubApi = Locator.Current.GetRequiredService<HubApi>();
         _dataManager = Locator.Current.GetRequiredService<DataManager>();
-        // Worm-Start
+        // Helix-Start
         _http = Locator.Current.GetRequiredService<HttpClient>();
-        // Worm-End
+        // Helix-End
     }
 
     /// <summary>
@@ -136,7 +136,7 @@ public sealed class ServerListCache : ReactiveObject, IServerSource
                 }
             }
 
-            // Worm-Start
+            // Helix-Start
             var loadedServers = entries.Select(entry =>
             {
                 var statusData = new ServerStatusData(entry.Address, entry.HubAddress);
@@ -146,7 +146,7 @@ public sealed class ServerListCache : ReactiveObject, IServerSource
 
             _allServers.AddItems(loadedServers);
             _ = RefreshServerPingsAsync(loadedServers, cancel);
-            // Worm-End
+            // Helix-End
 
             if (_allServers.Count == 0)
                 // We did not get any servers
@@ -167,7 +167,7 @@ public sealed class ServerListCache : ReactiveObject, IServerSource
         }
     }
 
-    // Worm-Start
+    // Helix-Start
     private async Task RefreshServerPingsAsync(IReadOnlyCollection<ServerStatusData> servers, CancellationToken cancel)
     {
         if (servers.Count == 0)
@@ -199,7 +199,7 @@ public sealed class ServerListCache : ReactiveObject, IServerSource
             limiter.Release();
         }
     }
-    // Worm-End
+    // Helix-End
 
     void IServerSource.UpdateInfoFor(ServerStatusData statusData)
     {

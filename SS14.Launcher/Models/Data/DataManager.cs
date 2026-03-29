@@ -646,6 +646,6 @@ public sealed class DataManager : ReactiveObject
 
 public record FavoritesChanged;
 
-// Worm-Start
+// Helix-Start
 public record ServerListDisplaySettingsChanged;
-// Worm-End
+// Helix-End

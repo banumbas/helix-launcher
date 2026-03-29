@@ -67,13 +67,13 @@ internal class Program
         var contentDb = Environment.GetEnvironmentVariable("SS14_LOADER_CONTENT_DB");
         var contentVersion = Environment.GetEnvironmentVariable("SS14_LOADER_CONTENT_VERSION");
         var overlayZip = Environment.GetEnvironmentVariable("SS14_LOADER_OVERLAY_ZIP");
-        // Worm-Start
+        // Helix-Start
         var overlayZips = Environment.GetEnvironmentVariable("SS14_LOADER_OVERLAY_ZIPS");
-        // Worm-End
+        // Helix-End
         ContentDbFileApi? contentApi = null;
-        // Worm-Start
+        // Helix-Start
         var overlayApis = new List<ZipFileApi>();
-        // Worm-End
+        // Helix-End
         IEnumerable<ApiMount>? extraMounts = null;
         if (!string.IsNullOrEmpty(contentDb) && !string.IsNullOrEmpty(contentVersion))
         {
@@ -81,7 +81,7 @@ internal class Program
             extraMounts = new[] { new ApiMount(contentApi, "/") };
         }
 
-        // Worm-Start
+        // Helix-Start
         var overlayPaths = new List<string>();
         if (!string.IsNullOrWhiteSpace(overlayZips))
         {
@@ -110,7 +110,7 @@ internal class Program
             // Put overlays before the game's regular installation so they mask files.
             extraMounts = [..overlayMounts, ..extraMounts ?? []];
         }
-        // Worm-End
+        // Helix-End
 
         var args = new MainArgs(_engineArgs, _fileApi, redialApi, extraMounts);
 
@@ -121,12 +121,12 @@ internal class Program
         finally
         {
             contentApi?.Dispose();
-            // Worm-Start
+            // Helix-Start
             foreach (var overlayApi in overlayApis)
             {
                 overlayApi.Dispose();
             }
-            // Worm-End
+            // Helix-End
         }
         return true;
     }

@@ -6,7 +6,7 @@ using Avalonia.Interactivity;
 using Avalonia.Platform.Storage;
 using SS14.Launcher.Localization;
 using SS14.Launcher.ViewModels;
-using SS14.Launcher.Views.Worm;
+using SS14.Launcher.Views.Helix;
 using TerraFX.Interop.Windows;
 using IDataObject = Avalonia.Input.IDataObject;
 
@@ -16,18 +16,18 @@ public partial class MainWindow : Window
 {
     private MainWindowViewModel? _viewModel;
 
-    // Worm-Start
-    private MainWindowContentWorm _content;
-    // Worm-End
+    // Helix-Start
+    private MainWindowContentHelix _content;
+    // Helix-End
 
     public MainWindow()
     {
         InitializeComponent();
 
-        // Worm-Start
+        // Helix-Start
         Width = MinWidth;
         Height = MinHeight;
-        // Worm-End
+        // Helix-End
 
         DarkMode();
 
@@ -36,9 +36,9 @@ public partial class MainWindow : Window
         AddHandler(DragDrop.DragOverEvent, DragOver);
         AddHandler(DragDrop.DropEvent, Drop);
 
-        // Worm-Start
-        _content = (MainWindowContentWorm) Content!;
-        // Worm-End
+        // Helix-Start
+        _content = (MainWindowContentHelix) Content!;
+        // Helix-End
 
         ReloadTitle();
     }
@@ -47,9 +47,9 @@ public partial class MainWindow : Window
     {
         ReloadTitle();
 
-        // Worm-Start
-        Content = _content = new MainWindowContentWorm();
-        // Worm-End
+        // Helix-Start
+        Content = _content = new MainWindowContentHelix();
+        // Helix-End
     }
 
     private void ReloadTitle()
@@ -87,11 +87,11 @@ public partial class MainWindow : Window
 
         var hWnd = (HWND)handle.Handle;
 
-        // Worm-Start
+        // Helix-Start
         COLORREF caption = 0x001C140F;
         COLORREF border = 0x0035291F;
         COLORREF text = 0x00F0E9E5;
-        // Worm-End
+        // Helix-End
         TerraFX.Interop.Windows.Windows.DwmSetWindowAttribute(hWnd, 35, &caption, (uint) sizeof(COLORREF));
         TerraFX.Interop.Windows.Windows.DwmSetWindowAttribute(hWnd, 34, &border, (uint) sizeof(COLORREF));
         TerraFX.Interop.Windows.Windows.DwmSetWindowAttribute(hWnd, 36, &text, (uint) sizeof(COLORREF));

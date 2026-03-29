@@ -9,10 +9,10 @@ public static class ServerApi
     // https://docs.spacestation14.io/en/engine/http-api
     public sealed record ServerStatus(
         [property: JsonPropertyName("name")] string? Name,
-        // Worm-Start
+        // Helix-Start
         [property: JsonPropertyName("map")] string? Map,
         [property: JsonPropertyName("preset")] string? Preset,
-        // Worm-End
+        // Helix-End
         [property: JsonPropertyName("players")]
         int PlayerCount,
         [property: JsonPropertyName("soft_max_players")]

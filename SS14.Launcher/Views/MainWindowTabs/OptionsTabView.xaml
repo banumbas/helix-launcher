@@ -12,7 +12,7 @@
     <mainWindowTabs:OptionsTabViewModel />
   </Design.DataContext>
 
-  <!-- // Worm-Start -->
+  <!-- // Helix-Start -->
   <TabControl>
     <TabItem Header="{loc:Loc tab-options-general-tab}">
       <ScrollViewer HorizontalScrollBarVisibility="Disabled">
@@ -63,28 +63,28 @@
       </ScrollViewer>
     </TabItem>
 
-    <TabItem Header="{loc:Loc tab-options-worm-tab}">
+    <TabItem Header="{loc:Loc tab-options-helix-tab}">
       <ScrollViewer HorizontalScrollBarVisibility="Disabled">
         <StackPanel Margin="12" Spacing="12">
           <StackPanel Spacing="6">
-            <TextBlock Text="{loc:Loc tab-options-worm-server-list-title}"
+            <TextBlock Text="{loc:Loc tab-options-helix-server-list-title}"
                        Classes="NanoHeadingMedium" />
-            <TextBlock Text="{loc:Loc tab-options-worm-server-list-desc}"
+            <TextBlock Text="{loc:Loc tab-options-helix-server-list-desc}"
                        Opacity="0.7"
                        TextWrapping="Wrap" />
           </StackPanel>
 
           <StackPanel Spacing="8">
             <CheckBox IsChecked="{Binding ServerListShowMode}"
-                      Content="{loc:Loc tab-options-worm-show-mode}" />
+                      Content="{loc:Loc tab-options-helix-show-mode}" />
             <CheckBox IsChecked="{Binding ServerListShowMap}"
-                      Content="{loc:Loc tab-options-worm-show-map}" />
+                      Content="{loc:Loc tab-options-helix-show-map}" />
             <CheckBox IsChecked="{Binding ServerListShowPing}"
-                      Content="{loc:Loc tab-options-worm-show-ping}" />
+                      Content="{loc:Loc tab-options-helix-show-ping}" />
           </StackPanel>
         </StackPanel>
       </ScrollViewer>
     </TabItem>
   </TabControl>
-  <!-- // Worm-End -->
+  <!-- // Helix-End -->
 </UserControl>

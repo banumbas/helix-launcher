@@ -6,7 +6,7 @@ using ReactiveUI;
 using Splat;
 using SS14.Launcher.Localization;
 using SS14.Launcher.Models;
-using SS14.Launcher.Models.Worm;
+using SS14.Launcher.Models.Helix;
 using SS14.Launcher.Utility;
 
 namespace SS14.Launcher.ViewModels;
@@ -224,9 +224,9 @@ public class ConnectingViewModel : ViewModelBase
 
     public static void StartConnect(MainWindowViewModel windowVm, string address, string? givenReason = null, string? displayName = null)
     {
-        // Worm-Start
+        // Helix-Start
         Locator.Current.GetService<RecentServerManager>()?.RememberServer(address, displayName);
-        // Worm-End
+        // Helix-End
         var connector = new Connector();
         var vm = new ConnectingViewModel(connector, windowVm, givenReason, ConnectionType.Server);
         windowVm.ConnectingVM = vm;

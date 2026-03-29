@@ -42,7 +42,7 @@
       </Grid.RowDefinitions>
 
       <!-- Main server list table -->
-      <!-- // Worm-Start -->
+      <!-- // Helix-Start -->
       <mainWindowTabsViews:ServerList Grid.Row="0" DockPanel.Dock="Top" List="{Binding SearchedServers}"
                                       ListText="{Binding ListText}"
                                       SpinnerVisible="{Binding SpinnerVisible}"
@@ -51,7 +51,7 @@
                                       ShowModeColumn="{Binding ShowModeColumn}"
                                       ShowPingColumn="{Binding ShowPingColumn}"
                                       Classes.filtersClosed="{Binding !FiltersVisible}" />
-      <!-- // Worm-End -->
+      <!-- // Helix-End -->
 
       <GridSplitter Grid.Row="1" BorderThickness="0"
                     HorizontalAlignment="Stretch"

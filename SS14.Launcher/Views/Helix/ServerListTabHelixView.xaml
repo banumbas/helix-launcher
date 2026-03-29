@@ -1,0 +1,79 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:mainWindowTabs="clr-namespace:SS14.Launcher.ViewModels.MainWindowTabs"
+             xmlns:mwt="clr-namespace:SS14.Launcher.Views.MainWindowTabs"
+             xmlns:helixViews="clr-namespace:SS14.Launcher.Views.Helix"
+             xmlns:loc="clr-namespace:SS14.Launcher.Localization"
+             mc:Ignorable="d"
+             d:DesignWidth="1240"
+             d:DesignHeight="720"
+             x:Class="SS14.Launcher.Views.Helix.ServerListTabHelixView">
+  <Design.DataContext>
+    <mainWindowTabs:ServerListTabViewModel />
+  </Design.DataContext>
+
+  <Grid RowDefinitions="*,Auto">
+    <Border Classes="HelixSectionCard"
+            Padding="18"
+            Margin="0,0,0,18">
+      <Grid RowDefinitions="Auto,Auto,*">
+        <Grid ColumnDefinitions="*,Auto">
+          <StackPanel Spacing="4">
+            <TextBlock Text="{loc:Loc tab-servers-title}"
+                       Classes="HelixSectionTitle" />
+            <TextBlock Text="{Binding ListText}"
+                       Classes="HelixMuted"
+                       IsVisible="{Binding ListText,Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+          </StackPanel>
+
+          <StackPanel Grid.Column="1"
+                      Orientation="Horizontal"
+                      Spacing="8">
+            <Button Classes="HelixPillButton"
+                    Click="RefreshClicked"
+                    Content="{loc:Loc helix-shell-refresh}" />
+            <Button Classes="HelixPillButton HelixPrimaryButton"
+                    Content="{loc:Loc helix-shell-direct-connect}"
+                    Click="DirectConnectClicked" />
+          </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1"
+              Margin="0,16,0,0"
+              ColumnDefinitions="*,Auto">
+          <TextBox Classes="HelixInput"
+                   Text="{Binding SearchString, Mode=TwoWay}"
+                   Watermark="{loc:Loc tab-servers-search-watermark}" />
+
+          <ToggleButton Grid.Column="1"
+                        Classes="HelixPillButton"
+                        Margin="10,0,0,0"
+                        IsChecked="{Binding FiltersVisible}"
+                        Content="{Binding Filters.FiltersText}" />
+        </Grid>
+
+        <Border Grid.Row="2"
+                Margin="0,16,0,0"
+                Classes="HelixInsetCard"
+                Padding="6">
+          <helixViews:ServerListHelix List="{Binding SearchedServers}"
+                                    ListText="{Binding ListText}"
+                                    SpinnerVisible="{Binding SpinnerVisible}"
+                                    ShowHeader="True"
+                                    ShowMapColumn="{Binding ShowMapColumn}"
+                                    ShowModeColumn="{Binding ShowModeColumn}"
+                                    ShowPingColumn="{Binding ShowPingColumn}" />
+        </Border>
+      </Grid>
+    </Border>
+
+    <Border Grid.Row="1"
+            Classes="HelixSectionCard"
+            Padding="18"
+            IsVisible="{Binding FiltersVisible}">
+      <mwt:ServerListFiltersView DataContext="{Binding Filters}" />
+    </Border>
+  </Grid>
+</UserControl>

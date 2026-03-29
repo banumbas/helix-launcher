@@ -1,0 +1,747 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:vm="clr-namespace:SS14.Launcher.ViewModels"
+             xmlns:v="clr-namespace:SS14.Launcher.Views"
+             xmlns:loc="clr-namespace:SS14.Launcher.Localization"
+             xmlns:mainWindowTabs="clr-namespace:SS14.Launcher.ViewModels.MainWindowTabs"
+             xmlns:helixViews="clr-namespace:SS14.Launcher.Views.Helix"
+             mc:Ignorable="d"
+             d:DesignWidth="1360"
+             d:DesignHeight="860"
+             x:Class="SS14.Launcher.Views.Helix.MainWindowContentHelix">
+  <Design.DataContext>
+    <vm:MainWindowViewModel />
+  </Design.DataContext>
+
+  <UserControl.DataTemplates>
+    <DataTemplate DataType="mainWindowTabs:HomePageViewModel">
+      <helixViews:HomePageHelixView />
+    </DataTemplate>
+    <DataTemplate DataType="mainWindowTabs:ServerListTabViewModel">
+      <helixViews:ServerListTabHelixView />
+    </DataTemplate>
+    <DataTemplate DataType="mainWindowTabs:NewsTabViewModel">
+      <helixViews:NewsTabHelixView />
+    </DataTemplate>
+    <DataTemplate DataType="mainWindowTabs:ResourcePacksTabViewModel">
+      <helixViews:ResourcePacksTabHelixView />
+    </DataTemplate>
+    <DataTemplate DataType="mainWindowTabs:OptionsTabViewModel">
+      <helixViews:OptionsTabHelixView />
+    </DataTemplate>
+  </UserControl.DataTemplates>
+
+  <UserControl.Styles>
+    <Style Selector="Border.HelixShellCard">
+      <Setter Property="Background" Value="#151B24" />
+      <Setter Property="BorderBrush" Value="#1F2935" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="16,16,0,0" />
+      <Setter Property="BoxShadow" Value="0 20 40 0 #50000000" />
+    </Style>
+
+    <Style Selector="Border.HelixDivider">
+      <Setter Property="Background" Value="#1F2935" />
+      <Setter Property="Height" Value="1" />
+    </Style>
+
+    <Style Selector="Border.HelixSectionCard">
+      <Setter Property="Background" Value="#111824" />
+      <Setter Property="BorderBrush" Value="#1F2935" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="14" />
+    </Style>
+
+    <Style Selector="Border.HelixInsetCard">
+      <Setter Property="Background" Value="#0F141C" />
+      <Setter Property="BorderBrush" Value="#1F2935" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="12" />
+    </Style>
+
+    <Style Selector="Border.HelixBadge">
+      <Setter Property="Background" Value="#162235" />
+      <Setter Property="BorderBrush" Value="#3D7DF0" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="999" />
+      <Setter Property="Padding" Value="10,5" />
+    </Style>
+
+    <Style Selector="ContentControl.OverlayBox">
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Panel Background="#8A0A0F16">
+            <Border Background="#151B24"
+                    BorderBrush="#1F2935"
+                    BorderThickness="1"
+                    CornerRadius="18"
+                    Padding="24"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    BoxShadow="0 20 40 0 #50000000">
+              <ContentPresenter Name="PART_ContentPresenter"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                Content="{TemplateBinding Content}"
+                                Padding="{TemplateBinding Padding}"
+                                VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" />
+            </Border>
+          </Panel>
+        </ControlTemplate>
+      </Setter>
+      <Setter Property="Background" Value="#151B24" />
+    </Style>
+
+    <Style Selector="ContentControl.OverlayBox TextBlock">
+      <Setter Property="Foreground" Value="#E5E9F0" />
+    </Style>
+
+    <Style Selector="ContentControl.OverlayBox TextBlock.NanoHeadingMedium">
+      <Setter Property="Foreground" Value="#E5E9F0" />
+      <Setter Property="FontSize" Value="24" />
+    </Style>
+
+    <Style Selector="ContentControl.OverlayBox Button">
+      <Setter Property="Padding" Value="16,10" />
+      <Setter Property="Background" Value="#111824" />
+      <Setter Property="BorderBrush" Value="#1F2935" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="Foreground" Value="#E5E9F0" />
+      <Setter Property="HorizontalContentAlignment" Value="Center" />
+      <Setter Property="VerticalContentAlignment" Value="Center" />
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  CornerRadius="999">
+            <ContentPresenter Margin="{TemplateBinding Padding}"
+                              Content="{TemplateBinding Content}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                              TextBlock.Foreground="{TemplateBinding Foreground}"
+                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+          </Border>
+        </ControlTemplate>
+      </Setter>
+    </Style>
+
+    <Style Selector="ContentControl.OverlayBox Button:pointerover">
+      <Setter Property="Background" Value="#162132" />
+      <Setter Property="BorderBrush" Value="#3D7DF0" />
+    </Style>
+
+    <Style Selector="ContentControl.OverlayBox Button:pressed">
+      <Setter Property="Background" Value="#1A2639" />
+      <Setter Property="BorderBrush" Value="#5C91F5" />
+    </Style>
+
+    <Style Selector="ContentControl.OverlayBox Button:disabled">
+      <Setter Property="Background" Value="#121821" />
+      <Setter Property="BorderBrush" Value="#243041" />
+      <Setter Property="Foreground" Value="#6F7A8B" />
+    </Style>
+
+    <Style Selector="v|DungSpinner">
+      <Setter Property="Fill" Value="#3D7DF0" />
+    </Style>
+
+    <Style Selector="Viewbox.DungSpinnerBox">
+      <Setter Property="Width" Value="60" />
+      <Setter Property="Height" Value="60" />
+      <Setter Property="HorizontalAlignment" Value="Center" />
+    </Style>
+
+    <Style Selector="TextBlock.HelixTitle">
+      <Setter Property="Foreground" Value="#E5E9F0" />
+      <Setter Property="FontSize" Value="26" />
+      <Setter Property="FontWeight" Value="Bold" />
+    </Style>
+
+    <Style Selector="TextBlock.HelixSubtitle">
+      <Setter Property="Foreground" Value="#8A95A8" />
+      <Setter Property="FontSize" Value="13" />
+    </Style>
+
+    <Style Selector="TextBlock.HelixSectionTitle">
+      <Setter Property="Foreground" Value="#E5E9F0" />
+      <Setter Property="FontSize" Value="18" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+
+    <Style Selector="TextBlock.HelixMuted">
+      <Setter Property="Foreground" Value="#8A95A8" />
+    </Style>
+
+    <Style Selector="TextBlock.HelixFieldLabel">
+      <Setter Property="Foreground" Value="#8A95A8" />
+      <Setter Property="FontSize" Value="12" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+
+    <Style Selector="TextBlock.HelixFieldValue">
+      <Setter Property="Foreground" Value="#E5E9F0" />
+      <Setter Property="FontSize" Value="14" />
+      <Setter Property="FontWeight" Value="SemiBold" />
+    </Style>
+
+    <Style Selector="TextBox.HelixInput">
+      <Setter Property="Background" Value="#0F141C" />
+      <Setter Property="Foreground" Value="#E5E9F0" />
+      <Setter Property="BorderBrush" Value="#1F2935" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="CornerRadius" Value="999" />
+      <Setter Property="Padding" Value="16,11" />
+    </Style>
+
+    <Style Selector="TextBox.HelixInput:focus">
+      <Setter Property="BorderBrush" Value="#3D7DF0" />
+      <Setter Property="Background" Value="#111926" />
+    </Style>
+
+    <Style Selector="Button.HelixPillButton">
+      <Setter Property="Padding" Value="16,10" />
+      <Setter Property="Background" Value="#111824" />
+      <Setter Property="BorderBrush" Value="#1F2935" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="Foreground" Value="#E5E9F0" />
+      <Setter Property="HorizontalContentAlignment" Value="Center" />
+      <Setter Property="VerticalContentAlignment" Value="Center" />
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  CornerRadius="999">
+            <ContentPresenter Margin="{TemplateBinding Padding}"
+                              Content="{TemplateBinding Content}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                              TextBlock.Foreground="{TemplateBinding Foreground}"
+                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+          </Border>
+        </ControlTemplate>
+      </Setter>
+    </Style>
+
+    <Style Selector="Button.HelixPillButton:pointerover">
+      <Setter Property="Background" Value="#162132" />
+      <Setter Property="BorderBrush" Value="#3D7DF0" />
+    </Style>
+
+    <Style Selector="Button.HelixPillButton:pressed">
+      <Setter Property="Background" Value="#1A2639" />
+      <Setter Property="BorderBrush" Value="#5C91F5" />
+    </Style>
+
+    <Style Selector="Button.HelixPillButton:disabled">
+      <Setter Property="Background" Value="#121821" />
+      <Setter Property="BorderBrush" Value="#243041" />
+      <Setter Property="Foreground" Value="#6F7A8B" />
+    </Style>
+
+    <Style Selector="ToggleButton.HelixPillButton">
+      <Setter Property="Padding" Value="16,10" />
+      <Setter Property="Background" Value="#111824" />
+      <Setter Property="BorderBrush" Value="#1F2935" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="Foreground" Value="#E5E9F0" />
+      <Setter Property="HorizontalContentAlignment" Value="Center" />
+      <Setter Property="VerticalContentAlignment" Value="Center" />
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  CornerRadius="999">
+            <ContentPresenter Margin="{TemplateBinding Padding}"
+                              Content="{TemplateBinding Content}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                              TextBlock.Foreground="{TemplateBinding Foreground}"
+                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+          </Border>
+        </ControlTemplate>
+      </Setter>
+    </Style>
+
+    <Style Selector="ToggleButton.HelixPillButton:pointerover">
+      <Setter Property="Background" Value="#162132" />
+      <Setter Property="BorderBrush" Value="#3D7DF0" />
+    </Style>
+
+    <Style Selector="ToggleButton.HelixPillButton:checked">
+      <Setter Property="Background" Value="#162235" />
+      <Setter Property="BorderBrush" Value="#3D7DF0" />
+    </Style>
+
+    <Style Selector="Button.HelixPrimaryButton">
+      <Setter Property="Background" Value="#162235" />
+      <Setter Property="BorderBrush" Value="#3D7DF0" />
+    </Style>
+
+    <Style Selector="Button.HelixPrimaryButton:pointerover">
+      <Setter Property="Background" Value="#1B2A42" />
+      <Setter Property="BorderBrush" Value="#5C91F5" />
+    </Style>
+
+    <Style Selector="Button.HelixTabButton">
+      <Setter Property="Padding" Value="14,10" />
+      <Setter Property="Background" Value="#0F141C" />
+      <Setter Property="BorderBrush" Value="Transparent" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="Foreground" Value="#8A95A8" />
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  CornerRadius="12">
+            <ContentPresenter Margin="{TemplateBinding Padding}"
+                              Content="{TemplateBinding Content}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                              TextBlock.Foreground="{TemplateBinding Foreground}"
+                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+          </Border>
+        </ControlTemplate>
+      </Setter>
+    </Style>
+
+    <Style Selector="Button.HelixTabButton:pointerover">
+      <Setter Property="Background" Value="#151D2B" />
+      <Setter Property="BorderBrush" Value="#253246" />
+      <Setter Property="Foreground" Value="#E5E9F0" />
+    </Style>
+
+    <Style Selector="Button.HelixTabButton.selected">
+      <Setter Property="Background" Value="#162235" />
+      <Setter Property="BorderBrush" Value="#3D7DF0" />
+      <Setter Property="Foreground" Value="#E5E9F0" />
+    </Style>
+
+    <Style Selector="Button.HelixSegmentButton">
+      <Setter Property="Padding" Value="14,9" />
+      <Setter Property="Background" Value="#0F141C" />
+      <Setter Property="BorderBrush" Value="#1F2935" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="Foreground" Value="#8A95A8" />
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  CornerRadius="999">
+            <ContentPresenter Margin="{TemplateBinding Padding}"
+                              Content="{TemplateBinding Content}"
+                              TextBlock.Foreground="{TemplateBinding Foreground}"
+                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+          </Border>
+        </ControlTemplate>
+      </Setter>
+    </Style>
+
+    <Style Selector="Button.HelixSegmentButton:pointerover">
+      <Setter Property="BorderBrush" Value="#3D7DF0" />
+      <Setter Property="Foreground" Value="#E5E9F0" />
+    </Style>
+
+    <Style Selector="Button.HelixSegmentButton.selected">
+      <Setter Property="Background" Value="#162235" />
+      <Setter Property="BorderBrush" Value="#3D7DF0" />
+      <Setter Property="Foreground" Value="#E5E9F0" />
+    </Style>
+
+    <Style Selector="Button.HelixNewsButton">
+      <Setter Property="Padding" Value="16,14" />
+      <Setter Property="Background" Value="#101722" />
+      <Setter Property="BorderBrush" Value="#1F2935" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="Foreground" Value="#E5E9F0" />
+      <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  CornerRadius="12">
+            <ContentPresenter Margin="{TemplateBinding Padding}"
+                              Content="{TemplateBinding Content}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                              TextBlock.Foreground="{TemplateBinding Foreground}"
+                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+          </Border>
+        </ControlTemplate>
+      </Setter>
+    </Style>
+
+    <Style Selector="Button.HelixNewsButton:pointerover">
+      <Setter Property="Background" Value="#141D2A" />
+      <Setter Property="BorderBrush" Value="#3D7DF0" />
+    </Style>
+
+    <Style Selector="CheckBox.HelixCheck">
+      <Setter Property="Foreground" Value="#E5E9F0" />
+      <Setter Property="Margin" Value="0,0,0,6" />
+    </Style>
+
+    <Style Selector="helixViews|AccountDropDownHelix">
+      <Setter Property="HorizontalAlignment" Value="Right" />
+    </Style>
+
+    <Style Selector="helixViews|AccountDropDownHelix v|DropDown, v|LanguageSelector v|DropDown">
+      <Setter Property="Background" Value="#111824" />
+      <Setter Property="BorderBrush" Value="#1F2935" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  CornerRadius="999">
+            <Grid Margin="16,10" ColumnDefinitions="*,Auto">
+              <ContentPresenter Content="{TemplateBinding HeaderContent}"
+                                ContentTemplate="{TemplateBinding HeaderContentTemplate}" />
+              <Path Grid.Column="1"
+                    Fill="#E5E9F0"
+                    Width="8"
+                    Height="4"
+                    Stretch="Uniform"
+                    Margin="8,0,0,0"
+                    VerticalAlignment="Center"
+                    Data="F1 M 301.14,-189.041L 311.57,-189.041L 306.355,-182.942L 301.14,-189.041 Z" />
+              <Popup Name="PART_Popup"
+                     PlacementTarget="{TemplateBinding}"
+                     Placement="{TemplateBinding Placement}"
+                     IsOpen="{TemplateBinding IsDropDownOpen,Mode=TwoWay}"
+                     IsLightDismissEnabled="True"
+                     MinWidth="{Binding Bounds.Width, RelativeSource={RelativeSource TemplatedParent}}">
+                <Border Background="#0F141C"
+                        BorderBrush="#1F2935"
+                        BorderThickness="1"
+                        CornerRadius="12"
+                        Padding="8">
+                  <ContentPresenter Content="{TemplateBinding Content}"
+                                    ContentTemplate="{TemplateBinding ContentTemplate}" />
+                </Border>
+              </Popup>
+            </Grid>
+          </Border>
+        </ControlTemplate>
+      </Setter>
+    </Style>
+
+    <Style Selector="helixViews|AccountDropDownHelix v|DropDown:pointerover, v|LanguageSelector v|DropDown:pointerover">
+      <Setter Property="Background" Value="#162132" />
+      <Setter Property="BorderBrush" Value="#3D7DF0" />
+    </Style>
+
+    <Style Selector="helixViews|AccountDropDownHelix v|DropDown:pressed, v|LanguageSelector v|DropDown:pressed">
+      <Setter Property="Background" Value="#162235" />
+      <Setter Property="BorderBrush" Value="#3D7DF0" />
+    </Style>
+
+    <Style Selector="helixViews|AccountDropDownHelix Button, v|LanguageSelector Button">
+      <Setter Property="Padding" Value="10,8" />
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderBrush" Value="Transparent" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="Foreground" Value="#E5E9F0" />
+      <Setter Property="HorizontalContentAlignment" Value="Left" />
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  CornerRadius="10">
+            <ContentPresenter Margin="{TemplateBinding Padding}"
+                              Content="{TemplateBinding Content}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                              TextBlock.Foreground="{TemplateBinding Foreground}"
+                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+          </Border>
+        </ControlTemplate>
+      </Setter>
+    </Style>
+
+    <Style Selector="helixViews|AccountDropDownHelix Button:pointerover, v|LanguageSelector Button:pointerover">
+      <Setter Property="Background" Value="#162132" />
+      <Setter Property="BorderBrush" Value="#3D7DF0" />
+    </Style>
+
+    <Style Selector="ScrollBar:vertical">
+      <Setter Property="Width" Value="12" />
+      <Setter Property="Margin" Value="8,0,0,0" />
+      <Setter Property="Background" Value="#111824" />
+    </Style>
+
+    <Style Selector="ScrollBar:horizontal">
+      <Setter Property="Height" Value="12" />
+      <Setter Property="Margin" Value="0,8,0,0" />
+      <Setter Property="Background" Value="#111824" />
+    </Style>
+
+    <Style Selector="ScrollBar /template/ RepeatButton">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderBrush" Value="Transparent" />
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="Padding" Value="0" />
+    </Style>
+
+    <Style Selector="ScrollBar /template/ RepeatButton#lineupbutton, ScrollBar /template/ RepeatButton#linedownbutton, ScrollBar /template/ RepeatButton#lineleftbutton, ScrollBar /template/ RepeatButton#linerightbutton, ScrollBar /template/ RepeatButton#PART_LineUpButton, ScrollBar /template/ RepeatButton#PART_LineDownButton, ScrollBar /template/ RepeatButton#PART_LineLeftButton, ScrollBar /template/ RepeatButton#PART_LineRightButton">
+      <Setter Property="Background" Value="#162235" />
+      <Setter Property="BorderBrush" Value="#253246" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="Padding" Value="0" />
+      <Setter Property="MinWidth" Value="0" />
+      <Setter Property="MinHeight" Value="0" />
+    </Style>
+
+    <Style Selector="ScrollBar:vertical /template/ RepeatButton#lineupbutton, ScrollBar:vertical /template/ RepeatButton#linedownbutton, ScrollBar:vertical /template/ RepeatButton#PART_LineUpButton, ScrollBar:vertical /template/ RepeatButton#PART_LineDownButton">
+      <Setter Property="Height" Value="12" />
+      <Setter Property="MinHeight" Value="12" />
+    </Style>
+
+    <Style Selector="ScrollBar:horizontal /template/ RepeatButton#lineleftbutton, ScrollBar:horizontal /template/ RepeatButton#linerightbutton, ScrollBar:horizontal /template/ RepeatButton#PART_LineLeftButton, ScrollBar:horizontal /template/ RepeatButton#PART_LineRightButton">
+      <Setter Property="Width" Value="12" />
+      <Setter Property="MinWidth" Value="12" />
+    </Style>
+
+    <Style Selector="ScrollBar /template/ RepeatButton#lineupbutton:pointerover, ScrollBar /template/ RepeatButton#linedownbutton:pointerover, ScrollBar /template/ RepeatButton#lineleftbutton:pointerover, ScrollBar /template/ RepeatButton#linerightbutton:pointerover, ScrollBar /template/ RepeatButton#PART_LineUpButton:pointerover, ScrollBar /template/ RepeatButton#PART_LineDownButton:pointerover, ScrollBar /template/ RepeatButton#PART_LineLeftButton:pointerover, ScrollBar /template/ RepeatButton#PART_LineRightButton:pointerover">
+      <Setter Property="Background" Value="#1B2A42" />
+      <Setter Property="BorderBrush" Value="#3D7DF0" />
+    </Style>
+
+    <Style Selector="ScrollBar /template/ Thumb#thumb">
+      <Setter Property="Background" Value="#243041" />
+      <Setter Property="BorderBrush" Value="#30425A" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="Margin" Value="2" />
+    </Style>
+
+    <Style Selector="ScrollBar:vertical /template/ Thumb#thumb">
+      <Setter Property="MinHeight" Value="24" />
+    </Style>
+
+    <Style Selector="ScrollBar:horizontal /template/ Thumb#thumb">
+      <Setter Property="MinWidth" Value="24" />
+    </Style>
+
+    <Style Selector="ScrollBar /template/ Thumb#thumb:pointerover">
+      <Setter Property="Background" Value="#2D3D54" />
+      <Setter Property="BorderBrush" Value="#3D7DF0" />
+    </Style>
+  </UserControl.Styles>
+
+  <Panel Background="#0F141C">
+    <Border IsVisible="{Binding LoggedIn}"
+            Margin="12,6,12,0"
+            Classes="HelixShellCard">
+      <Grid RowDefinitions="Auto,*,Auto">
+        <Grid Grid.Row="0"
+              Margin="28,24,28,18"
+              ColumnDefinitions="*,Auto">
+          <StackPanel Spacing="6">
+            <TextBlock Text="{loc:Loc helix-shell-brand}"
+                       Classes="HelixTitle" />
+            <TextBlock Text="{Binding HomeTab.Name}"
+                       Classes="HelixSubtitle" />
+          </StackPanel>
+
+          <StackPanel Grid.Column="1"
+                      Orientation="Horizontal"
+                      Spacing="10"
+                      VerticalAlignment="Top">
+            <Button Classes="HelixPillButton"
+                    Command="{Binding OnDiscordButtonPressed}">
+              <v:IconLabel Icon="{DynamicResource InfoIcon-discord}"
+                           Content="{loc:Loc main-window-header-link-discord}" />
+            </Button>
+
+            <Button Classes="HelixPillButton"
+                    Command="{Binding OnWebsiteButtonPressed}">
+              <v:IconLabel Icon="{DynamicResource InfoIcon-web}"
+                           Content="{loc:Loc main-window-header-link-website}" />
+            </Button>
+
+            <Border Classes="HelixBadge"
+                    VerticalAlignment="Center">
+              <TextBlock Foreground="#5C91F5"
+                         FontSize="11"
+                         FontWeight="SemiBold"
+                         Text="{Binding Version}" />
+            </Border>
+
+            <helixViews:AccountDropDownHelix IsVisible="{Binding AccountDropDownVisible}" />
+          </StackPanel>
+        </Grid>
+
+        <Border Grid.Row="0"
+                Margin="28,0,28,0"
+                VerticalAlignment="Bottom"
+                Classes="HelixDivider" />
+
+        <ContentControl Grid.Row="1"
+                        x:Name="SelectedTabContent"
+                        Margin="28,22,28,22" />
+
+        <Border Grid.Row="2"
+                BorderBrush="#1F2935"
+                BorderThickness="0,1,0,0"
+                Background="#151B24">
+          <DockPanel Margin="20,12,20,12">
+            <StackPanel Orientation="Horizontal"
+                        Spacing="8">
+              <Button x:Name="NavHomeButton"
+                      Classes="HelixTabButton"
+                      Click="NavHomeClicked"
+                      Content="{loc:Loc helix-shell-nav-home}" />
+              <Button x:Name="NavServersButton"
+                      Classes="HelixTabButton"
+                      Click="NavServersClicked"
+                      Content="{loc:Loc helix-shell-nav-servers}" />
+              <Button x:Name="NavNewsButton"
+                      Classes="HelixTabButton"
+                      Click="NavNewsClicked"
+                      Content="{loc:Loc helix-shell-nav-news}" />
+              <Button x:Name="NavPatchesButton"
+                      Classes="HelixTabButton"
+                      Click="NavPatchesClicked"
+                      Content="{loc:Loc helix-shell-nav-patches}" />
+              <Button x:Name="NavOptionsButton"
+                      Classes="HelixTabButton"
+                      Click="NavOptionsClicked"
+                      Content="{loc:Loc helix-shell-nav-settings}" />
+            </StackPanel>
+
+          </DockPanel>
+        </Border>
+      </Grid>
+    </Border>
+
+    <helixViews:MainWindowLoginHelix IsVisible="{Binding !$parent.DataContext.LoggedIn}"
+                                   DataContext="{Binding LoginViewModel}" />
+
+    <ContentControl Classes="OverlayBox"
+                    IsVisible="{Binding LoginViewModel.Screen.OverlayControl, Converter={x:Static ObjectConverters.IsNotNull}}">
+      <ContentControl Content="{Binding LoginViewModel.Screen.OverlayControl}" />
+    </ContentControl>
+
+    <ContentControl Classes="OverlayBox"
+                    IsVisible="{Binding LoginViewModel.Screen.Busy}">
+      <StackPanel Orientation="Vertical"
+                  VerticalAlignment="Center">
+        <Viewbox Classes="DungSpinnerBox">
+          <v:DungSpinner IsVisible="{Binding LoginViewModel.Screen.Busy}" />
+        </Viewbox>
+        <TextBlock Text="{Binding LoginViewModel.Screen.BusyText}"
+                   HorizontalAlignment="Center" />
+      </StackPanel>
+    </ContentControl>
+
+    <ContentControl Classes="OverlayBox"
+                    IsVisible="{Binding OverlayViewModel, Converter={x:Static ObjectConverters.IsNotNull}}">
+      <ContentControl Content="{Binding OverlayViewModel}" />
+    </ContentControl>
+
+    <ContentControl Classes="OverlayBox"
+                    IsVisible="{Binding BusyTask, Converter={x:Static ObjectConverters.IsNotNull}}">
+      <StackPanel Orientation="Vertical">
+        <Viewbox Classes="DungSpinnerBox">
+          <v:DungSpinner DockPanel.Dock="Top"
+                         IsVisible="{Binding BusyTask, Converter={x:Static ObjectConverters.IsNotNull}}" />
+        </Viewbox>
+        <TextBlock Text="{Binding BusyTask}"
+                   HorizontalAlignment="Center" />
+      </StackPanel>
+    </ContentControl>
+
+    <ContentControl Classes="OverlayBox"
+                    IsVisible="{Binding OutOfDate}">
+      <StackPanel Orientation="Vertical">
+        <TextBlock HorizontalAlignment="Center"
+                   Classes="NanoHeadingMedium"
+                   Text="{loc:Loc main-window-out-of-date}" />
+        <TextBlock Margin="0,10"
+                   TextAlignment="Center"
+                   Text="{loc:Loc main-window-out-of-date-desc}" />
+        <DockPanel LastChildFill="False">
+          <Button DockPanel.Dock="Right"
+                  Content="{loc:Loc main-window-out-of-date-exit}"
+                  Command="{Binding ExitPressed}" />
+          <Button DockPanel.Dock="Left"
+                  Content="{loc:Loc main-window-out-of-date-download-manual}"
+                  Command="{Binding DownloadPressed}" />
+        </DockPanel>
+      </StackPanel>
+    </ContentControl>
+
+    <ContentControl Classes="OverlayBox"
+                    IsVisible="{Binding !HasDismissedEarlyAccessWarning.Value}">
+      <StackPanel Orientation="Vertical">
+        <TextBlock HorizontalAlignment="Center"
+                   Classes="NanoHeadingMedium"
+                   Text="{loc:Loc main-window-early-access-title}" />
+        <TextBlock Margin="0,10"
+                   MaxWidth="450"
+                   TextAlignment="Center"
+                   TextWrapping="Wrap"
+                   Text="{loc:Loc main-window-early-access-desc}" />
+        <Button Content="{loc:Loc main-window-early-access-accept}"
+                Command="{Binding DismissEarlyAccessPressed}"
+                HorizontalAlignment="Center" />
+      </StackPanel>
+    </ContentControl>
+
+    <ContentControl Classes="OverlayBox"
+                    IsVisible="{Binding ShouldShowIntelDegradationWarning}">
+      <StackPanel Orientation="Vertical">
+        <TextBlock HorizontalAlignment="Center"
+                   Classes="NanoHeadingMedium"
+                   Text="{loc:Loc main-window-intel-degrade-title}" />
+        <TextBlock Margin="0,10"
+                   MaxWidth="450"
+                   TextAlignment="Center"
+                   TextWrapping="Wrap"
+                   Text="{loc:Loc main-window-intel-degrade-desc}" />
+        <Button Content="{loc:Loc main-window-intel-degrade-accept}"
+                Command="{Binding DismissIntelDegradationPressed}"
+                HorizontalAlignment="Center" />
+      </StackPanel>
+    </ContentControl>
+
+    <ContentControl Classes="OverlayBox"
+                    IsVisible="{Binding ShouldShowRosettaWarning}">
+      <StackPanel Orientation="Vertical">
+        <TextBlock HorizontalAlignment="Center"
+                   Classes="NanoHeadingMedium"
+                   Text="{loc:Loc main-window-rosetta-title}" />
+        <TextBlock Margin="0,10"
+                   MaxWidth="450"
+                   TextAlignment="Center"
+                   TextWrapping="Wrap"
+                   Text="{loc:Loc main-window-rosetta-desc}" />
+        <Button Content="{loc:Loc main-window-rosetta-accept}"
+                Command="{Binding DismissAppleSiliconRosettaPressed}"
+                HorizontalAlignment="Center" />
+      </StackPanel>
+    </ContentControl>
+
+    <v:ConnectingOverlay DataContext="{Binding ConnectingVM}"
+                         IsVisible="{Binding $parent.DataContext.ConnectingVM, Converter={x:Static ObjectConverters.IsNotNull}}" />
+
+    <ContentControl Classes="OverlayBox"
+                    Name="DragDropOverlay"
+                    IsVisible="False">
+      <TextBlock Text="{loc:Loc main-window-drag-drop-prompt}" />
+    </ContentControl>
+  </Panel>
+</UserControl>
