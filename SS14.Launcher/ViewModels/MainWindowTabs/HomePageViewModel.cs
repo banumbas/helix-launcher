@@ -17,6 +17,7 @@ using SS14.Launcher.Models.ServerStatus;
 using SS14.Launcher.Models.Worm;
 using SS14.Launcher.Utility;
 using SS14.Launcher.Views;
+using SS14.Launcher.Views.Worm;
 
 namespace SS14.Launcher.ViewModels.MainWindowTabs;
 
@@ -100,7 +101,9 @@ public class HomePageViewModel : MainWindowTabViewModel
             return;
         }
 
-        var res = await new DirectConnectDialog().ShowDialog<string?>(window);
+        // Worm-Start
+        var res = await new DirectConnectDialogWorm().ShowDialog<string?>(window);
+        // Worm-End
         if (res == null)
         {
             return;
@@ -116,7 +119,9 @@ public class HomePageViewModel : MainWindowTabViewModel
             return;
         }
 
-        var (name, address) = await new AddFavoriteDialog().ShowDialog<(string name, string address)>(window);
+        // Worm-Start
+        var (name, address) = await new AddFavoriteDialogWorm().ShowDialog<(string name, string address)>(window);
+        // Worm-End
 
         try
         {

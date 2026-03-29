@@ -69,6 +69,94 @@
       <Setter Property="Padding" Value="10,5" />
     </Style>
 
+    <Style Selector="ContentControl.OverlayBox">
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Panel Background="#8A0A0F16">
+            <Border Background="#151B24"
+                    BorderBrush="#1F2935"
+                    BorderThickness="1"
+                    CornerRadius="18"
+                    Padding="24"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    BoxShadow="0 20 40 0 #50000000">
+              <ContentPresenter Name="PART_ContentPresenter"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                ContentTemplate="{TemplateBinding ContentTemplate}"
+                                Content="{TemplateBinding Content}"
+                                Padding="{TemplateBinding Padding}"
+                                VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"
+                                HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" />
+            </Border>
+          </Panel>
+        </ControlTemplate>
+      </Setter>
+      <Setter Property="Background" Value="#151B24" />
+    </Style>
+
+    <Style Selector="ContentControl.OverlayBox TextBlock">
+      <Setter Property="Foreground" Value="#E5E9F0" />
+    </Style>
+
+    <Style Selector="ContentControl.OverlayBox TextBlock.NanoHeadingMedium">
+      <Setter Property="Foreground" Value="#E5E9F0" />
+      <Setter Property="FontSize" Value="24" />
+    </Style>
+
+    <Style Selector="ContentControl.OverlayBox Button">
+      <Setter Property="Padding" Value="16,10" />
+      <Setter Property="Background" Value="#111824" />
+      <Setter Property="BorderBrush" Value="#1F2935" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="Foreground" Value="#E5E9F0" />
+      <Setter Property="HorizontalContentAlignment" Value="Center" />
+      <Setter Property="VerticalContentAlignment" Value="Center" />
+      <Setter Property="Template">
+        <ControlTemplate>
+          <Border Background="{TemplateBinding Background}"
+                  BorderBrush="{TemplateBinding BorderBrush}"
+                  BorderThickness="{TemplateBinding BorderThickness}"
+                  CornerRadius="999">
+            <ContentPresenter Margin="{TemplateBinding Padding}"
+                              Content="{TemplateBinding Content}"
+                              ContentTemplate="{TemplateBinding ContentTemplate}"
+                              TextBlock.Foreground="{TemplateBinding Foreground}"
+                              HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}" />
+          </Border>
+        </ControlTemplate>
+      </Setter>
+    </Style>
+
+    <Style Selector="ContentControl.OverlayBox Button:pointerover">
+      <Setter Property="Background" Value="#162132" />
+      <Setter Property="BorderBrush" Value="#3D7DF0" />
+    </Style>
+
+    <Style Selector="ContentControl.OverlayBox Button:pressed">
+      <Setter Property="Background" Value="#1A2639" />
+      <Setter Property="BorderBrush" Value="#5C91F5" />
+    </Style>
+
+    <Style Selector="ContentControl.OverlayBox Button:disabled">
+      <Setter Property="Background" Value="#121821" />
+      <Setter Property="BorderBrush" Value="#243041" />
+      <Setter Property="Foreground" Value="#6F7A8B" />
+    </Style>
+
+    <Style Selector="v|DungSpinner">
+      <Setter Property="Fill" Value="#3D7DF0" />
+    </Style>
+
+    <Style Selector="Viewbox.DungSpinnerBox">
+      <Setter Property="Width" Value="60" />
+      <Setter Property="Height" Value="60" />
+      <Setter Property="HorizontalAlignment" Value="Center" />
+    </Style>
+
     <Style Selector="TextBlock.WormTitle">
       <Setter Property="Foreground" Value="#E5E9F0" />
       <Setter Property="FontSize" Value="26" />
@@ -304,11 +392,11 @@
       <Setter Property="Margin" Value="0,0,0,6" />
     </Style>
 
-    <Style Selector="v|AccountDropDown">
+    <Style Selector="wormViews|AccountDropDownWorm">
       <Setter Property="HorizontalAlignment" Value="Right" />
     </Style>
 
-    <Style Selector="v|AccountDropDown v|DropDown, v|LanguageSelector v|DropDown">
+    <Style Selector="wormViews|AccountDropDownWorm v|DropDown, v|LanguageSelector v|DropDown">
       <Setter Property="Background" Value="#111824" />
       <Setter Property="BorderBrush" Value="#1F2935" />
       <Setter Property="BorderThickness" Value="1" />
@@ -350,17 +438,17 @@
       </Setter>
     </Style>
 
-    <Style Selector="v|AccountDropDown v|DropDown:pointerover, v|LanguageSelector v|DropDown:pointerover">
+    <Style Selector="wormViews|AccountDropDownWorm v|DropDown:pointerover, v|LanguageSelector v|DropDown:pointerover">
       <Setter Property="Background" Value="#162132" />
       <Setter Property="BorderBrush" Value="#3D7DF0" />
     </Style>
 
-    <Style Selector="v|AccountDropDown v|DropDown:pressed, v|LanguageSelector v|DropDown:pressed">
+    <Style Selector="wormViews|AccountDropDownWorm v|DropDown:pressed, v|LanguageSelector v|DropDown:pressed">
       <Setter Property="Background" Value="#162235" />
       <Setter Property="BorderBrush" Value="#3D7DF0" />
     </Style>
 
-    <Style Selector="v|AccountDropDown Button, v|LanguageSelector Button">
+    <Style Selector="wormViews|AccountDropDownWorm Button, v|LanguageSelector Button">
       <Setter Property="Padding" Value="10,8" />
       <Setter Property="Background" Value="Transparent" />
       <Setter Property="BorderBrush" Value="Transparent" />
@@ -384,7 +472,7 @@
       </Setter>
     </Style>
 
-    <Style Selector="v|AccountDropDown Button:pointerover, v|LanguageSelector Button:pointerover">
+    <Style Selector="wormViews|AccountDropDownWorm Button:pointerover, v|LanguageSelector Button:pointerover">
       <Setter Property="Background" Value="#162132" />
       <Setter Property="BorderBrush" Value="#3D7DF0" />
     </Style>
@@ -392,35 +480,64 @@
     <Style Selector="ScrollBar:vertical">
       <Setter Property="Width" Value="12" />
       <Setter Property="Margin" Value="8,0,0,0" />
-      <Setter Property="Background" Value="#0B1018" />
+      <Setter Property="Background" Value="#111824" />
     </Style>
 
     <Style Selector="ScrollBar:horizontal">
       <Setter Property="Height" Value="12" />
       <Setter Property="Margin" Value="0,8,0,0" />
-      <Setter Property="Background" Value="#0B1018" />
+      <Setter Property="Background" Value="#111824" />
+    </Style>
+
+    <Style Selector="ScrollBar /template/ RepeatButton">
+      <Setter Property="Background" Value="Transparent" />
+      <Setter Property="BorderBrush" Value="Transparent" />
+      <Setter Property="BorderThickness" Value="0" />
+      <Setter Property="Padding" Value="0" />
+    </Style>
+
+    <Style Selector="ScrollBar /template/ RepeatButton#lineupbutton, ScrollBar /template/ RepeatButton#linedownbutton, ScrollBar /template/ RepeatButton#lineleftbutton, ScrollBar /template/ RepeatButton#linerightbutton, ScrollBar /template/ RepeatButton#PART_LineUpButton, ScrollBar /template/ RepeatButton#PART_LineDownButton, ScrollBar /template/ RepeatButton#PART_LineLeftButton, ScrollBar /template/ RepeatButton#PART_LineRightButton">
+      <Setter Property="Background" Value="#162235" />
+      <Setter Property="BorderBrush" Value="#253246" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="Padding" Value="0" />
+      <Setter Property="MinWidth" Value="0" />
+      <Setter Property="MinHeight" Value="0" />
+    </Style>
+
+    <Style Selector="ScrollBar:vertical /template/ RepeatButton#lineupbutton, ScrollBar:vertical /template/ RepeatButton#linedownbutton, ScrollBar:vertical /template/ RepeatButton#PART_LineUpButton, ScrollBar:vertical /template/ RepeatButton#PART_LineDownButton">
+      <Setter Property="Height" Value="12" />
+      <Setter Property="MinHeight" Value="12" />
+    </Style>
+
+    <Style Selector="ScrollBar:horizontal /template/ RepeatButton#lineleftbutton, ScrollBar:horizontal /template/ RepeatButton#linerightbutton, ScrollBar:horizontal /template/ RepeatButton#PART_LineLeftButton, ScrollBar:horizontal /template/ RepeatButton#PART_LineRightButton">
+      <Setter Property="Width" Value="12" />
+      <Setter Property="MinWidth" Value="12" />
+    </Style>
+
+    <Style Selector="ScrollBar /template/ RepeatButton#lineupbutton:pointerover, ScrollBar /template/ RepeatButton#linedownbutton:pointerover, ScrollBar /template/ RepeatButton#lineleftbutton:pointerover, ScrollBar /template/ RepeatButton#linerightbutton:pointerover, ScrollBar /template/ RepeatButton#PART_LineUpButton:pointerover, ScrollBar /template/ RepeatButton#PART_LineDownButton:pointerover, ScrollBar /template/ RepeatButton#PART_LineLeftButton:pointerover, ScrollBar /template/ RepeatButton#PART_LineRightButton:pointerover">
+      <Setter Property="Background" Value="#1B2A42" />
+      <Setter Property="BorderBrush" Value="#3D7DF0" />
     </Style>
 
     <Style Selector="ScrollBar /template/ Thumb#thumb">
-      <Setter Property="Template">
-        <ControlTemplate>
-          <Border Background="#243041"
-                  BorderBrush="#30425A"
-                  BorderThickness="1"
-                  CornerRadius="999" />
-        </ControlTemplate>
-      </Setter>
+      <Setter Property="Background" Value="#243041" />
+      <Setter Property="BorderBrush" Value="#30425A" />
+      <Setter Property="BorderThickness" Value="1" />
+      <Setter Property="Margin" Value="2" />
+    </Style>
+
+    <Style Selector="ScrollBar:vertical /template/ Thumb#thumb">
+      <Setter Property="MinHeight" Value="24" />
+    </Style>
+
+    <Style Selector="ScrollBar:horizontal /template/ Thumb#thumb">
+      <Setter Property="MinWidth" Value="24" />
     </Style>
 
     <Style Selector="ScrollBar /template/ Thumb#thumb:pointerover">
-      <Setter Property="Template">
-        <ControlTemplate>
-          <Border Background="#2D3D54"
-                  BorderBrush="#3D7DF0"
-                  BorderThickness="1"
-                  CornerRadius="999" />
-        </ControlTemplate>
-      </Setter>
+      <Setter Property="Background" Value="#2D3D54" />
+      <Setter Property="BorderBrush" Value="#3D7DF0" />
     </Style>
   </UserControl.Styles>
 
@@ -463,8 +580,7 @@
                          Text="{Binding Version}" />
             </Border>
 
-            <v:AccountDropDown IsVisible="{Binding AccountDropDownVisible}"
-                               DataContext="{Binding AccountDropDown}" />
+            <wormViews:AccountDropDownWorm IsVisible="{Binding AccountDropDownVisible}" />
           </StackPanel>
         </Grid>
 
@@ -511,8 +627,8 @@
       </Grid>
     </Border>
 
-    <v:MainWindowLogin IsVisible="{Binding !$parent.DataContext.LoggedIn}"
-                       DataContext="{Binding LoginViewModel}" />
+    <wormViews:MainWindowLoginWorm IsVisible="{Binding !$parent.DataContext.LoggedIn}"
+                                   DataContext="{Binding LoginViewModel}" />
 
     <ContentControl Classes="OverlayBox"
                     IsVisible="{Binding LoginViewModel.Screen.OverlayControl, Converter={x:Static ObjectConverters.IsNotNull}}">
