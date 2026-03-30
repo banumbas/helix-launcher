@@ -3,6 +3,11 @@
 
 discord: https://discord.gg/68WfqhBJx3
 
+# Features
+* Resource Packs
+* Displaying game mode, map and ping in the launcher
+* Reworked menu
+
 # Resource Packs
 
 Resource packs replace game files by path at launch time. 
@@ -35,6 +40,11 @@ Notes:
 * Files are overridden by their relative path inside `Resources/`.
 * `target` is optional. Leave it empty to apply the pack to any fork.
 * If you override files inside an `.rsi` directory, keep the correct `.rsi/meta.json` next to the changed textures.
+
+# Features
+* Ресурспаки
+* Отображение текущего режима игры, карты и пинга прямо в лаунчере
+* Переработанное меню
 
 # Ресурспаки
 
