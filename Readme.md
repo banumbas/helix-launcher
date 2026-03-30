@@ -41,6 +41,8 @@ Notes:
 * `target` is optional. Leave it empty to apply the pack to any fork.
 * If you override files inside an `.rsi` directory, keep the correct `.rsi/meta.json` next to the changed textures.
 
+# The LAUNCHER WON'T HAVE harmony SUPPORT, hwid spoofing, and the like, it's designed for FAIR PLAY.
+
 # Features
 * Ресурспаки
 * Отображение текущего режима игры, карты и пинга прямо в лаунчере
@@ -78,3 +80,4 @@ ResourcePacks/
 * Если вы переопределяете файлы в каталоге `.rsi`, сохраняйте правильный `.rsi/meta.json рядом с измененными текстурами.
 
 
+# В ЛАУНЧЕРЕ НЕ БУДЕТ ПОДДЕРЖКИ harmony, спуфа хвидов и тому подобного, он предназначен для ЧЕСТНОЙ игры.
