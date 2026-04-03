@@ -3,11 +3,13 @@ using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.IO;
 using System.IO.Compression;
+using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Runtime.Loader;
 using NSec.Cryptography;
 using Robust.LoaderApi;
+using SS14.Launcher.Models.ResourcePacks;
 
 namespace SS14.Loader;
 
@@ -67,8 +69,10 @@ internal class Program
         var contentDb = Environment.GetEnvironmentVariable("SS14_LOADER_CONTENT_DB");
         var contentVersion = Environment.GetEnvironmentVariable("SS14_LOADER_CONTENT_VERSION");
         var overlayZip = Environment.GetEnvironmentVariable("SS14_LOADER_OVERLAY_ZIP");
+        var resourcePackOverlayZip = Environment.GetEnvironmentVariable("SS14_LOADER_RESOURCE_PACK_OVERLAY_ZIP");
         // Helix-Start
         var overlayZips = Environment.GetEnvironmentVariable("SS14_LOADER_OVERLAY_ZIPS");
+        var resourcePackOverlayZips = Environment.GetEnvironmentVariable("SS14_LOADER_RESOURCE_PACK_OVERLAY_ZIPS");
         // Helix-End
         ContentDbFileApi? contentApi = null;
         // Helix-Start
@@ -82,21 +86,70 @@ internal class Program
         }
 
         // Helix-Start
-        var overlayPaths = new List<string>();
+        var resourcePackOverlayPaths = new List<string>();
+        if (!string.IsNullOrWhiteSpace(resourcePackOverlayZips))
+        {
+            resourcePackOverlayPaths.AddRange(resourcePackOverlayZips.Split(Path.PathSeparator, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries));
+        }
+        else if (!string.IsNullOrWhiteSpace(resourcePackOverlayZip))
+        {
+            resourcePackOverlayPaths.Add(resourcePackOverlayZip);
+        }
+
+        if (resourcePackOverlayPaths.Count > 0)
+        {
+            var overlayMounts = new List<ApiMount>(resourcePackOverlayPaths.Count);
+
+            foreach (var overlayPath in resourcePackOverlayPaths)
+            {
+                var overlayArchive = new ZipArchive(
+                    File.OpenRead(overlayPath),
+                    ZipArchiveMode.Read);
+
+                var overlayApi = new ZipFileApi(overlayArchive, "");
+                overlayApis.Add(overlayApi);
+
+                var disallowedEntries = overlayApi.AllFiles
+                    .Where(path => !ResourcePackOverlayPolicy.IsAllowedPath(path))
+                    .Take(5)
+                    .ToArray();
+
+                if (disallowedEntries.Length > 0)
+                {
+                    Console.WriteLine(
+                        "Resource pack overlay contains blocked entries. They will be ignored: {0}",
+                        string.Join(", ", disallowedEntries));
+                }
+
+                if (!overlayApi.AllFiles.Any(ResourcePackOverlayPolicy.IsAllowedPath))
+                {
+                    Console.WriteLine("Skipping empty resource pack overlay after policy filtering: {0}", overlayPath);
+                    continue;
+                }
+
+                var filteredApi = new FilteredFileApi(overlayApi, ResourcePackOverlayPolicy.IsAllowedPath);
+                overlayMounts.Add(new ApiMount(filteredApi, "/"));
+            }
+
+            // Put overlays before the game's regular installation so they mask files.
+            extraMounts = [..overlayMounts, ..extraMounts ?? []];
+        }
+
+        var trustedOverlayPaths = new List<string>();
         if (!string.IsNullOrWhiteSpace(overlayZips))
         {
-            overlayPaths.AddRange(overlayZips.Split(Path.PathSeparator, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries));
+            trustedOverlayPaths.AddRange(overlayZips.Split(Path.PathSeparator, StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries));
         }
         else if (!string.IsNullOrWhiteSpace(overlayZip))
         {
-            overlayPaths.Add(overlayZip);
+            trustedOverlayPaths.Add(overlayZip);
         }
 
-        if (overlayPaths.Count > 0)
+        if (trustedOverlayPaths.Count > 0)
         {
-            var overlayMounts = new List<ApiMount>(overlayPaths.Count);
+            var overlayMounts = new List<ApiMount>(trustedOverlayPaths.Count);
 
-            foreach (var overlayPath in overlayPaths)
+            foreach (var overlayPath in trustedOverlayPaths)
             {
                 var overlayArchive = new ZipArchive(
                     File.OpenRead(overlayPath),

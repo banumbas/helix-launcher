@@ -77,6 +77,60 @@ public sealed class ResourcePackManagerTests
     }
 
     [Test]
+    public async Task BuildOverlayZipAsync_IgnoresPrototypeAndUnsupportedRoots()
+    {
+        using var fixture = new ResourcePackFixture();
+
+        fixture.CreatePack(
+            "01-assets",
+            "Assets",
+            "",
+            ("Locale/en-US/test.ftl", "hello"),
+            ("Textures/Interface/test.rsi/meta.json", "{ }"),
+            ("Prototypes/entities/test.yml", "prototype"),
+            ("Maps/test.yml", "map"));
+
+        var manager = fixture.CreateManager();
+        var overlay = await manager.BuildOverlayZipAsync(manager.LoadPacks(), null);
+
+        Assert.That(overlay, Is.Not.Null);
+
+        using var archive = ZipFile.OpenRead(overlay!);
+        Assert.That(ReadEntryText(archive, "Locale/en-US/test.ftl"), Is.EqualTo("hello"));
+        Assert.That(ReadEntryText(archive, "Textures/Interface/test.rsi/meta.json"), Is.EqualTo("{ }"));
+        Assert.That(archive.GetEntry("Prototypes/entities/test.yml"), Is.Null);
+        Assert.That(archive.GetEntry("Maps/test.yml"), Is.Null);
+    }
+
+    [Test]
+    public async Task BuildOverlayZipAsync_ReturnsNullWhenPackOnlyContainsUnsupportedRoots()
+    {
+        using var fixture = new ResourcePackFixture();
+
+        fixture.CreatePack(
+            "01-prototypes-only",
+            "Prototype pack",
+            "",
+            ("Prototypes/entities/test.yml", "prototype"));
+
+        var manager = fixture.CreateManager();
+        var overlay = await manager.BuildOverlayZipAsync(manager.LoadPacks(), null);
+
+        Assert.That(overlay, Is.Null);
+    }
+
+    [TestCase("Textures/interface.png", true)]
+    [TestCase("Locale/en-US/test.ftl", true)]
+    [TestCase("Prototypes/entities/test.yml", false)]
+    [TestCase("/Prototypes/entities/test.yml", false)]
+    [TestCase("..\\Prototypes\\entities\\test.yml", false)]
+    [TestCase("Maps/test.yml", false)]
+    public void ResourcePackOverlayPolicy_IsAllowedPath(string path, bool expected)
+    {
+        Assert.That(ResourcePackOverlayPolicy.IsAllowedPath(path), Is.EqualTo(expected));
+    }
+
+    [Test]
     [NonParallelizable]
     public void SetResourcePackEnabled_SavesStateEvenWhenBindingAlreadyUpdatedTheModel()
     {

@@ -601,7 +601,8 @@ public partial class Connector : ReactiveObject
         EnvVar("SS14_LOADER_CONTENT_DB", LauncherPaths.PathContentDb);
         EnvVar("SS14_LOADER_CONTENT_VERSION", launchInfo.Version.ToString());
         // Helix-Start
-        var overlayZips = new List<string>();
+        var trustedOverlayZips = new List<string>();
+        var resourcePackOverlayZips = new List<string>();
         string? resourcePackOverlay = null;
         try
         {
@@ -620,13 +621,15 @@ public partial class Connector : ReactiveObject
         }
 
         if (!string.IsNullOrWhiteSpace(resourcePackOverlay))
-            overlayZips.Add(resourcePackOverlay);
+            resourcePackOverlayZips.Add(resourcePackOverlay);
 
         if (!string.IsNullOrWhiteSpace(launchInfo.OverlayZip))
-            overlayZips.Add(launchInfo.OverlayZip);
+            trustedOverlayZips.Add(launchInfo.OverlayZip);
 
-        EnvVar("SS14_LOADER_OVERLAY_ZIPS", overlayZips.Count == 0 ? null : string.Join(Path.PathSeparator, overlayZips));
-        EnvVar("SS14_LOADER_OVERLAY_ZIP", overlayZips.Count == 1 ? overlayZips[0] : null);
+        EnvVar("SS14_LOADER_RESOURCE_PACK_OVERLAY_ZIPS", resourcePackOverlayZips.Count == 0 ? null : string.Join(Path.PathSeparator, resourcePackOverlayZips));
+        EnvVar("SS14_LOADER_RESOURCE_PACK_OVERLAY_ZIP", resourcePackOverlayZips.Count == 1 ? resourcePackOverlayZips[0] : null);
+        EnvVar("SS14_LOADER_OVERLAY_ZIPS", trustedOverlayZips.Count == 0 ? null : string.Join(Path.PathSeparator, trustedOverlayZips));
+        EnvVar("SS14_LOADER_OVERLAY_ZIP", trustedOverlayZips.Count == 1 ? trustedOverlayZips[0] : null);
         // Helix-End
 
         // Env vars for engine modules.

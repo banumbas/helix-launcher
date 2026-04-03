@@ -204,17 +204,52 @@ public sealed class ResourcePackManager
         if (!Directory.Exists(pack.ResourcesPath))
             yield break;
 
-        foreach (var filePath in Directory.EnumerateFiles(pack.ResourcesPath, "*", SearchOption.AllDirectories))
+        var topLevelEntries = Directory.EnumerateFileSystemEntries(pack.ResourcesPath).ToArray();
+        foreach (var unsupportedEntryName in GetUnsupportedRootEntries(topLevelEntries))
         {
-            var relativePath = Path.GetRelativePath(pack.ResourcesPath, filePath)
-                .Replace('\\', '/')
-                .TrimStart('/');
-
-            if (string.IsNullOrWhiteSpace(relativePath))
-                continue;
-
-            yield return new OverlayEntry(relativePath, filePath, pack.DirectoryPath);
+            Log.Warning(
+                "Ignoring unsupported resource pack root {EntryName} in {PackDirectory}. Supported roots: {SupportedRoots}",
+                unsupportedEntryName,
+                pack.DirectoryPath,
+                ResourcePackOverlayPolicy.AllowedRootsLabel);
         }
+
+        foreach (var contentRootDirectory in GetSupportedRootDirectories(topLevelEntries))
+        {
+            foreach (var filePath in Directory.EnumerateFiles(contentRootDirectory, "*", SearchOption.AllDirectories))
+            {
+                var relativePath = Path.GetRelativePath(pack.ResourcesPath, filePath);
+                if (!ResourcePackOverlayPolicy.TryNormalizePath(relativePath, out var normalizedPath))
+                    continue;
+
+                yield return new OverlayEntry(normalizedPath, filePath, pack.DirectoryPath);
+            }
+        }
+    }
+
+    private static IReadOnlyList<string> GetSupportedRootDirectories(IEnumerable<string> topLevelEntries)
+    {
+        return topLevelEntries
+            .Where(path => Directory.Exists(path))
+            .Where(path => ResourcePackOverlayPolicy.IsAllowedRoot(Path.GetFileName(path)))
+            .OrderBy(path => Path.GetFileName(path), StringComparer.OrdinalIgnoreCase)
+            .ToArray();
+    }
+
+    private static IReadOnlyList<string> GetUnsupportedRootEntries(IEnumerable<string> topLevelEntries)
+    {
+        return topLevelEntries
+            .Select(path => new
+            {
+                Path = path,
+                Name = Path.GetFileName(path)
+            })
+            .Where(entry => !string.IsNullOrWhiteSpace(entry.Name))
+            .Where(entry => !Directory.Exists(entry.Path) || !ResourcePackOverlayPolicy.IsAllowedRoot(entry.Name))
+            .Select(entry => entry.Name)
+            .Distinct(StringComparer.OrdinalIgnoreCase)
+            .OrderBy(name => name, StringComparer.OrdinalIgnoreCase)
+            .ToArray();
     }
 
     private static string? GetOptionalString(JsonElement rootElement, params string[] propertyNames)

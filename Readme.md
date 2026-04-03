@@ -3,7 +3,7 @@
 
 # Resource Packs
 
-Resource packs replace game files by path at launch time. 
+Resource packs replace client-facing asset files by path at launch time. 
 
 Pack directory:
 * `%AppData%/Space Station 14/launcher/ResourcePacks/<PackName>` on Windows by default
@@ -33,6 +33,9 @@ Notes:
 * Files are overridden by their relative path inside `Resources/`.
 * `target` is optional. Leave it empty to apply the pack to any fork.
 * If you override files inside an `.rsi` directory, keep the correct `.rsi/meta.json` next to the changed textures.
+* Only `Audio/`, `Fonts/`, `Locale/`, `Shaders/`, and `Textures/` roots are mounted from a pack.
+* Gameplay and data roots such as `Prototypes/` are ignored by the launcher and will never be included in the overlay zip.
+* The loader enforces the same restriction again at mount time, so blocked roots are not exposed to the client even if they somehow end up inside the archive.
 
 # Ресурспаки
 
