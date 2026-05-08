@@ -670,9 +670,9 @@
                       Spacing="10"
                       VerticalAlignment="Top">
             <Button Classes="HelixPillButton"
-                    Command="{Binding OnDiscordButtonPressed}">
+                    Click="HelixDiscordClicked">
               <v:IconLabel Icon="{DynamicResource InfoIcon-discord}"
-                           Content="{loc:Loc main-window-header-link-discord}" />
+                           Content="{loc:Loc helix-shell-link-discord}" />
             </Button>
 
             <Button Classes="HelixPillButton"

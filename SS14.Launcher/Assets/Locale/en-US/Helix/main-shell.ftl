@@ -1,6 +1,7 @@
 ## Helix main shell
 
 helix-shell-brand = Helix Launcher
+helix-shell-link-discord = Helix Discord
 helix-shell-profile-subtitle = Profile overview
 helix-shell-nav-home = Home
 helix-shell-nav-servers = Servers

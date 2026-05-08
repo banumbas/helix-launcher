@@ -2,12 +2,15 @@ using System;
 using System.ComponentModel;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using SS14.Launcher.Utility;
 using SS14.Launcher.ViewModels;
 
 namespace SS14.Launcher.Views.Helix;
 
 public sealed partial class MainWindowContentHelix : UserControl
 {
+    private const string HelixDiscordUrl = "https://discord.gg/68WfqhBJx3";
+
     private MainWindowViewModel? _viewModel;
 
     public MainWindowContentHelix()
@@ -88,5 +91,10 @@ public sealed partial class MainWindowContentHelix : UserControl
     {
         if (_viewModel != null)
             _viewModel.SelectedIndex = 4;
+    }
+
+    private void HelixDiscordClicked(object? sender, RoutedEventArgs e)
+    {
+        Helpers.OpenUri(new Uri(HelixDiscordUrl));
     }
 }
