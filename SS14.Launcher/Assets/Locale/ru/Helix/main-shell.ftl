@@ -10,6 +10,7 @@ helix-shell-nav-settings = Настройки
 helix-shell-favorites-title = Избранные серверы:
 helix-shell-recent-title = Недавние серверы:
 helix-shell-refresh = Обновить
+helix-shell-link-discord = Helix Discord
 helix-shell-add-favorite = Добавить в избранное...
 helix-shell-clear-history = Очистить историю
 helix-shell-direct-connect = Подключиться по адресу...

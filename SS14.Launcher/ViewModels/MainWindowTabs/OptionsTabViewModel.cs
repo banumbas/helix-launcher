@@ -11,7 +11,7 @@ using SS14.Launcher.Utility;
 
 namespace SS14.Launcher.ViewModels.MainWindowTabs;
 
-public class OptionsTabViewModel : MainWindowTabViewModel
+public partial class OptionsTabViewModel : MainWindowTabViewModel
 {
     public DataManager Cfg { get; }
     private readonly IEngineManager _engineManager;

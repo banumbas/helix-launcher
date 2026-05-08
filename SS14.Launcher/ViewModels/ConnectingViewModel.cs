@@ -79,6 +79,7 @@ public class ConnectingViewModel : ViewModelBase
             .Subscribe(val =>
             {
                 _connectorStatus = val;
+                HelixGameActivity.UpdateFromConnectionStatus(val);
 
                 this.RaisePropertyChanged(nameof(ProgressIndeterminate));
                 this.RaisePropertyChanged(nameof(StatusText));

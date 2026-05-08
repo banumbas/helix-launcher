@@ -171,6 +171,39 @@
             </Border>
           </StackPanel>
         </Border>
+
+        <Border Classes="HelixSectionCard"
+                Padding="18">
+          <StackPanel Spacing="14">
+            <StackPanel Spacing="4">
+              <TextBlock Text="{loc:Loc tab-options-helix-discord-rpc-title}"
+                         Classes="HelixSectionTitle" />
+              <TextBlock Text="{loc:Loc tab-options-helix-discord-rpc-desc}"
+                         Classes="HelixMuted"
+                         TextWrapping="Wrap" />
+            </StackPanel>
+
+            <Border Classes="HelixInsetCard"
+                    Padding="14">
+              <StackPanel Spacing="10">
+                <CheckBox Classes="HelixCheck"
+                          IsChecked="{Binding HelixDiscordRichPresenceEnabled}"
+                          Content="{loc:Loc tab-options-helix-discord-rpc-enabled}" />
+
+                <TextBlock Text="{loc:Loc tab-options-helix-discord-rpc-in-game-title}"
+                           Classes="HelixFieldLabel" />
+                <RadioButton Classes="HelixCheck"
+                             GroupName="HelixDiscordInGamePresenceMode"
+                             IsChecked="{Binding HelixDiscordInGameUseOriginal}"
+                             Content="{loc:Loc tab-options-helix-discord-rpc-in-game-original}" />
+                <RadioButton Classes="HelixCheck"
+                             GroupName="HelixDiscordInGamePresenceMode"
+                             IsChecked="{Binding HelixDiscordInGameUseHelix}"
+                             Content="{loc:Loc tab-options-helix-discord-rpc-in-game-helix}" />
+              </StackPanel>
+            </Border>
+          </StackPanel>
+        </Border>
       </StackPanel>
     </StackPanel>
   </ScrollViewer>

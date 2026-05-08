@@ -13,7 +13,7 @@ namespace SS14.Launcher.Models.Data;
 /// </remarks>
 /// <see cref="DataManager"/>
 [UsedImplicitly]
-public static class CVars
+public static partial class CVars
 {
     /// <summary>
     /// Default to using compatibility options for rendering etc,

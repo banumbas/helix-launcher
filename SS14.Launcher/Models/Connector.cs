@@ -17,8 +17,10 @@ using DynamicData;
 using ReactiveUI;
 using Serilog;
 using Splat;
+using SS14.Launcher.Api;
 using SS14.Launcher.Models.Data;
 using SS14.Launcher.Models.EngineManager;
+using SS14.Launcher.Models.Helix;
 using SS14.Launcher.Models.Logins;
 using SS14.Launcher.Models.ResourcePacks; // Helix-Edit
 using SS14.Launcher.Utility;
@@ -129,6 +131,7 @@ public partial class Connector : ReactiveObject
         Status = ConnectionStatus.Connecting;
 
         var (info, parsedAddr, infoAddr) = await GetServerInfoAsync(address, cancel);
+        var statusTask = TryGetServerStatusAsync(parsedAddr, cancel);
 
         await HandlePrivacyPolicyAsync(info, cancel);
 
@@ -141,6 +144,8 @@ public partial class Connector : ReactiveObject
         var installation = await RunUpdateAsync(info.BuildInformation, cancel);
 
         var connectAddress = GetConnectAddress(info, infoAddr);
+        var status = await statusTask;
+        HelixGameActivity.SetPendingPresence(BuildHelixGamePresence(parsedAddr, status));
 
         // Helix-Start
         await LaunchClientWrap(
@@ -309,6 +314,7 @@ public partial class Connector : ReactiveObject
 
             // Helix-Start
             resourcePackForkId = metadata.BaseBuild?.ForkId;
+            HelixGameActivity.SetPendingPresence(null);
             // Helix-End
         }
 
@@ -559,6 +565,39 @@ public partial class Connector : ReactiveObject
         {
             throw new ConnectException(ConnectionStatus.ConnectionFailed, e);
         }
+    }
+
+    private async Task<ServerApi.ServerStatus?> TryGetServerStatusAsync(Uri parsedAddress, CancellationToken cancel)
+    {
+        try
+        {
+            using var linkedToken = CancellationTokenSource.CreateLinkedTokenSource(cancel);
+            linkedToken.CancelAfter(TimeSpan.FromSeconds(2));
+
+            var statusAddress = UriHelper.GetServerStatusAddress(parsedAddress);
+            return await _http.GetFromJsonAsync<ServerApi.ServerStatus>(statusAddress, linkedToken.Token);
+        }
+        catch (OperationCanceledException)
+        {
+            return null;
+        }
+        catch (Exception e) when (e is JsonException or HttpRequestException or InvalidDataException)
+        {
+            Log.Debug(e, "Failed to fetch server status for Helix Discord RPC");
+            return null;
+        }
+    }
+
+    private HelixGamePresence BuildHelixGamePresence(Uri parsedAddress, ServerApi.ServerStatus? status)
+    {
+        return new HelixGamePresence(
+            ServerName: status?.Name,
+            ServerAddress: parsedAddress.ToString(),
+            Username: _loginManager.ActiveAccount?.Username ?? ConfigConstants.FallbackUsername,
+            Map: status?.Map,
+            Preset: status?.Preset,
+            PlayerCount: status?.PlayerCount,
+            SoftMaxPlayerCount: status?.SoftMaxPlayerCount > 0 ? status.SoftMaxPlayerCount : null);
     }
 
     public static InstalledEngineModule? GetInstalledModuleForEngineVersion(

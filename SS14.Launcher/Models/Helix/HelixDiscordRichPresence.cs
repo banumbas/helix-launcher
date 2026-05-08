@@ -34,7 +34,7 @@ public sealed class HelixDiscordRichPresence
     private Stream? _stream;
     private Socket? _socket;
     private DateTime _lastConnectAttempt = DateTime.MinValue;
-    private string? _state;
+    private HelixDiscordActivity? _activity;
 
     private HelixDiscordRichPresence()
     {
@@ -42,12 +42,17 @@ public sealed class HelixDiscordRichPresence
 
     public void SetActivity(string state)
     {
-        state = NormalizeState(state);
+        SetActivity(new HelixDiscordActivity(State: state));
+    }
 
-        if (_state == state && _stream is { CanWrite: true })
+    public void SetActivity(HelixDiscordActivity activity)
+    {
+        activity = activity.Normalize();
+
+        if (_activity == activity && _stream is { CanWrite: true })
             return;
 
-        _state = state;
+        _activity = activity;
         _ = SetActivityAsync();
     }
 
@@ -67,9 +72,10 @@ public sealed class HelixDiscordRichPresence
             if (!await EnsureConnected())
                 return;
 
+            var current = _activity ?? new HelixDiscordActivity(State: "In launcher");
             var activity = new JsonObject
             {
-                ["state"] = _state ?? "In launcher",
+                ["state"] = current.State,
                 ["timestamps"] = new JsonObject
                 {
                     ["start"] = _startedAtUnix
@@ -86,6 +92,17 @@ public sealed class HelixDiscordRichPresence
                         ["url"] = DiscordUrl
                     })
             };
+
+            if (!string.IsNullOrWhiteSpace(current.Details))
+                activity["details"] = current.Details;
+
+            if (current.PlayerCount is { } playerCount && current.MaxPlayers is { } maxPlayers)
+            {
+                activity["party"] = new JsonObject
+                {
+                    ["size"] = new JsonArray(JsonValue.Create(playerCount), JsonValue.Create(maxPlayers))
+                };
+            }
 
             var payload = new JsonObject
             {
@@ -339,5 +356,44 @@ public sealed class HelixDiscordRichPresence
         Close = 2,
         Ping = 3,
         Pong = 4
+    }
+}
+
+public sealed record HelixDiscordActivity(
+    string? Details = null,
+    string State = "In launcher",
+    int? PlayerCount = null,
+    int? MaxPlayers = null)
+{
+    public HelixDiscordActivity Normalize()
+    {
+        var state = string.IsNullOrWhiteSpace(State) ? "In launcher" : State;
+        var playerCount = PlayerCount;
+        var maxPlayers = MaxPlayers;
+
+        if (playerCount is < 0 || maxPlayers is <= 0 || playerCount > maxPlayers)
+        {
+            playerCount = null;
+            maxPlayers = null;
+        }
+
+        return this with
+        {
+            Details = NormalizeOptional(Details),
+            State = NormalizeState(state),
+            PlayerCount = playerCount,
+            MaxPlayers = maxPlayers
+        };
+    }
+
+    private static string NormalizeState(string state)
+    {
+        state = state.Trim();
+        return state.Length <= 128 ? state : state[..128];
+    }
+
+    private static string? NormalizeOptional(string? value)
+    {
+        return string.IsNullOrWhiteSpace(value) ? null : NormalizeState(value);
     }
 }
