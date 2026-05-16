@@ -7,6 +7,7 @@ discord: https://discord.gg/68WfqhBJx3
 * Resource Packs
 * Displaying game mode, map and ping in the launcher
 * Reworked menu
+* Custom Discord RPC
 
 # Resource Packs
 
@@ -50,6 +51,7 @@ Notes:
 * Ресурспаки
 * Отображение текущего режима игры, карты и пинга прямо в лаунчере
 * Переработанное меню
+* Кастомный Дискорд RPC
 
 # Ресурспаки
 
