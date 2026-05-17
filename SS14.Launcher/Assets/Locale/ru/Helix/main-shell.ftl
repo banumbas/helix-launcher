@@ -6,6 +6,7 @@ helix-shell-nav-home = Главная
 helix-shell-nav-servers = Серверы
 helix-shell-nav-news = Новости
 helix-shell-nav-patches = Ресурспаки
+helix-shell-nav-configs = Конфиги
 helix-shell-nav-settings = Настройки
 helix-shell-favorites-title = Избранные серверы:
 helix-shell-recent-title = Недавние серверы:

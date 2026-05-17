@@ -69,7 +69,8 @@ public sealed partial class MainWindowContentHelix : UserControl
         NavServersButton.Classes.Set("selected", selectedIndex == 1);
         NavNewsButton.Classes.Set("selected", selectedIndex == 2);
         NavPatchesButton.Classes.Set("selected", selectedIndex == 3);
-        NavOptionsButton.Classes.Set("selected", selectedIndex == 4);
+        NavConfigsButton.Classes.Set("selected", selectedIndex == 4);
+        NavOptionsButton.Classes.Set("selected", selectedIndex == 5);
     }
 
     private void NavHomeClicked(object? sender, RoutedEventArgs e)
@@ -97,6 +98,12 @@ public sealed partial class MainWindowContentHelix : UserControl
     }
 
     private void NavOptionsClicked(object? sender, RoutedEventArgs e)
+    {
+        if (_viewModel != null)
+            _viewModel.SelectedIndex = 5;
+    }
+
+    private void NavConfigsClicked(object? sender, RoutedEventArgs e)
     {
         if (_viewModel != null)
             _viewModel.SelectedIndex = 4;

@@ -87,7 +87,8 @@ public sealed partial class MainWindowContentHelix
             1 => "Browsing servers",
             2 => "Reading news",
             3 => "Managing resource packs",
-            4 => "Changing settings",
+            4 => "Managing keybind configs",
+            5 => "Changing settings",
             _ => $"Viewing {_viewModel.Tabs[selectedIndex].Name}"
         };
 

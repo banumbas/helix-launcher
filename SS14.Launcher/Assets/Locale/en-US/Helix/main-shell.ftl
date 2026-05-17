@@ -7,6 +7,7 @@ helix-shell-nav-home = Home
 helix-shell-nav-servers = Servers
 helix-shell-nav-news = News
 helix-shell-nav-patches = Resource Packs
+helix-shell-nav-configs = Configs
 helix-shell-nav-settings = Settings
 helix-shell-favorites-title = Favorite Servers:
 helix-shell-recent-title = Recent Servers:

@@ -21,6 +21,7 @@ using SS14.Launcher.Api;
 using SS14.Launcher.Models.Data;
 using SS14.Launcher.Models.EngineManager;
 using SS14.Launcher.Models.Helix;
+using SS14.Launcher.Models.KeybindConfigs; // Helix-Edit
 using SS14.Launcher.Models.Logins;
 using SS14.Launcher.Models.ResourcePacks; // Helix-Edit
 using SS14.Launcher.Utility;
@@ -39,6 +40,7 @@ public partial class Connector : ReactiveObject
     private readonly IEngineManager _engineManager;
     // Helix-Start
     private readonly ResourcePackManager _resourcePackManager;
+    private readonly KeybindConfigManager _keybindConfigManager;
     // Helix-End
 
     private ConnectionStatus _status = ConnectionStatus.None;
@@ -57,6 +59,7 @@ public partial class Connector : ReactiveObject
         _engineManager = Locator.Current.GetRequiredService<IEngineManager>();
         // Helix-Start
         _resourcePackManager = Locator.Current.GetRequiredService<ResourcePackManager>();
+        _keybindConfigManager = Locator.Current.GetRequiredService<KeybindConfigManager>();
         // Helix-End
         _http = Locator.Current.GetRequiredService<HttpClient>();
     }
@@ -701,6 +704,17 @@ public partial class Connector : ReactiveObject
         // Performance tweaks
         EnvVar("DOTNET_TieredPGO", "1");
         EnvVar("DOTNET_ReadyToRun", "0");
+
+        // Helix-Start
+        try
+        {
+            _keybindConfigManager.ApplySelectedConfig();
+        }
+        catch (Exception e)
+        {
+            Log.Warning(e, "Failed to apply selected keybind config, continuing with existing client keybinds");
+        }
+        // Helix-End
 
         if (launchInfo.ServerGC)
             EnvVar("DOTNET_gcServer", "1");

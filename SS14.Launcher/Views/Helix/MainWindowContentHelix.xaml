@@ -29,6 +29,9 @@
     <DataTemplate DataType="mainWindowTabs:ResourcePacksTabViewModel">
       <helixViews:ResourcePacksTabHelixView />
     </DataTemplate>
+    <DataTemplate DataType="mainWindowTabs:ConfigsTabViewModel">
+      <helixViews:ConfigsTabHelixView />
+    </DataTemplate>
     <DataTemplate DataType="mainWindowTabs:OptionsTabViewModel">
       <helixViews:OptionsTabHelixView />
     </DataTemplate>
@@ -725,6 +728,10 @@
                       Classes="HelixTabButton"
                       Click="NavPatchesClicked"
                       Content="{loc:Loc helix-shell-nav-patches}" />
+              <Button x:Name="NavConfigsButton"
+                      Classes="HelixTabButton"
+                      Click="NavConfigsClicked"
+                      Content="{loc:Loc helix-shell-nav-configs}" />
               <Button x:Name="NavOptionsButton"
                       Classes="HelixTabButton"
                       Click="NavOptionsClicked"

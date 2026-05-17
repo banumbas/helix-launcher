@@ -13,6 +13,10 @@ public static class LauncherPaths
     public static readonly string ResourcePacksDirName = "resource_packs";
     public static readonly string ResourcePackOverlayCacheDirName = "resource_pack_overlays";
     public static readonly string ResourcePacksConfigName = "resource_packs.json";
+    public static readonly string KeybindConfigsDirName = "configs";
+    public static readonly string KeybindConfigsConfigName = "keybind_configs.json";
+    public static readonly string ClientDataDirName = "data";
+    public static readonly string ClientKeybindsName = "keybinds.yml";
     // Helix-End
     public static readonly string AppDataPath = Path.Combine("Space Station 14", GetAppDataName());
     public static readonly string EngineInstallationsDirName = "engines";
@@ -35,6 +39,9 @@ public static class LauncherPaths
     // Helix-Start
     public static readonly string DirResourcePacks = Path.Combine(DirUserData, ResourcePacksDirName);
     public static readonly string DirResourcePackOverlayCache = Path.Combine(DirLocalData, ResourcePackOverlayCacheDirName);
+    public static readonly string DirClientData = Path.Combine(Path.GetDirectoryName(DirUserData)!, ClientDataDirName);
+    public static readonly string DirKeybindConfigs = Path.Combine(DirClientData, KeybindConfigsDirName);
+    public static readonly string DirLegacyKeybindConfigs = Path.Combine(DirUserData, KeybindConfigsDirName);
     // Helix-End
     public static readonly string PathLauncherLog = Path.Combine(DirLogs, LauncherLogName);
     public static readonly string PathClientMacLog = Path.Combine(DirLogs, ClientMacLogName);
@@ -45,6 +52,9 @@ public static class LauncherPaths
     public static readonly string PathOverrideAssetsDb = Path.Combine(DirLocalData, "override_assets.db");
     // Helix-Start
     public static readonly string PathResourcePacksConfig = Path.Combine(DirUserData, ResourcePacksConfigName);
+    public static readonly string PathKeybindConfigsConfig = Path.Combine(DirClientData, KeybindConfigsConfigName);
+    public static readonly string PathLegacyKeybindConfigsConfig = Path.Combine(DirUserData, KeybindConfigsConfigName);
+    public static readonly string PathClientKeybinds = Path.Combine(DirClientData, ClientKeybindsName);
     // Helix-End
 
     public static void CreateDirs()
@@ -56,6 +66,8 @@ public static class LauncherPaths
         // Helix-Start
         Ensure(DirResourcePacks);
         Ensure(DirResourcePackOverlayCache);
+        Ensure(DirClientData);
+        Ensure(DirKeybindConfigs);
         // Helix-End
 
         static void Ensure(string path) => Helpers.EnsureDirectoryExists(path);

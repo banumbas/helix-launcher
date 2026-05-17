@@ -43,6 +43,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
     public NewsTabViewModel NewsTab { get; }
     // Helix-Start
     public ResourcePacksTabViewModel ResourcePacksTab { get; }
+    public ConfigsTabViewModel ConfigsTab { get; }
     // Helix-End
     public OptionsTabViewModel OptionsTab { get; }
 
@@ -59,6 +60,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
         HomeTab = new HomePageViewModel(this);
         // Helix-Start
         ResourcePacksTab = new ResourcePacksTabViewModel();
+        ConfigsTab = new ConfigsTabViewModel();
         // Helix-End
         OptionsTab = new OptionsTabViewModel();
 
@@ -68,6 +70,7 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
         tabs.Add(NewsTab);
         // Helix-Start
         tabs.Add(ResourcePacksTab);
+        tabs.Add(ConfigsTab);
         // Helix-End
         tabs.Add(OptionsTab);
 #if DEVELOPMENT

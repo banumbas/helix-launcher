@@ -23,6 +23,7 @@ using SS14.Launcher.Models.ServerStatus;
 using SS14.Launcher.Models.EngineManager;
 using SS14.Launcher.Models.Logins;
 using SS14.Launcher.Models.OverrideAssets;
+using SS14.Launcher.Models.KeybindConfigs; // Helix-Edit
 using SS14.Launcher.Models.ResourcePacks; // Helix-Edit
 using SS14.Launcher.Models.Helix;
 using SS14.Launcher.Utility;
@@ -229,6 +230,7 @@ internal static class Program
         var engineManager = new EngineManagerDynamic();
         // Helix-Start
         var resourcePackManager = new ResourcePackManager();
+        var keybindConfigManager = new KeybindConfigManager();
         var recentServerManager = new RecentServerManager();
         // Helix-End
 
@@ -244,6 +246,7 @@ internal static class Program
         locator.RegisterConstant(launcherInfo);
         // Helix-Start
         locator.RegisterConstant(resourcePackManager);
+        locator.RegisterConstant(keybindConfigManager);
         locator.RegisterConstant(recentServerManager);
         // Helix-End
 
