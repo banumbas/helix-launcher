@@ -1,5 +1,5 @@
 # SS14.Launcher
-<img width="1017" height="712" alt="изображение" src="https://github.com/user-attachments/assets/35deb3cf-3cce-4242-acad-341098d94a84" />
+<img width="1020" height="705" alt="изображение" src="https://github.com/user-attachments/assets/526fcf24-4cb1-4c8a-9b5b-c814b4381565" />
 
 discord: https://discord.gg/68WfqhBJx3
 
@@ -8,6 +8,7 @@ discord: https://discord.gg/68WfqhBJx3
 * Displaying game mode, map and ping in the launcher
 * Reworked menu
 * Custom Discord RPC
+* Config system
 
 # Resource Packs
 
@@ -42,8 +43,6 @@ Notes:
 * `target` is optional. Leave it empty to apply the pack to any fork.
 * If you override files inside an `.rsi` directory, keep the correct `.rsi/meta.json` next to the changed textures.
 * Only `Audio/`, `Fonts/`, `Locale/`, `Shaders/`, and `Textures/` roots are mounted from a pack.
-* Gameplay and data roots such as `Prototypes/` are ignored by the launcher and will never be included in the overlay zip.
-* The loader enforces the same restriction again at mount time, so blocked roots are not exposed to the client even if they somehow end up inside the archive.
 
 # The LAUNCHER WON'T HAVE harmony SUPPORT, hwid spoofing, and the like, it's designed for FAIR PLAY.
 
@@ -52,6 +51,7 @@ Notes:
 * Отображение текущего режима игры, карты и пинга прямо в лаунчере
 * Переработанное меню
 * Кастомный Дискорд RPC
+* Система конфигов
 
 # Ресурспаки
 
@@ -83,6 +83,6 @@ ResourcePacks/
 * Файлы переопределяются их относительным путем внутри `Resources/`.
 * `target` необязательно. Оставьте это поле пустым, чтобы применить пакет к любому форку.
 * Если вы переопределяете файлы в каталоге `.rsi`, сохраняйте правильный `.rsi/meta.json рядом с измененными текстурами.
-
+* Только `Audio/`, `Fonts/`, `Locale/`, `Shaders/`, и `Textures/` монтируются в пак.
 
 # В ЛАУНЧЕРЕ НЕ БУДЕТ ПОДДЕРЖКИ harmony, спуфа хвидов и тому подобного, он предназначен для ЧЕСТНОЙ игры.
