@@ -1,18 +1,33 @@
 # SS14.Launcher
-<img width="1020" height="705" alt="изображение" src="https://github.com/user-attachments/assets/526fcf24-4cb1-4c8a-9b5b-c814b4381565" />
 
 discord: https://discord.gg/68WfqhBJx3
+
+# Лицензирование
+
+Исходный код лаунчера Space Station 14, унаследованный от upstream-проекта, сохраняет условия лицензии MIT - см. [LICENSE.txt](LICENSE.txt).
+
+Все изменения, созданные в рамках этого форка, распространяются по лицензии GNU Affero General Public License v3.0 (AGPL-3.0-only) - см. [LICENSE-AGPL-3.0.txt](LICENSE-AGPL-3.0.txt).
+
+Код, написанный Wizden, распространяется по лицензии MIT, если в соответствующем файле не указано иное.
+
+## Licensing
+
+The Space Station 14 launcher source code inherited from the upstream project remains licensed under the MIT License - see [LICENSE.txt](LICENSE.txt).
+
+All changes created for this fork are licensed under the GNU Affero General Public License v3.0 (AGPL-3.0-only) - see [LICENSE-AGPL-3.0.txt](LICENSE-AGPL-3.0.txt).
+
+Code written by Wizden is licensed under the MIT License unless the relevant file states otherwise.
 
 # Features
 * Resource Packs
 * Displaying game mode, map and ping in the launcher
-* Reworked menu
+* Redesigned menu with customization options
 * Custom Discord RPC
 * Config system
 
 # Resource Packs
 
-Resource packs replace client-facing asset files by path at launch time. 
+Resource packs replace client-facing asset files by path at launch time.
 
 Pack directory:
 * `%AppData%/Space Station 14/launcher/ResourcePacks/<PackName>` on Windows by default
@@ -49,13 +64,13 @@ Notes:
 # Features
 * Ресурспаки
 * Отображение текущего режима игры, карты и пинга прямо в лаунчере
-* Переработанное меню
+* Переработанное меню с возможность кастомизации
 * Кастомный Дискорд RPC
 * Система конфигов
 
 # Ресурспаки
 
-Ресурспаки заменяют файлы игры по пути к ним во время запуска. 
+Ресурспаки заменяют файлы игры по пути к ним во время запуска.
 
 Каталог пакетов:
 * "%AppData%/Space Station 14/launcher/ResourcePacks/<Имя пакета>" в Windows по умолчанию
