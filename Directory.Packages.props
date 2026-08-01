@@ -18,6 +18,7 @@
     <PackageVersion Include="Avalonia" Version="11.2.4"/>
     <PackageVersion Include="Avalonia.Desktop" Version="11.2.4"/>
     <PackageVersion Include="Avalonia.ReactiveUI" Version="11.2.4"/>
+    <PackageVersion Include="Avalonia.Controls.ColorPicker" Version="11.2.4"/>
     <PackageVersion Include="Avalonia.Diagnostics" Version="11.2.4"/>
     <PackageVersion Include="Avalonia.Themes.Simple" Version="11.2.4"/>
     <PackageVersion Include="CodeHollow.FeedReader" Version="1.2.6"/>

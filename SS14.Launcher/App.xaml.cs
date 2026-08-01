@@ -6,6 +6,7 @@ using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
+using Avalonia.Media;
 using Avalonia.Media.Imaging;
 using Avalonia.Platform;
 using JetBrains.Annotations;
@@ -14,9 +15,9 @@ using Splat;
 using SS14.Launcher.Localization;
 using SS14.Launcher.Models;
 using SS14.Launcher.Models.ContentManagement;
+using SS14.Launcher.Models.Data;
 using SS14.Launcher.Models.OverrideAssets;
-using SS14.Launcher.Models.ResourcePacks; // Helix-Edit
-using SS14.Launcher.Models.Helix;
+using SS14.Launcher.Theme;
 using SS14.Launcher.Utility;
 using SS14.Launcher.ViewModels;
 using SS14.Launcher.Views;
@@ -125,23 +126,17 @@ public class App : Application
     private void OnStartup(object? s, ControlledApplicationLifetimeStartupEventArgs e)
     {
         var loc = Locator.Current.GetRequiredService<LocalizationManager>();
+        var cfg = Locator.Current.GetRequiredService<DataManager>();
         var msgr = Locator.Current.GetRequiredService<LauncherMessaging>();
         var contentManager = Locator.Current.GetRequiredService<ContentManager>();
         var overrideAssets = Locator.Current.GetRequiredService<OverrideAssetsManager>();
         var launcherInfo = Locator.Current.GetRequiredService<LauncherInfoManager>();
-        // Helix-Start
-        var resourcePackManager = Locator.Current.GetRequiredService<ResourcePackManager>();
-        var recentServerManager = Locator.Current.GetRequiredService<RecentServerManager>();
-        // Helix-End
+        ApplySavedTheme(cfg);
 
         loc.Initialize();
         launcherInfo.Initialize();
         contentManager.Initialize();
         overrideAssets.Initialize();
-        // Helix-Start
-        resourcePackManager.Initialize();
-        recentServerManager.Initialize();
-        // Helix-End
 
         var viewModel = new MainWindowViewModel();
         var window = new MainWindow
@@ -170,5 +165,24 @@ public class App : Application
     {
         var msgr = Locator.Current.GetRequiredService<LauncherMessaging>();
         msgr.StopAndWait();
+    }
+
+    private void ApplySavedTheme(DataManager cfg)
+    {
+        AppThemeManager.ApplyTheme(this, AppThemeManager.Normalize(cfg.GetCVar(CVars.Theme)),
+            cfg.GetCVar(CVars.ThemeGradient), cfg.GetCVar(CVars.ThemeDecor), new AppThemeManager.CustomThemeColors(
+                ParseColor(cfg.GetCVar(CVars.ThemeCustomBackground), "#25252A"),
+                ParseColor(cfg.GetCVar(CVars.ThemeCustomAccent), "#3E6C45"),
+                ParseColor(cfg.GetCVar(CVars.ThemeCustomForeground), "#EEEEEE"),
+                ParseColor(cfg.GetCVar(CVars.ThemeCustomPopup), "#202025"),
+                ParseColor(cfg.GetCVar(CVars.ThemeCustomGradientStart), "#25252A"),
+                ParseColor(cfg.GetCVar(CVars.ThemeCustomGradientEnd), "#2E3746")));
+        AppThemeManager.ApplyFont(this, cfg.GetCVar(CVars.ThemeFont));
+    }
+
+    private static Color ParseColor(string raw, string fallback)
+    {
+        try { return Color.Parse(raw); }
+        catch { return Color.Parse(fallback); }
     }
 }

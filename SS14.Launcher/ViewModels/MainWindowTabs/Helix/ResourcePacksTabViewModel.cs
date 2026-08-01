@@ -10,6 +10,10 @@ using SS14.Launcher.Models.ResourcePacks;
 
 namespace SS14.Launcher.ViewModels.MainWindowTabs;
 
+/// <summary>
+/// Compatibility view model retained for resource pack services and their tests.
+/// Resource packs are configured from OptionsTabViewModel in the launcher UI.
+/// </summary>
 public sealed class ResourcePacksTabViewModel : MainWindowTabViewModel
 {
     private readonly LocalizationManager _loc;
@@ -24,27 +28,17 @@ public sealed class ResourcePacksTabViewModel : MainWindowTabViewModel
     }
 
     public override string Name => _loc.GetString("tab-resource-packs-title");
-
     public ObservableCollection<ResourcePackInfo> ResourcePacks { get; } = new();
-
     public string PacksDirectory => _resourcePackManager.PacksDirectory;
-
     public bool HasResourcePacks => ResourcePacks.Count != 0;
 
-    public override void Selected()
-    {
-        ReloadPacks();
-    }
+    public override void Selected() => ReloadPacks();
 
     public void ReloadPacks()
     {
-        var packs = _resourcePackManager.LoadPacks();
-
         ResourcePacks.Clear();
-        foreach (var pack in packs)
-        {
+        foreach (var pack in _resourcePackManager.LoadPacks())
             ResourcePacks.Add(pack);
-        }
 
         this.RaisePropertyChanged(nameof(HasResourcePacks));
         this.RaisePropertyChanged(nameof(PacksDirectory));
@@ -53,11 +47,7 @@ public sealed class ResourcePacksTabViewModel : MainWindowTabViewModel
     public void OpenResourcePackDirectory()
     {
         Directory.CreateDirectory(PacksDirectory);
-        Process.Start(new ProcessStartInfo
-        {
-            UseShellExecute = true,
-            FileName = PacksDirectory
-        });
+        Process.Start(new ProcessStartInfo { UseShellExecute = true, FileName = PacksDirectory });
     }
 
     public void SetResourcePackEnabled(ResourcePackInfo pack, bool enabled)
@@ -71,15 +61,12 @@ public sealed class ResourcePacksTabViewModel : MainWindowTabViewModel
         if (pack == null || delta == 0)
             return;
 
-        var currentIndex = ResourcePacks.IndexOf(pack);
-        if (currentIndex < 0)
+        var index = ResourcePacks.IndexOf(pack);
+        var nextIndex = index + delta;
+        if (index < 0 || nextIndex < 0 || nextIndex >= ResourcePacks.Count)
             return;
 
-        var nextIndex = currentIndex + delta;
-        if (nextIndex < 0 || nextIndex >= ResourcePacks.Count)
-            return;
-
-        ResourcePacks.Move(currentIndex, nextIndex);
+        ResourcePacks.Move(index, nextIndex);
         SavePacks();
     }
 
@@ -89,8 +76,6 @@ public sealed class ResourcePacksTabViewModel : MainWindowTabViewModel
         Log.Debug("Saved {Count} resource pack entries", ResourcePacks.Count);
     }
 
-    private void ResourcePacksOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs eventArgs)
-    {
+    private void ResourcePacksOnCollectionChanged(object? sender, NotifyCollectionChangedEventArgs args) =>
         this.RaisePropertyChanged(nameof(HasResourcePacks));
-    }
 }

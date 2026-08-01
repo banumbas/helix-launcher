@@ -142,6 +142,17 @@ public static partial class CVars
     /// </summary>
     public static readonly CVarDef<string?> Language = CVarDef.Create<string?>("Language", null);
 
+    public static readonly CVarDef<int> Theme = CVarDef.Create("Theme", 0);
+    public static readonly CVarDef<bool> ThemeGradient = CVarDef.Create("ThemeGradient", true);
+    public static readonly CVarDef<bool> ThemeDecor = CVarDef.Create("ThemeDecor", true);
+    public static readonly CVarDef<string> ThemeFont = CVarDef.Create("ThemeFont", "avares://SS14.Launcher/Assets/Fonts/noto_sans/*.ttf#Noto Sans");
+    public static readonly CVarDef<string> ThemeCustomBackground = CVarDef.Create("ThemeCustomBackground", "#25252A");
+    public static readonly CVarDef<string> ThemeCustomAccent = CVarDef.Create("ThemeCustomAccent", "#3E6C45");
+    public static readonly CVarDef<string> ThemeCustomForeground = CVarDef.Create("ThemeCustomForeground", "#EEEEEE");
+    public static readonly CVarDef<string> ThemeCustomPopup = CVarDef.Create("ThemeCustomPopup", "#202025");
+    public static readonly CVarDef<string> ThemeCustomGradientStart = CVarDef.Create("ThemeCustomGradientStart", "#25252A");
+    public static readonly CVarDef<string> ThemeCustomGradientEnd = CVarDef.Create("ThemeCustomGradientEnd", "#2E3746");
+
     /// <summary>
     /// The CPU architecture this launcher was last run with.
     /// </summary>

@@ -5,6 +5,7 @@
              xmlns:mainWindowTabs="clr-namespace:SS14.Launcher.ViewModels.MainWindowTabs"
              xmlns:loc="clr-namespace:SS14.Launcher.Localization"
              xmlns:views="clr-namespace:SS14.Launcher.Views"
+             xmlns:colorControls="clr-namespace:Avalonia.Controls;assembly=Avalonia.Controls.ColorPicker"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
              x:Class="SS14.Launcher.Views.MainWindowTabs.OptionsTabView"
              Name="NewsTab">
@@ -12,7 +13,31 @@
     <mainWindowTabs:OptionsTabViewModel />
   </Design.DataContext>
 
-  <!-- // Helix-Start -->
+  <UserControl.Resources>
+    <mainWindowTabs:ThemeDescriptionConverter x:Key="ThemeDescriptionConverter" />
+  </UserControl.Resources>
+
+  <UserControl.Styles>
+    <Style Selector="ComboBox.SettingsCombo">
+      <Setter Property="MinHeight" Value="30" />
+      <Setter Property="MinWidth" Value="220" />
+      <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
+    <Style Selector="ColorPicker.SettingsColorPicker">
+      <Setter Property="HorizontalAlignment" Value="Left" />
+      <Setter Property="Width" Value="260" />
+    </Style>
+    <Style Selector="Button.SettingsButton">
+      <Setter Property="MinHeight" Value="30" />
+      <Setter Property="MinWidth" Value="120" />
+      <Setter Property="Padding" Value="12,5" />
+      <Setter Property="HorizontalAlignment" Value="Left" />
+    </Style>
+    <Style Selector="Button.SettingsButton.Compact">
+      <Setter Property="MinWidth" Value="90" />
+    </Style>
+  </UserControl.Styles>
+
   <TabControl>
     <TabItem Header="{loc:Loc tab-options-general-tab}">
       <ScrollViewer HorizontalScrollBarVisibility="Disabled">
@@ -63,28 +88,132 @@
       </ScrollViewer>
     </TabItem>
 
-    <TabItem Header="{loc:Loc tab-options-helix-tab}">
+    <TabItem Header="{loc:Loc tab-options-resource-packs-tab}">
       <ScrollViewer HorizontalScrollBarVisibility="Disabled">
         <StackPanel Margin="12" Spacing="12">
+          <TextBlock Text="{loc:Loc tab-resource-packs-header}" Classes="NanoHeadingMedium" />
+          <TextBlock Text="{loc:Loc tab-resource-packs-desc}" Opacity="0.65" TextWrapping="Wrap" />
+          <TextBlock Text="{Binding ResourcePacksDirectory}" Classes="SubText" TextWrapping="Wrap" />
+          <StackPanel Orientation="Horizontal" Spacing="8">
+            <Button Content="{loc:Loc tab-resource-packs-open-directory}" Click="OpenResourcePacksDirectory" />
+            <Button Content="{loc:Loc tab-resource-packs-reload}" Click="ReloadResourcePacks" />
+          </StackPanel>
+          <TextBlock Text="{loc:Loc tab-resource-packs-empty}" IsVisible="{Binding !HasResourcePacks}" Opacity="0.65" TextWrapping="Wrap" />
+          <ItemsControl ItemsSource="{Binding ResourcePacks}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <Border BorderBrush="{DynamicResource ThemeBorderMidBrush}" BorderThickness="1" Padding="10" Margin="0,0,0,6">
+                  <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto">
+                    <StackPanel Grid.Column="0" Spacing="2">
+                      <TextBlock Text="{Binding Name}" FontWeight="SemiBold" />
+                      <TextBlock Text="{Binding Description}" IsVisible="{Binding HasDescription}" Opacity="0.65" TextWrapping="Wrap" />
+                      <TextBlock Text="{Binding DirectoryName}" Classes="SubText" />
+                    </StackPanel>
+                    <CheckBox Grid.Column="1" Content="{loc:Loc tab-resource-packs-enabled}" IsChecked="{Binding Enabled}" Checked="ResourcePackEnabledChanged" Unchecked="ResourcePackEnabledChanged" />
+                    <StackPanel Grid.Column="1" Grid.Row="2" Orientation="Horizontal" Spacing="4" HorizontalAlignment="Right">
+                      <Button Content="↑" Click="MoveResourcePackUp" />
+                      <Button Content="↓" Click="MoveResourcePackDown" />
+                    </StackPanel>
+                  </Grid>
+                </Border>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </StackPanel>
+      </ScrollViewer>
+    </TabItem>
+
+    <TabItem Header="{loc:Loc tab-options-configs-tab}">
+      <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="12" Spacing="12">
+          <TextBlock Text="{loc:Loc tab-configs-title}" Classes="NanoHeadingMedium" />
+          <TextBlock Text="{loc:Loc tab-configs-desc}" Opacity="0.65" TextWrapping="Wrap" />
+          <TextBlock Text="{Binding KeybindConfigsDirectory}" Classes="SubText" TextWrapping="Wrap" />
+          <StackPanel Orientation="Horizontal" Spacing="8">
+            <Button Content="{loc:Loc tab-configs-open-directory}" Click="OpenKeybindConfigsDirectory" />
+            <Button Content="{loc:Loc tab-configs-import-current}" Click="ImportCurrentKeybinds" />
+            <Button Content="{loc:Loc tab-configs-clear-selection}" Click="ClearKeybindConfigSelection" />
+            <Button Content="{loc:Loc tab-configs-reload}" Click="ReloadKeybindConfigs" />
+          </StackPanel>
+          <TextBlock Text="{loc:Loc tab-configs-empty}" IsVisible="{Binding !HasKeybindConfigs}" Opacity="0.65" TextWrapping="Wrap" />
+          <ItemsControl ItemsSource="{Binding KeybindConfigs}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate>
+                <Border BorderBrush="{DynamicResource ThemeBorderMidBrush}" BorderThickness="1" Padding="10" Margin="0,0,0,6">
+                  <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto">
+                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold" />
+                    <TextBlock Grid.Row="1" Text="{Binding FileName}" Classes="SubText" />
+                    <TextBlock Grid.Column="1" Text="{loc:Loc tab-configs-selected}" IsVisible="{Binding Selected}" Foreground="{DynamicResource ThemeNanoGoldBrush}" />
+                    <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal" Spacing="6">
+                      <Button Content="{loc:Loc tab-configs-select}" Click="SelectKeybindConfig" />
+                      <Button Content="{loc:Loc tab-configs-delete}" Click="DeleteKeybindConfig" />
+                    </StackPanel>
+                  </Grid>
+                </Border>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </StackPanel>
+      </ScrollViewer>
+    </TabItem>
+
+    <TabItem Header="{loc:Loc launcher-themes-title}">
+      <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="12" Spacing="16">
           <StackPanel Spacing="6">
-            <TextBlock Text="{loc:Loc tab-options-helix-server-list-title}"
-                       Classes="NanoHeadingMedium" />
-            <TextBlock Text="{loc:Loc tab-options-helix-server-list-desc}"
-                       Opacity="0.7"
-                       TextWrapping="Wrap" />
+            <TextBlock Text="{loc:Loc launcher-themes-theme}" Classes="NanoHeadingMedium" />
+            <TextBlock Text="{loc:Loc launcher-themes-theme-desc}" Opacity="0.6" TextWrapping="Wrap" />
+            <ComboBox Classes="SettingsCombo" ItemsSource="{Binding Themes}" SelectedItem="{Binding SelectedTheme}" Width="300" Margin="4,0,0,0">
+              <ComboBox.ItemTemplate>
+                <DataTemplate>
+                  <TextBlock Text="{Binding Converter={StaticResource ThemeDescriptionConverter}}" />
+                </DataTemplate>
+              </ComboBox.ItemTemplate>
+            </ComboBox>
           </StackPanel>
 
+          <StackPanel Spacing="8" IsVisible="{Binding IsCustomThemeSelected}">
+            <TextBlock Text="{loc:Loc launcher-themes-custom-colors}" Classes="NanoHeadingSmall" />
+            <TextBlock Text="{loc:Loc launcher-themes-custom-colors-desc}" Opacity="0.6" TextWrapping="Wrap" />
+            <TextBlock Text="{loc:Loc launcher-themes-background}" />
+            <colorControls:ColorPicker Classes="SettingsColorPicker" IsAlphaEnabled="False" IsAlphaVisible="False" Color="{Binding CustomThemeBackground, Mode=TwoWay}" />
+            <TextBlock Text="{loc:Loc launcher-themes-accent}" />
+            <colorControls:ColorPicker Classes="SettingsColorPicker" IsAlphaEnabled="False" IsAlphaVisible="False" Color="{Binding CustomThemeAccent, Mode=TwoWay}" />
+            <TextBlock Text="{loc:Loc launcher-themes-text}" />
+            <colorControls:ColorPicker Classes="SettingsColorPicker" IsAlphaEnabled="False" IsAlphaVisible="False" Color="{Binding CustomThemeForeground, Mode=TwoWay}" />
+            <TextBlock Text="{loc:Loc launcher-themes-popup}" />
+            <colorControls:ColorPicker Classes="SettingsColorPicker" IsAlphaEnabled="False" IsAlphaVisible="False" Color="{Binding CustomThemePopup, Mode=TwoWay}" />
+            <TextBlock Text="{loc:Loc launcher-themes-gradient-start}" />
+            <colorControls:ColorPicker Classes="SettingsColorPicker" IsAlphaEnabled="False" IsAlphaVisible="False" Color="{Binding CustomThemeGradientStart, Mode=TwoWay}" />
+            <TextBlock Text="{loc:Loc launcher-themes-gradient-end}" />
+            <colorControls:ColorPicker Classes="SettingsColorPicker" IsAlphaEnabled="False" IsAlphaVisible="False" Color="{Binding CustomThemeGradientEnd, Mode=TwoWay}" />
+            <StackPanel Orientation="Horizontal" Spacing="8">
+              <Button Classes="SettingsButton Compact" Content="{loc:Loc launcher-themes-reset}" Click="ResetCustomTheme" />
+              <Button Classes="SettingsButton Compact" Content="{loc:Loc launcher-themes-import}" Click="ImportCustomTheme" />
+              <Button Classes="SettingsButton Compact" Content="{loc:Loc launcher-themes-export}" Click="ExportCustomTheme" />
+            </StackPanel>
+          </StackPanel>
+
+          <StackPanel Spacing="6">
+            <CheckBox IsChecked="{Binding ThemeGradient}" Content="{loc:Loc launcher-themes-gradient}" />
+            <TextBlock Text="{loc:Loc launcher-themes-gradient-desc}" Margin="26,0,0,0" Opacity="0.6" TextWrapping="Wrap" />
+            <CheckBox IsChecked="{Binding ThemeDecor}" Content="{loc:Loc launcher-themes-decor}" />
+            <TextBlock Text="{loc:Loc launcher-themes-decor-desc}" Margin="26,0,0,0" Opacity="0.6" TextWrapping="Wrap" />
+          </StackPanel>
+
+          <Separator Height="1" Opacity="0.1" Background="White" />
           <StackPanel Spacing="8">
-            <CheckBox IsChecked="{Binding ServerListShowMode}"
-                      Content="{loc:Loc tab-options-helix-show-mode}" />
-            <CheckBox IsChecked="{Binding ServerListShowMap}"
-                      Content="{loc:Loc tab-options-helix-show-map}" />
-            <CheckBox IsChecked="{Binding ServerListShowPing}"
-                      Content="{loc:Loc tab-options-helix-show-ping}" />
+            <TextBlock Text="{loc:Loc launcher-themes-font}" Classes="NanoHeadingSmall" />
+            <TextBlock Text="{loc:Loc launcher-themes-font-desc}" Opacity="0.6" TextWrapping="Wrap" />
+            <DockPanel MaxWidth="500" HorizontalAlignment="Left">
+              <Button Classes="SettingsButton Compact" DockPanel.Dock="Right" Content="{loc:Loc launcher-themes-font-load}" Click="PickCustomFont" Margin="8,0,0,0" />
+              <ComboBox Classes="SettingsCombo" ItemsSource="{Binding ThemeFonts}" SelectedItem="{Binding SelectedThemeFont}">
+                <ComboBox.ItemTemplate><DataTemplate><TextBlock Text="{Binding Name}" /></DataTemplate></ComboBox.ItemTemplate>
+              </ComboBox>
+            </DockPanel>
           </StackPanel>
         </StackPanel>
       </ScrollViewer>
     </TabItem>
   </TabControl>
-  <!-- // Helix-End -->
 </UserControl>

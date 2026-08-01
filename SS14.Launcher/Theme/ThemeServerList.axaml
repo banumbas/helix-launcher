@@ -5,7 +5,7 @@
         xmlns:mwt="using:SS14.Launcher.Views.MainWindowTabs">
   <Style Selector="ItemsControl.ServerList > ContentPresenter:nth-child(2n)">
     <Setter Property="Background">
-      <SolidColorBrush Color="#262626" />
+      <DynamicResource ResourceKey="ThemeListAltRowBrush" />
     </Setter>
   </Style>
 
@@ -101,7 +101,7 @@
 
           <Panel>
             <Panel.Background>
-              <SolidColorBrush Color="#1e1e22" />
+              <DynamicResource ResourceKey="ThemeBackgroundBrush" />
             </Panel.Background>
             <ScrollViewer MinHeight="150" HorizontalScrollBarVisibility="Disabled"
                           VerticalScrollBarVisibility="Auto">

@@ -17,7 +17,6 @@ using SS14.Launcher.Models.ServerStatus;
 using SS14.Launcher.Models.Helix;
 using SS14.Launcher.Utility;
 using SS14.Launcher.Views;
-using SS14.Launcher.Views.Helix;
 
 namespace SS14.Launcher.ViewModels.MainWindowTabs;
 
@@ -102,7 +101,7 @@ public class HomePageViewModel : MainWindowTabViewModel
         }
 
         // Helix-Start
-        var res = await new DirectConnectDialogHelix().ShowDialog<string?>(window);
+        var res = await new DirectConnectDialog().ShowDialog<string?>(window);
         // Helix-End
         if (res == null)
         {
@@ -120,7 +119,7 @@ public class HomePageViewModel : MainWindowTabViewModel
         }
 
         // Helix-Start
-        var (name, address) = await new AddFavoriteDialogHelix().ShowDialog<(string name, string address)>(window);
+        var (name, address) = await new AddFavoriteDialog().ShowDialog<(string name, string address)>(window);
         // Helix-End
 
         try

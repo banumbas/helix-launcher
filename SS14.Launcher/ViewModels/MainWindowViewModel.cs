@@ -17,6 +17,7 @@ using SS14.Launcher.Api;
 using SS14.Launcher.Localization;
 using SS14.Launcher.Models;
 using SS14.Launcher.Models.Data;
+using SS14.Launcher.Models.Helix;
 using SS14.Launcher.Models.Logins;
 using SS14.Launcher.Utility;
 using SS14.Launcher.ViewModels.Login;
@@ -41,10 +42,6 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
     public HomePageViewModel HomeTab { get; }
     public ServerListTabViewModel ServersTab { get; }
     public NewsTabViewModel NewsTab { get; }
-    // Helix-Start
-    public ResourcePacksTabViewModel ResourcePacksTab { get; }
-    public ConfigsTabViewModel ConfigsTab { get; }
-    // Helix-End
     public OptionsTabViewModel OptionsTab { get; }
 
     public MainWindowViewModel()
@@ -58,20 +55,12 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
         ServersTab = new ServerListTabViewModel(this);
         NewsTab = new NewsTabViewModel();
         HomeTab = new HomePageViewModel(this);
-        // Helix-Start
-        ResourcePacksTab = new ResourcePacksTabViewModel();
-        ConfigsTab = new ConfigsTabViewModel();
-        // Helix-End
         OptionsTab = new OptionsTabViewModel();
 
         var tabs = new List<MainWindowTabViewModel>();
         tabs.Add(HomeTab);
         tabs.Add(ServersTab);
         tabs.Add(NewsTab);
-        // Helix-Start
-        tabs.Add(ResourcePacksTab);
-        tabs.Add(ConfigsTab);
-        // Helix-End
         tabs.Add(OptionsTab);
 #if DEVELOPMENT
         tabs.Add(new DevelopmentTabViewModel());
@@ -178,6 +167,16 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
     public void OnDiscordButtonPressed()
     {
         Helpers.OpenUri(new Uri(ConfigConstants.DiscordUrl));
+    }
+
+    public void OnHelixDiscordButtonPressed()
+    {
+        Helpers.OpenUri(new Uri(HelixDiscordRichPresence.DiscordUrl));
+    }
+
+    public void OnGitHubButtonPressed()
+    {
+        Helpers.OpenUri(new Uri(ConfigConstants.GitHubUrl));
     }
 
     public void OnWebsiteButtonPressed()

@@ -1,12 +1,13 @@
 using System;
 using System.Linq;
+using Avalonia;
 using Avalonia.Controls;
 using Avalonia.Input;
 using Avalonia.Interactivity;
+using Avalonia.Media;
 using Avalonia.Platform.Storage;
 using SS14.Launcher.Localization;
 using SS14.Launcher.ViewModels;
-using SS14.Launcher.Views.Helix;
 using TerraFX.Interop.Windows;
 using IDataObject = Avalonia.Input.IDataObject;
 
@@ -16,18 +17,11 @@ public partial class MainWindow : Window
 {
     private MainWindowViewModel? _viewModel;
 
-    // Helix-Start
-    private MainWindowContentHelix _content;
-    // Helix-End
+    private MainWindowContent _content;
 
     public MainWindow()
     {
         InitializeComponent();
-
-        // Helix-Start
-        Width = MinWidth;
-        Height = MinHeight;
-        // Helix-End
 
         DarkMode();
 
@@ -36,9 +30,7 @@ public partial class MainWindow : Window
         AddHandler(DragDrop.DragOverEvent, DragOver);
         AddHandler(DragDrop.DropEvent, Drop);
 
-        // Helix-Start
-        _content = (MainWindowContentHelix) Content!;
-        // Helix-End
+        _content = (MainWindowContent) Content!;
 
         ReloadTitle();
     }
@@ -47,9 +39,7 @@ public partial class MainWindow : Window
     {
         ReloadTitle();
 
-        // Helix-Start
-        Content = _content = new MainWindowContentHelix();
-        // Helix-End
+        Content = _content = new MainWindowContent();
     }
 
     private void ReloadTitle()
@@ -85,20 +75,37 @@ public partial class MainWindow : Window
             return;
         }
 
-        var hWnd = (HWND)handle.Handle;
-
-        // Helix-Start
-        COLORREF caption = 0x001C140F;
-        COLORREF border = 0x0035291F;
-        COLORREF text = 0x00F0E9E5;
-        // Helix-End
-        TerraFX.Interop.Windows.Windows.DwmSetWindowAttribute(hWnd, 35, &caption, (uint) sizeof(COLORREF));
-        TerraFX.Interop.Windows.Windows.DwmSetWindowAttribute(hWnd, 34, &border, (uint) sizeof(COLORREF));
-        TerraFX.Interop.Windows.Windows.DwmSetWindowAttribute(hWnd, 36, &text, (uint) sizeof(COLORREF));
+        RefreshTitleBarColors();
 
         // Removes the top margin of the window on Windows 11, since there's ample space after we recolor the title bar.
         Classes.Add("WindowsTitlebarColorActive");
     }
+
+    /// <summary>Updates the native Windows title bar after a launcher theme change.</summary>
+    public unsafe void RefreshTitleBarColors()
+    {
+        if (!OperatingSystem.IsWindows() || Environment.OSVersion.Version.Build < 22000)
+            return;
+
+        if (TryGetPlatformHandle() is not { HandleDescriptor: "HWND" } handle)
+            return;
+
+        var background = GetThemeColor("ThemeBackgroundColor", Color.Parse("#25252A"));
+        var foreground = GetThemeColor("ThemeForegroundColor", Color.Parse("#EEEEEE"));
+        var border = Mix(background, foreground, 0.18);
+        var hWnd = (HWND)handle.Handle;
+        var caption = ToColorRef(background);
+        var borderColor = ToColorRef(border);
+        var text = ToColorRef(foreground);
+
+        TerraFX.Interop.Windows.Windows.DwmSetWindowAttribute(hWnd, 35, &caption, (uint) sizeof(COLORREF));
+        TerraFX.Interop.Windows.Windows.DwmSetWindowAttribute(hWnd, 34, &borderColor, (uint) sizeof(COLORREF));
+        TerraFX.Interop.Windows.Windows.DwmSetWindowAttribute(hWnd, 36, &text, (uint) sizeof(COLORREF));
+    }
+
+    private static Color GetThemeColor(string key, Color fallback) => Application.Current?.Resources[key] is Color color ? color : fallback;
+    private static Color Mix(Color a, Color b, double amount) => new(255, (byte)(a.R + (b.R - a.R) * amount), (byte)(a.G + (b.G - a.G) * amount), (byte)(a.B + (b.B - a.B) * amount));
+    private static COLORREF ToColorRef(Color color) => (COLORREF)(uint)(color.R | color.G << 8 | color.B << 16);
 
     private void Drop(object? sender, DragEventArgs args)
     {

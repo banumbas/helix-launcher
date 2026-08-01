@@ -37,14 +37,19 @@
 
     <SolidColorBrush x:Key="ThemeTabItemSelectedBrush" Color="{StaticResource ThemeTabItemSelectedColor}" />
     <SolidColorBrush x:Key="ThemeTabItemHoveredBrush" Color="{StaticResource ThemeTabItemHoveredColor}" />
+    <SolidColorBrush x:Key="ThemeBorderMidBrush" Color="{DynamicResource ThemeBorderMidColor}" />
+    <SolidColorBrush x:Key="ThemeBorderHighBrush" Color="{DynamicResource ThemeBorderHighColor}" />
+    <SolidColorBrush x:Key="ThemeListAltRowBrush" Color="{DynamicResource ThemeListAltRowColor}" />
+    <Thickness x:Key="ThemeBorderThickness">1</Thickness>
+    <FontFamily x:Key="ThemeFontFamily">avares://SS14.Launcher/Assets/Fonts/noto_sans/*.ttf#Noto Sans</FontFamily>
 
     <sys:Double x:Key="FontSizeNormal">15</sys:Double>
 
     <VisualBrush x:Key="ThemeStripeBackBrush">
       <VisualBrush.Visual>
-        <Panel Height="32" Width="32" Background="#1e1e22">
-          <Path Data="M 0 8 L 24 32 L 8 32 L 0 24 Z" Fill="#262626" />
-          <Path Data="M 8 0 L 24 0 L 32 8 L 32 24 Z" Fill="#262626" />
+        <Panel Height="32" Width="32" Background="{DynamicResource ThemeBackgroundBrush}">
+          <Path Data="M 0 8 L 24 32 L 8 32 L 0 24 Z" Fill="{DynamicResource ThemeListAltRowBrush}" />
+          <Path Data="M 8 0 L 24 0 L 32 8 L 32 24 Z" Fill="{DynamicResource ThemeListAltRowBrush}" />
         </Panel>
       </VisualBrush.Visual>
 

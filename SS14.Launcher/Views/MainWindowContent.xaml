@@ -12,12 +12,12 @@
     <vm:MainWindowViewModel />
   </Design.DataContext>
 
-  <Panel>
+  <Panel Background="{DynamicResource ThemeBackgroundBrush}">
     <DockPanel LastChildFill="true">
       <!-- Header -->
       <Panel DockPanel.Dock="Top">
         <Panel.Background>
-          <SolidColorBrush Color="#212126" />
+          <DynamicResource ResourceKey="ThemeBackgroundBrush" />
         </Panel.Background>
 
         <DockPanel Name="HeaderPanel" Classes="MainWindowHeader">
@@ -26,24 +26,33 @@
                  Source="{DynamicResource LogoLong}" />
           <!--<v:Logo DockPanel.Dock="Left" Height="60" HorizontalAlignment="Left" Margin="0, 8"></v:Logo>-->
           <Grid DockPanel.Dock="Right" HorizontalAlignment="Right" VerticalAlignment="Center"
-                ColumnDefinitions="Auto, Auto" RowDefinitions="Auto, Auto" Margin="0, 0, 3, 0">
-            <!-- Discord link -->
-            <Button Grid.Row="0" Grid.Column="0" MinWidth="90"
+                ColumnDefinitions="Auto, Auto, Auto" RowDefinitions="Auto, Auto" Margin="0, 0, 3, 0">
+            <!-- Helix Discord link -->
+            <Button Grid.Row="0" Grid.Column="0" MinWidth="112"
+                    Command="{Binding OnHelixDiscordButtonPressed}" Classes="OpenRight"
+                    Margin="0, 6, 2, 2">
+              <v:IconLabel Icon="{DynamicResource InfoIcon-discord}"
+                           Content="{loc:Loc main-window-header-link-helix-discord}" />
+            </Button>
+
+            <!-- Official Discord link -->
+            <Button Grid.Row="0" Grid.Column="1" MinWidth="120"
                     Command="{Binding OnDiscordButtonPressed}" Classes="OpenBoth"
                     Margin="0, 6, 2, 2">
               <v:IconLabel Icon="{DynamicResource InfoIcon-discord}"
-                           Content="{loc:Loc main-window-header-link-discord}" />
+                           Content="{loc:Loc main-window-header-link-official-discord}" />
             </Button>
 
-            <!-- Website link -->
-            <Button Grid.Row="0" Grid.Column="1" MinWidth="90"
-                    Command="{Binding OnWebsiteButtonPressed}" Classes="OpenLeft"
+            <!-- GitHub link -->
+            <Button Grid.Row="0" Grid.Column="2" MinWidth="82"
+                    Command="{Binding OnGitHubButtonPressed}" Classes="OpenLeft"
                     Margin="0, 6, 0, 2">
-              <v:IconLabel Icon="{DynamicResource InfoIcon-web}" Content="{loc:Loc main-window-header-link-website}" />
+              <v:IconLabel Icon="{DynamicResource InfoIcon-github}"
+                           Content="{loc:Loc main-window-header-link-github}" />
             </Button>
 
             <!-- Account drop down -->
-            <v:AccountDropDown Grid.ColumnSpan="2" Grid.Row="1"
+            <v:AccountDropDown Grid.ColumnSpan="3" Grid.Row="1"
                                IsEnabled="{Binding $parent.DataContext.AccountDropDownVisible}"
                                DataContext="{Binding AccountDropDown}" />
           </Grid>
