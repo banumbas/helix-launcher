@@ -88,6 +88,32 @@
       </ScrollViewer>
     </TabItem>
 
+    <TabItem Header="{loc:Loc tab-options-helix-tab}">
+      <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+        <StackPanel Margin="12" Spacing="16">
+          <StackPanel Spacing="6">
+            <TextBlock Text="{loc:Loc tab-options-helix-server-list-title}" Classes="NanoHeadingMedium" />
+            <TextBlock Text="{loc:Loc tab-options-helix-server-list-desc}" Opacity="0.6" TextWrapping="Wrap" />
+            <CheckBox Margin="4" IsChecked="{Binding ServerListShowMode}" Content="{loc:Loc tab-options-helix-show-mode}" />
+            <CheckBox Margin="4" IsChecked="{Binding ServerListShowMap}" Content="{loc:Loc tab-options-helix-show-map}" />
+            <CheckBox Margin="4" IsChecked="{Binding ServerListShowPing}" Content="{loc:Loc tab-options-helix-show-ping}" />
+          </StackPanel>
+
+          <Separator Height="1" Opacity="0.1" Background="White" />
+
+          <StackPanel Spacing="6">
+            <TextBlock Text="{loc:Loc tab-options-helix-discord-rpc-title}" Classes="NanoHeadingMedium" />
+            <TextBlock Text="{loc:Loc tab-options-helix-discord-rpc-desc}" Opacity="0.6" TextWrapping="Wrap" />
+            <CheckBox Margin="4" IsChecked="{Binding HelixDiscordRichPresenceEnabled}" Content="{loc:Loc tab-options-helix-discord-rpc-enabled}" />
+
+            <TextBlock Text="{loc:Loc tab-options-helix-discord-rpc-in-game-title}" Classes="NanoHeadingSmall" Margin="4,8,4,2" />
+            <RadioButton Margin="4,2" GroupName="HelixDiscordInGamePresenceMode" IsChecked="{Binding HelixDiscordInGameUseOriginal}" Content="{loc:Loc tab-options-helix-discord-rpc-in-game-original}" />
+            <RadioButton Margin="4,2" GroupName="HelixDiscordInGamePresenceMode" IsChecked="{Binding HelixDiscordInGameUseHelix}" Content="{loc:Loc tab-options-helix-discord-rpc-in-game-helix}" />
+          </StackPanel>
+        </StackPanel>
+      </ScrollViewer>
+    </TabItem>
+
     <TabItem Header="{loc:Loc tab-options-resource-packs-tab}">
       <ScrollViewer HorizontalScrollBarVisibility="Disabled">
         <StackPanel Margin="12" Spacing="12">

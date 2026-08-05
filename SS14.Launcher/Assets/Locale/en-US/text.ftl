@@ -437,3 +437,18 @@ tab-resource-packs-enabled = Enabled
 launcher-themes-font = Font
 launcher-themes-font-desc = Choose a built-in font or load a .ttf/.otf file.
 launcher-themes-font-load = Load custom font
+
+# Helix launcher options
+tab-options-helix-tab = Helix
+tab-options-helix-server-list-title = Server List Display
+tab-options-helix-server-list-desc = Controls extra fields in the Favorites and Servers lists.
+tab-options-helix-show-mode = Show current game mode
+tab-options-helix-show-map = Show current map
+tab-options-helix-show-ping = Show ping
+tab-options-helix-discord-rpc-title = Discord Rich Presence
+tab-options-helix-discord-rpc-desc = Controls what Discord Rich Presence shows while the launcher and game are running.
+tab-options-helix-discord-rpc-enabled = Enable Discord Rich Presence
+tab-options-helix-discord-rpc-in-game-title = While the game is running
+tab-options-helix-discord-rpc-in-game-original = Original Space Station 14 RPC
+tab-options-helix-discord-rpc-in-game-helix = Helix RPC with server info
+

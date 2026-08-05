@@ -44,6 +44,8 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
     public NewsTabViewModel NewsTab { get; }
     public OptionsTabViewModel OptionsTab { get; }
 
+    public HelixDiscordPresenceController DiscordPresenceController { get; }
+
     public MainWindowViewModel()
     {
         _cfg = Locator.Current.GetRequiredService<DataManager>();
@@ -66,6 +68,8 @@ public sealed class MainWindowViewModel : ViewModelBase, IErrorOverlayOwner
         tabs.Add(new DevelopmentTabViewModel());
 #endif
         Tabs = tabs;
+
+        DiscordPresenceController = new HelixDiscordPresenceController(this);
 
         AccountDropDown = new AccountDropDownViewModel(this);
         LoginViewModel = new MainWindowLoginViewModel();
