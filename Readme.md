@@ -8,15 +8,11 @@ discord: https://discord.gg/68WfqhBJx3
 
 Все изменения, созданные в рамках этого форка, распространяются по лицензии GNU Affero General Public License v3.0 (AGPL-3.0-only) - см. [LICENSE-AGPL-3.0.txt](LICENSE-AGPL-3.0.txt).
 
-Код, написанный Wizden, распространяется по лицензии MIT, если в соответствующем файле не указано иное.
-
 ## Licensing
 
 The Space Station 14 launcher source code inherited from the upstream project remains licensed under the MIT License - see [LICENSE.txt](LICENSE.txt).
 
 All changes created for this fork are licensed under the GNU Affero General Public License v3.0 (AGPL-3.0-only) - see [LICENSE-AGPL-3.0.txt](LICENSE-AGPL-3.0.txt).
-
-Code written by Wizden is licensed under the MIT License unless the relevant file states otherwise.
 
 # Features
 * Resource Packs
